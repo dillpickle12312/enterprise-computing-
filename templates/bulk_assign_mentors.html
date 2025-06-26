@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+
+{% block title %}Bulk Assign Mentors{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="mb-0">
+                    <i class="fas fa-users me-2"></i>Bulk Assign Mentors
+                </h1>
+                <p class="text-muted mb-0">Assign mentors to multiple unassigned mentees at once</p>
+            </div>
+            <a href="{{ url_for('mentees') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Mentees
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if unassigned_mentees and available_mentors %}
+    <form method="POST">
+        <div class="row">
+            <!-- Unassigned Mentees -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-graduate me-2"></i>Unassigned Mentees
+                            <span class="badge bg-warning ms-2">{{ unassigned_mentees|length }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for mentee in unassigned_mentees %}
+                            <div class="card mb-3 border-warning">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">{{ mentee.name }}</h6>
+                                            <small class="text-muted">{{ mentee.roll_call }}</small><br>
+                                            <span class="badge bg-secondary">{{ mentee.subject }}</span>
+                                            <span class="badge bg-info">{{ mentee.lessons_remaining }} lessons</span>
+                                        </div>
+                                        <div class="text-end">
+                                            <label class="form-label small">Assign to:</label>
+                                            <select name="assignments" class="form-select form-select-sm mentee-assignment" 
+                                                    data-mentee-id="{{ mentee.id }}"
+                                                    data-subject="{{ mentee.subject }}">
+                                                <option value="">Select mentor...</option>
+                                                {% for mentor_info in available_mentors %}
+                                                    {% if mentee.subject in mentor_info.mentor.subjects.split(',') %}
+                                                        <option value="{{ mentee.id }}-{{ mentor_info.mentor.id }}"
+                                                                data-mentor-id="{{ mentor_info.mentor.id }}"
+                                                                data-available-slots="{{ mentor_info.available_slots }}"
+                                                                data-mentor-name="{{ mentor_info.mentor.name }}">
+                                                            {{ mentor_info.mentor.name }} 
+                                                            ({{ mentor_info.available_slots }} slots)
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Mentors -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chalkboard-teacher me-2"></i>Available Mentors
+                            <span class="badge bg-success ms-2">{{ available_mentors|length }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for mentor_info in available_mentors %}
+                            <div class="card mb-3 border-success" id="mentor-card-{{ mentor_info.mentor.id }}">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">{{ mentor_info.mentor.name }}</h6>
+                                            <small class="text-muted">{{ mentor_info.mentor.roll_call }}</small><br>
+                                            <div class="mt-1">
+                                                {% for subject in mentor_info.mentor.subjects.split(',') %}
+                                                    <span class="badge bg-secondary me-1">{{ subject.strip() }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="badge bg-success mb-1">
+                                                <span id="available-slots-{{ mentor_info.mentor.id }}">{{ mentor_info.available_slots }}</span> 
+                                                / {{ mentor_info.mentor.max_mentees }} slots
+                                            </div><br>
+                                            <small class="text-muted">
+                                                <span id="assignments-count-{{ mentor_info.mentor.id }}">0</span> assignments
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assignment Summary -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clipboard-check me-2"></i>Assignment Summary
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="assignment-summary" class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Ready to assign:</strong> Select mentors for mentees to see assignment summary.
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-outline-secondary" onclick="clearAllAssignments()">
+                                <i class="fas fa-eraser me-2"></i>Clear All
+                            </button>
+                            <button type="submit" class="btn btn-success" id="assign-button" disabled>
+                                <i class="fas fa-check me-2"></i>Assign Selected Mentors
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% elif unassigned_mentees and not available_mentors %}
+    <div class="alert alert-warning">
+        <h5 class="alert-heading">
+            <i class="fas fa-exclamation-triangle me-2"></i>No Available Mentors
+        </h5>
+        <p>There are {{ unassigned_mentees|length }} unassigned mentees, but no mentors with available capacity.</p>
+        <hr>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('add_mentor') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add New Mentor
+            </a>
+            <a href="{{ url_for('mentors') }}" class="btn btn-outline-primary">
+                <i class="fas fa-list me-2"></i>View All Mentors
+            </a>
+        </div>
+    </div>
+
+{% elif available_mentors and not unassigned_mentees %}
+    <div class="alert alert-success">
+        <h5 class="alert-heading">
+            <i class="fas fa-check-circle me-2"></i>All Mentees Assigned
+        </h5>
+        <p>Great! All mentees currently have mentors assigned.</p>
+        <hr>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('add_mentee') }}" class="btn btn-success">
+                <i class="fas fa-plus me-2"></i>Add New Mentee
+            </a>
+            <a href="{{ url_for('mentees') }}" class="btn btn-outline-success">
+                <i class="fas fa-list me-2"></i>View All Mentees
+            </a>
+        </div>
+    </div>
+
+{% else %}
+    <div class="alert alert-info">
+        <h5 class="alert-heading">
+            <i class="fas fa-info-circle me-2"></i>Setup Required
+        </h5>
+        <p>To use bulk assignment, you need both mentors and mentees in the system.</p>
+        <hr>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('add_mentor') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add Mentors
+            </a>
+            <a href="{{ url_for('add_mentee') }}" class="btn btn-success">
+                <i class="fas fa-plus me-2"></i>Add Mentees
+            </a>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Help Section -->
+<div class="card mt-4 bg-secondary border-0">
+    <div class="card-header">
+        <h6 class="mb-0">
+            <i class="fas fa-question-circle me-2"></i>Bulk Assignment Help
+        </h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="text-warning">How It Works</h6>
+                <ul class="text-light small">
+                    <li>Only unassigned mentees are shown</li>
+                    <li>Only mentors with available capacity are listed</li>
+                    <li>Subject compatibility is automatically checked</li>
+                    <li>Real-time validation prevents overassignment</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 class="text-warning">Tips for Best Results</h6>
+                <ul class="text-light small">
+                    <li>Review mentor workloads before assigning</li>
+                    <li>Consider subject expertise and experience</li>
+                    <li>Balance assignments across available mentors</li>
+                    <li>Use individual assignment for special cases</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const assignmentSelects = document.querySelectorAll('.mentee-assignment');
+    const assignButton = document.getElementById('assign-button');
+    const assignmentSummary = document.getElementById('assignment-summary');
+    
+    // Track mentor assignments
+    const mentorAssignments = {};
+    const mentorCapacity = {};
+    
+    // Initialize mentor capacity tracking
+    {% for mentor_info in available_mentors %}
+        mentorCapacity[{{ mentor_info.mentor.id }}] = {{ mentor_info.available_slots }};
+        mentorAssignments[{{ mentor_info.mentor.id }}] = 0;
+    {% endfor %}
+    
+    function updateAssignmentCounts() {
+        // Reset counts
+        {% for mentor_info in available_mentors %}
+            mentorAssignments[{{ mentor_info.mentor.id }}] = 0;
+        {% endfor %}
+        
+        // Count current assignments
+        assignmentSelects.forEach(select => {
+            if (select.value) {
+                const mentorId = select.querySelector('option:checked').getAttribute('data-mentor-id');
+                if (mentorId) {
+                    mentorAssignments[parseInt(mentorId)]++;
+                }
+            }
+        });
+        
+        // Update UI
+        {% for mentor_info in available_mentors %}
+            const mentorId = {{ mentor_info.mentor.id }};
+            const assignedCount = mentorAssignments[mentorId];
+            const availableSlots = mentorCapacity[mentorId] - assignedCount;
+            
+            document.getElementById(`assignments-count-${mentorId}`).textContent = assignedCount;
+            document.getElementById(`available-slots-${mentorId}`).textContent = availableSlots;
+            
+            const mentorCard = document.getElementById(`mentor-card-${mentorId}`);
+            if (availableSlots <= 0) {
+                mentorCard.classList.remove('border-success');
+                mentorCard.classList.add('border-warning');
+            } else {
+                mentorCard.classList.remove('border-warning');
+                mentorCard.classList.add('border-success');
+            }
+        {% endfor %}
+        
+        updateAssignmentSummary();
+    }
+    
+    function updateAssignmentSummary() {
+        const totalAssignments = Object.values(mentorAssignments).reduce((sum, count) => sum + count, 0);
+        
+        if (totalAssignments === 0) {
+            assignmentSummary.className = 'alert alert-info';
+            assignmentSummary.innerHTML = `
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Ready to assign:</strong> Select mentors for mentees to see assignment summary.
+            `;
+            assignButton.disabled = true;
+        } else {
+            assignmentSummary.className = 'alert alert-success';
+            let summaryText = `
+                <i class="fas fa-check-circle me-2"></i>
+                <strong>Ready to assign ${totalAssignments} mentee(s):</strong><br>
+            `;
+            
+            {% for mentor_info in available_mentors %}
+                const mentorId = {{ mentor_info.mentor.id }};
+                const count = mentorAssignments[mentorId];
+                if (count > 0) {
+                    summaryText += `• {{ mentor_info.mentor.name }}: ${count} student(s)<br>`;
+                }
+            {% endfor %}
+            
+            assignmentSummary.innerHTML = summaryText;
+            assignButton.disabled = false;
+        }
+    }
+    
+    function validateMentorCapacity(select) {
+        const selectedOption = select.querySelector('option:checked');
+        if (!selectedOption || !selectedOption.value) return true;
+        
+        const mentorId = parseInt(selectedOption.getAttribute('data-mentor-id'));
+        const currentAssignments = mentorAssignments[mentorId];
+        const capacity = mentorCapacity[mentorId];
+        
+        return currentAssignments < capacity;
+    }
+    
+    // Add event listeners
+    assignmentSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            // Validate capacity
+            if (this.value && !validateMentorCapacity(this)) {
+                alert('This mentor has reached their capacity. Please select a different mentor.');
+                this.value = '';
+                return;
+            }
+            
+            updateAssignmentCounts();
+        });
+    });
+    
+    // Clear all assignments
+    window.clearAllAssignments = function() {
+        assignmentSelects.forEach(select => {
+            select.value = '';
+        });
+        updateAssignmentCounts();
+    };
+    
+    // Initial update
+    updateAssignmentCounts();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,381 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+        </h1>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Total Mentors</h5>
+                        <h2>{{ stats.total_mentors }}</h2>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-chalkboard-teacher fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Total Mentees</h5>
+                        <h2>{{ stats.total_mentees }}</h2>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-user-graduate fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Scheduled Sessions</h5>
+                        <h2>{{ stats.sessions_scheduled }}</h2>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-calendar-check fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Completed Sessions</h5>
+                        <h2>{{ stats.sessions_completed }}</h2>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Auto-Graduation Status -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-graduation-cap fa-2x mb-2"></i>
+                <h4>{{ stats.graduated_today }}</h4>
+                <small>Students Graduated Today</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-2x mb-2"></i>
+                <h4>{{ stats.total_mentees }}</h4>
+                <small>Active Mentees</small>
+            </div>
+        </div>
+    </div>    <div class="col-md-4 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-chalkboard-teacher fa-2x mb-2"></i>
+                <h4>{{ stats.total_mentors }}</h4>
+                <small>Active Mentors</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Retirement Warning -->
+{% if stats.mentors_near_retirement > 0 %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-warning">
+            <i class="fas fa-hourglass-half me-2"></i>
+            <strong>Retirement Alert:</strong> {{ stats.mentors_near_retirement }} mentor{{ 's' if stats.mentors_near_retirement != 1 else '' }} 
+            {{ 'are' if stats.mentors_near_retirement != 1 else 'is' }} nearing retirement (5-6 completed sessions). 
+            They will be automatically retired after completing 7 sessions total.
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Sessions Due Today -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-calendar-day me-2"></i>Sessions Due Today
+                    <span class="badge bg-white text-info ms-2">{{ today_sessions|length }}</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if today_sessions %}
+                    <div class="row">
+                        {% for session in today_sessions %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card border-info">
+                                <div class="card-body">                                    <h6 class="card-title">
+                                        <i class="fas fa-clock me-1"></i>
+                                        {{ session.start_time.strftime('%I:%M %p') }}
+                                    </h6>
+                                    <div class="mb-2">
+                                        <strong>Mentor:</strong> {{ session.mentor.name }}<br>
+                                        <strong>Mentee:</strong> {{ session.mentee.name }}<br>
+                                        <strong>Subject:</strong> {{ session.mentee.subject }}
+                                    </div>
+                                    <div class="mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-stopwatch me-1"></i>
+                                            {{ session.duration_minutes }} minutes
+                                        </small>
+                                    </div>
+                                    <div class="d-flex gap-1">
+                                        <form method="POST" action="{{ url_for('update_session_status') }}" class="d-inline">
+                                            <input type="hidden" name="session_id" value="{{ session.id }}">
+                                            <input type="hidden" name="status" value="completed">
+                                            <button type="submit" class="btn btn-success btn-sm" title="Mark Complete">
+                                                <i class="fas fa-check"></i> Complete
+                                            </button>
+                                        </form>
+                                        <a href="{{ url_for('calendar') }}" class="btn btn-outline-primary btn-sm" title="View in Calendar">
+                                            <i class="fas fa-calendar"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Quick Actions:</strong> Click "Complete" to mark a session as finished, or click the calendar icon to view all sessions.
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-calendar-check fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No sessions scheduled for today</h5>
+                        <p class="text-muted">Check the <a href="{{ url_for('calendar') }}">calendar</a> to schedule new sessions.</p>
+                    </div>                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Session Statistics -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>Session Statistics
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2 text-center">
+                        <div class="badge bg-primary fs-6 mb-2">{{ stats.sessions_scheduled }}</div>
+                        <div class="small">Scheduled</div>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <div class="badge bg-success fs-6 mb-2">{{ stats.sessions_completed }}</div>
+                        <div class="small">Completed</div>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <div class="badge bg-danger fs-6 mb-2">{{ stats.sessions_canceled }}</div>
+                        <div class="small">Canceled</div>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <div class="badge bg-warning fs-6 mb-2">{{ stats.sessions_rescheduled }}</div>
+                        <div class="small">Rescheduled</div>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <div class="badge bg-dark fs-6 mb-2">{{ stats.sessions_missed }}</div>
+                        <div class="small">Missed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lessons Completed by Subject -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-book me-2"></i>Lessons Completed by Subject
+                </h5>
+            </div>
+            <div class="card-body">
+                {% for subject, count in lessons_by_subject.items() %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>{{ subject }}</span>
+                    <span class="badge bg-primary">{{ count }} lessons</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-users me-2"></i>Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">                <div class="d-grid gap-2">
+                    <a href="{{ url_for('add_mentor') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Add New Mentor
+                    </a>
+                    <a href="{{ url_for('add_mentee') }}" class="btn btn-success">
+                        <i class="fas fa-plus me-2"></i>Add New Mentee
+                    </a>
+                    <a href="{{ url_for('assign_mentor') }}" class="btn btn-info">
+                        <i class="fas fa-link me-2"></i>Assign Mentor
+                    </a>                    <a href="{{ url_for('schedule_session') }}" class="btn btn-warning">
+                        <i class="fas fa-calendar-plus me-2"></i>Schedule Session
+                    </a>
+                    <hr>
+                    <div class="d-grid gap-2">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fas fa-download me-2"></i>Export Data
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('export_data', data_type='mentors') }}">
+                                    <i class="fas fa-chalkboard-teacher me-2"></i>Export Mentors (CSV)
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('export_data', data_type='mentees') }}">
+                                    <i class="fas fa-user-graduate me-2"></i>Export Mentees (CSV)
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('export_data', data_type='sessions') }}">
+                                    <i class="fas fa-calendar-alt me-2"></i>Export Sessions (CSV)
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <a href="{{ url_for('clear_all_data') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Manage System Data
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Mentors and Mentees -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Recent Mentors
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if mentors %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Subjects</th>
+                                    <th>Mentees</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for mentor in mentors[:5] %}
+                                <tr>                                    <td>
+                                        <a href="{{ url_for('mentor_detail', id=mentor.id) }}" class="text-decoration-none">
+                                            {{ mentor.name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ mentor.subjects.replace(',', ', ') }}</td>
+                                    <td>
+                                        <span class="badge bg-secondary">
+                                            {{ mentor.mentees|length }}/{{ mentor.max_mentees }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="{{ url_for('mentors') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                {% else %}
+                    <p class="text-muted">No mentors added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-graduate me-2"></i>Recent Mentees
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if mentees %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Subject</th>
+                                    <th>Lessons Left</th>
+                                    <th>Mentor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for mentee in mentees[:5] %}
+                                <tr>
+                                    <td>{{ mentee.name }}</td>
+                                    <td>{{ mentee.subject }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ mentee.lessons_remaining }}</span>
+                                    </td>
+                                    <td>
+                                        {% if mentee.assigned_mentor %}
+                                            {{ mentee.assigned_mentor.name }}
+                                        {% else %}
+                                            <span class="text-muted">Unassigned</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="{{ url_for('mentees') }}" class="btn btn-sm btn-outline-success">View All</a>
+                {% else %}
+                    <p class="text-muted">No mentees added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

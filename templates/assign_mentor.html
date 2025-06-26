@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Assign Mentor{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">
+                    <i class="fas fa-link me-2"></i>Assign Mentor to Mentee
+                </h3>
+                <p class="text-muted mb-0 mt-2">Connect students with available tutors</p>
+            </div>
+            <div class="card-body">
+                {% if unassigned_mentees %}
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="mentee_id" class="form-label">
+                                    <i class="fas fa-user-graduate me-1"></i>Select Mentee
+                                </label>
+                                <select class="form-select" id="mentee_id" name="mentee_id" required>
+                                    <option value="">Choose a student...</option>
+                                    {% for mentee in unassigned_mentees %}
+                                        <option value="{{ mentee.id }}" 
+                                                data-subject="{{ mentee.subject }}"
+                                                {% if request.args.get('mentee_id') == mentee.id|string %}selected{% endif %}>
+                                            {{ mentee.name }} ({{ mentee.subject }}) - {{ mentee.lessons_remaining }} lessons left
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-text">Choose an unassigned student who needs a mentor.</div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="mentor_id" class="form-label">
+                                    <i class="fas fa-chalkboard-teacher me-1"></i>Select Mentor
+                                </label>
+                                <select class="form-select" id="mentor_id" name="mentor_id" required disabled>
+                                    <option value="">First select a mentee...</option>
+                                </select>
+                                <div class="form-text">Available mentors who teach the selected subject.</div>
+                            </div>
+                        </div>
+
+                        <!-- Mentor details display -->
+                        <div id="mentor-details" class="card bg-secondary border-0 mb-4" style="display: none;">
+                            <div class="card-body">
+                                <h6 class="text-warning mb-2">
+                                    <i class="fas fa-info-circle me-1"></i>Mentor Information
+                                </h6>
+                                <div id="mentor-info"></div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('mentees') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Mentees
+                            </a>
+                            <button type="submit" class="btn btn-success" id="assign-btn" disabled>
+                                <i class="fas fa-link me-2"></i>Assign Mentor
+                            </button>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">No Unassigned Mentees</h4>
+                        <p class="text-muted mb-4">All mentees currently have mentors assigned, or there are no mentees in the system.</p>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="{{ url_for('add_mentee') }}" class="btn btn-success">
+                                <i class="fas fa-plus me-2"></i>Add New Mentee
+                            </a>
+                            <a href="{{ url_for('mentees') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-list me-2"></i>View All Mentees
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Compatibility Info -->
+        <div class="card mt-4 bg-secondary border-0">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Assignment Guidelines
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-warning">Mentor Requirements</h6>
+                        <ul class="text-light small">
+                            <li>Must teach the mentee's required subject</li>
+                            <li>Must have available capacity (under max students)</li>
+                            <li>Must not be near retirement (7 session limit)</li>
+                            <li>Should have relevant experience in the subject</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-warning">Assignment Tips</h6>
+                        <ul class="text-light small">
+                            <li>Consider mentor's current workload</li>
+                            <li>Match teaching style with learning needs</li>
+                            <li>Check session availability and schedules</li>
+                            <li>Review mentor's track record if applicable</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Mentors Summary -->
+        {% if available_mentors %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-users me-2"></i>Available Mentors Summary
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Mentor</th>
+                                <th>Subjects</th>
+                                <th>Current Students</th>
+                                <th>Available Slots</th>
+                                <th>Sessions Left</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mentor_info in available_mentors %}
+                            <tr>
+                                <td>{{ mentor_info.mentor.name }}</td>
+                                <td>
+                                    {% for subject in mentor_info.mentor.subjects.split(',') %}
+                                        <span class="badge bg-secondary me-1">{{ subject.strip() }}</span>
+                                    {% endfor %}
+                                </td>
+                                <td>{{ mentor_info.mentor.mentees|length }}/{{ mentor_info.mentor.max_mentees }}</td>
+                                <td>
+                                    <span class="badge bg-success">{{ mentor_info.available_slots }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">{{ mentor_info.mentor.lessons_left }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const menteeSelect = document.getElementById('mentee_id');
+    const mentorSelect = document.getElementById('mentor_id');
+    const mentorDetails = document.getElementById('mentor-details');
+    const mentorInfo = document.getElementById('mentor-info');
+    const assignBtn = document.getElementById('assign-btn');
+      // Available mentors data from server
+    const availableMentors = {{ available_mentors | tojson | safe }};
+    
+    menteeSelect.addEventListener('change', function() {
+        const menteeId = this.value;
+        const selectedOption = this.options[this.selectedIndex];
+        const menteeSubject = selectedOption.getAttribute('data-subject');
+        
+        // Clear mentor selection
+        mentorSelect.innerHTML = '<option value="">Choose a mentor...</option>';
+        mentorDetails.style.display = 'none';
+        assignBtn.disabled = true;
+        
+        if (menteeId && menteeSubject) {
+            // Enable mentor select
+            mentorSelect.disabled = false;
+            
+            // Filter mentors by subject
+            const compatibleMentors = availableMentors.filter(mentorInfo => {
+                const mentorSubjects = mentorInfo.mentor.subjects.split(',').map(s => s.trim());
+                return mentorSubjects.includes(menteeSubject);
+            });
+            
+            if (compatibleMentors.length > 0) {
+                compatibleMentors.forEach(mentorInfo => {
+                    const option = document.createElement('option');
+                    option.value = mentorInfo.mentor.id;
+                    option.textContent = `${mentorInfo.mentor.name} (${mentorInfo.available_slots} slots available, ${mentorInfo.mentor.lessons_left} sessions left)`;
+                    option.setAttribute('data-mentor-data', JSON.stringify(mentorInfo));
+                    mentorSelect.appendChild(option);
+                });
+            } else {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No compatible mentors available';
+                option.disabled = true;
+                mentorSelect.appendChild(option);
+            }
+        } else {
+            mentorSelect.disabled = true;
+        }
+    });
+    
+    mentorSelect.addEventListener('change', function() {
+        const mentorId = this.value;
+        const selectedOption = this.options[this.selectedIndex];
+        
+        if (mentorId) {
+            const mentorData = JSON.parse(selectedOption.getAttribute('data-mentor-data') || '{}');
+            
+            if (mentorData.mentor) {
+                // Show mentor details
+                mentorInfo.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Name:</strong> ${mentorData.mentor.name}<br>
+                            <strong>Subjects:</strong> ${mentorData.mentor.subjects.replace(/,/g, ', ')}<br>
+                            <strong>Current Students:</strong> ${mentorData.mentor.mentees?.length || 0}/${mentorData.mentor.max_mentees}
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Available Slots:</strong> <span class="badge bg-success">${mentorData.available_slots}</span><br>
+                            <strong>Sessions Remaining:</strong> <span class="badge bg-info">${mentorData.mentor.lessons_left}</span><br>
+                            <strong>Roll Call:</strong> <code>${mentorData.mentor.roll_call}</code>
+                        </div>
+                    </div>
+                `;
+                mentorDetails.style.display = 'block';
+                assignBtn.disabled = false;
+            }
+        } else {
+            mentorDetails.style.display = 'none';
+            assignBtn.disabled = true;
+        }
+    });
+    
+    // Pre-select mentee if coming from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const preselectedMenteeId = urlParams.get('mentee_id');
+    if (preselectedMenteeId) {
+        menteeSelect.value = preselectedMenteeId;
+        menteeSelect.dispatchEvent(new Event('change'));
+    }
+});
+</script>
+{% endblock %}

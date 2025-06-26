@@ -1,0 +1,1481 @@
+{% extends "base.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-calendar-alt me-2"></i>Session Calendar
+            </h1>
+            <a href="{{ url_for('schedule_session') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Schedule New Session
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Calendar Controls -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h6 class="mb-2">Session Status Legend:</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge" style="background-color: #007bff;">Scheduled</span>
+                            <span class="badge" style="background-color: #28a745;">Completed</span>
+                            <span class="badge" style="background-color: #dc3545;">Canceled</span>
+                            <span class="badge" style="background-color: #ffc107; color: #000;">Rescheduled</span>
+                            <span class="badge" style="background-color: #fd7e14;">Missed</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary" onclick="calendar.changeView('dayGridMonth')">Month</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="calendar.changeView('timeGridWeek')">Week</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="calendar.changeView('timeGridDay')">Day</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Calendar Display -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Session Details Modal -->
+<div class="modal fade" id="sessionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Session Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="session-details"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <div id="session-actions"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reschedule Modal -->
+<div class="modal fade" id="rescheduleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reschedule Session</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('reschedule_session') }}">
+                <div class="modal-body">
+                    <input type="hidden" id="reschedule-session-id" name="session_id">                    <div class="mb-3">
+                        <label for="new_date" class="form-label">New Date</label>
+                        <input type="date" class="form-control" id="new_date" name="new_date" required>
+                        <div class="form-text">
+                            <i class="fas fa-utensils me-1"></i>Session will be rescheduled to lunch time (12:30 PM)
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning">Reschedule</button>
+                </div>            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Schedule Modal -->
+<div class="modal fade" id="quickScheduleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-calendar-plus me-2"></i>Quick Schedule Session
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('schedule_session') }}">
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Quick Scheduling:</strong> You clicked on <span id="selectedDateDisplay"></span>. 
+                        All sessions are automatically scheduled at lunch time (12:30 PM) for 45 minutes.
+                    </div>
+                    
+                    <input type="hidden" id="quick-schedule-date" name="date">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="quick-mentor-id" class="form-label">
+                                    <i class="fas fa-user-tie me-1"></i>Select Mentor
+                                </label>
+                                <select class="form-select" id="quick-mentor-id" name="mentor_id" required onchange="updateMentorInfo()">
+                                    <option value="">Choose a mentor...</option>
+                                    {% for mentor in mentors if mentor.lessons_left > 0 %}
+                                    <option value="{{ mentor.id }}" 
+                                            data-lessons-left="{{ mentor.lessons_left }}" 
+                                            data-subjects="{{ mentor.subjects }}">
+                                        {{ mentor.name }} - {{ mentor.subjects }} ({{ mentor.lessons_left }} lessons left)
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-text">
+                                    <i class="fas fa-lightbulb me-1"></i>Only mentors with available lessons are shown
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="quick-mentee-id" class="form-label">
+                                    <i class="fas fa-user-graduate me-1"></i>Select Mentee
+                                </label>
+                                <select class="form-select" id="quick-mentee-id" name="mentee_id" required onchange="updateMenteeInfo()">
+                                    <option value="">Choose a mentee...</option>
+                                    {% for mentee in mentees if not mentee.mentor_id %}
+                                    <option value="{{ mentee.id }}" data-subject="{{ mentee.subject }}">
+                                        {{ mentee.name }} - {{ mentee.subject }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-text">
+                                    <i class="fas fa-lightbulb me-1"></i>Only unassigned mentees are shown
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">
+                                        <i class="fas fa-clock me-1"></i>Session Details
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <strong>Date:</strong><br>
+                                            <span id="quickScheduleDateDisplay"></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong>Time:</strong><br>
+                                            <i class="fas fa-utensils me-1"></i>12:30 PM (Lunch)
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong>Duration:</strong><br>
+                                            45 minutes (all subjects)
+                                        </div>
+                                    </div>
+                                    <div class="mt-3" id="compatibilityCheck" style="display: none;">
+                                        <div class="alert alert-warning" id="compatibilityWarning" style="display: none;">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            <span id="compatibilityMessage"></span>
+                                        </div>
+                                        <div class="alert alert-success" id="compatibilitySuccess" style="display: none;">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            Perfect match! This mentor can teach this subject.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancel">Cancel</button>
+                    <a href="{{ url_for('schedule_session') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-cog me-1"></i>Advanced Options
+                    </a>
+                    <button type="submit" class="btn btn-primary" id="quickScheduleSubmit">
+                        <i class="fas fa-calendar-check me-1"></i>Schedule Session
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Sessions List (Alternative View) -->
+<div class="row mt-4">
+    <div class="col-12">
+        <!-- Current & Upcoming Sessions -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link p-0 text-decoration-none" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#currentSessionsTable" 
+                                aria-expanded="true" aria-controls="currentSessionsTable">
+                            <i class="fas fa-calendar-day me-2 text-primary"></i>Current & Upcoming Sessions
+                            <span class="badge bg-primary ms-2" id="current-sessions-count">0</span>
+                            <i class="fas fa-chevron-up ms-2" id="current-sessions-chevron"></i>
+                        </button>
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <input type="text" class="form-control form-control-sm" id="currentSessionSearch" 
+                               placeholder="Search current sessions..." style="width: 220px;">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="clearCurrentSearch()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse show" id="currentSessionsTable">
+                <div class="card-body">
+                    {% set current_sessions = [] %}                    {% for session in sessions|sort(attribute='date') %}
+                        {% if session.date >= today %}
+                            {% set _ = current_sessions.append(session) %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if current_sessions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="current-sessions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>Mentor</th>
+                                    <th>Mentee</th>
+                                    <th>Subject</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for session in current_sessions %}
+                                <tr class="table-{{ 'success' if session.status == 'completed' else 'danger' if session.status in ['canceled', 'missed'] else 'warning' if session.status == 'rescheduled' else '' }}">
+                                    <td>
+                                        <strong>{{ session.date.strftime('%m/%d/%Y') }}</strong><br>
+                                        <small><i class="fas fa-utensils me-1"></i>12:30 PM (Lunch)</small>
+                                    </td>
+                                    <td>{{ session.mentor.name }}</td>
+                                    <td>{{ session.mentee.name }}</td>
+                                    <td><span class="badge bg-info">{{ session.mentee.subject }}</span></td>
+                                    <td>{{ session.duration_minutes }} min</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'primary' if session.status == 'scheduled' else 'success' if session.status == 'completed' else 'danger' if session.status in ['canceled', 'missed'] else 'warning' }}">
+                                            {{ session.status.title() }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            {% if session.status == 'scheduled' %}
+                                            <button class="btn btn-outline-success" 
+                                                    onclick="updateSessionStatus({{ session.id }}, 'completed')"
+                                                    title="Mark as Completed">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button class="btn btn-outline-warning" 
+                                                    onclick="showRescheduleModal({{ session.id }})"
+                                                    title="Reschedule">
+                                                <i class="fas fa-clock"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger" 
+                                                    onclick="updateSessionStatus({{ session.id }}, 'canceled')"
+                                                    title="Cancel">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                            <button class="btn btn-outline-dark" 
+                                                    onclick="updateSessionStatus({{ session.id }}, 'missed')"
+                                                    title="Mark as Missed">
+                                                <i class="fas fa-user-times"></i>
+                                            </button>
+                                            {% elif session.status in ['canceled', 'missed'] %}
+                                            <button class="btn btn-outline-primary" 
+                                                    onclick="updateSessionStatus({{ session.id }}, 'scheduled')"
+                                                    title="Restore to Scheduled">
+                                                <i class="fas fa-undo"></i>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-calendar-check fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No current or upcoming sessions</h5>
+                        <p class="text-muted">All sessions are in the past or you need to schedule new ones.</p>
+                        <a href="{{ url_for('schedule_session') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Schedule New Session
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>        <!-- Past Sessions (Collapsed by Default) -->
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link p-0 text-decoration-none text-muted" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#pastSessionsTable" 
+                                aria-expanded="false" aria-controls="pastSessionsTable">
+                            <i class="fas fa-history me-2"></i>Past Sessions
+                            <span class="badge bg-secondary ms-2" id="past-sessions-count">0</span>
+                            <i class="fas fa-chevron-down ms-2" id="past-sessions-chevron"></i>
+                        </button>
+                    </h5>
+                    <div class="d-flex gap-2 align-items-center flex-wrap">
+                        <input type="text" class="form-control form-control-sm" id="pastSessionSearch" 
+                               placeholder="Search past sessions..." style="width: 180px;">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="clearPastSearch()" title="Clear Search">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advanced Filters for Past Sessions -->
+            <div class="collapse" id="pastSessionsTable">
+                <div class="card-body">
+                    <!-- Filter Section -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="card bg-light">
+                                <div class="card-body py-2">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-3">
+                                            <label for="pastDateFrom" class="form-label form-label-sm mb-1">Date From</label>
+                                            <input type="date" class="form-control form-control-sm" id="pastDateFrom" 
+                                                   onchange="filterPastSessions()">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="pastDateTo" class="form-label form-label-sm mb-1">Date To</label>
+                                            <input type="date" class="form-control form-control-sm" id="pastDateTo" 
+                                                   onchange="filterPastSessions()">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="pastMentorFilter" class="form-label form-label-sm mb-1">Mentor</label>
+                                            <select class="form-select form-select-sm" id="pastMentorFilter" 
+                                                    onchange="filterPastSessions()">
+                                                <option value="">All Mentors</option>
+                                                {% set past_mentors = [] %}
+                                                {% for session in sessions %}
+                                                    {% if session.date < today and session.mentor.name not in past_mentors %}
+                                                        {% set _ = past_mentors.append(session.mentor.name) %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% for mentor in past_mentors|sort %}
+                                                <option value="{{ mentor }}">{{ mentor }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="pastStatusFilter" class="form-label form-label-sm mb-1">Status</label>
+                                            <select class="form-select form-select-sm" id="pastStatusFilter" 
+                                                    onchange="filterPastSessions()">
+                                                <option value="">All Statuses</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="canceled">Canceled</option>
+                                                <option value="missed">Missed</option>
+                                                <option value="scheduled">Scheduled</option>
+                                                <option value="rescheduled">Rescheduled</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <button class="btn btn-outline-secondary btn-sm" onclick="clearPastFilters()" title="Clear All Filters">
+                                                <i class="fas fa-eraser me-1"></i>Clear Filters
+                                            </button>
+                                            <span class="text-muted ms-2" id="pastFilterStatus">Showing all sessions</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <div class="collapse" id="pastSessionsTable">
+                <div class="card-body">
+                    {% set past_sessions = [] %}
+                    {% for session in sessions|sort(attribute='date', reverse=true) %}
+                        {% if session.date < today %}
+                            {% set _ = past_sessions.append(session) %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if past_sessions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="past-sessions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>Mentor</th>
+                                    <th>Mentee</th>
+                                    <th>Subject</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for session in past_sessions %}
+                                <tr class="table-{{ 'success' if session.status == 'completed' else 'danger' if session.status in ['canceled', 'missed'] else 'warning' if session.status == 'rescheduled' else '' }}">
+                                    <td>
+                                        <strong>{{ session.date.strftime('%m/%d/%Y') }}</strong><br>
+                                        <small><i class="fas fa-utensils me-1"></i>12:30 PM (Lunch)</small>
+                                    </td>
+                                    <td>{{ session.mentor.name }}</td>
+                                    <td>{{ session.mentee.name }}</td>
+                                    <td><span class="badge bg-info">{{ session.mentee.subject }}</span></td>
+                                    <td>{{ session.duration_minutes }} min</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'primary' if session.status == 'scheduled' else 'success' if session.status == 'completed' else 'danger' if session.status in ['canceled', 'missed'] else 'warning' }}">
+                                            {{ session.status.title() }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            {% if session.status == 'completed' %}
+                                            <button class="btn btn-outline-warning" 
+                                                    onclick="updateSessionStatus({{ session.id }}, 'scheduled')"
+                                                    title="Mark as Scheduled">
+                                                <i class="fas fa-undo"></i>
+                                            </button>
+                                            {% elif session.status in ['canceled', 'missed'] %}
+                                            <button class="btn btn-outline-primary" 
+                                                    onclick="updateSessionStatus({{ session.id }}, 'scheduled')"
+                                                    title="Restore to Scheduled">
+                                                <i class="fas fa-undo"></i>
+                                            </button>
+                                            {% else %}
+                                            <button class="btn btn-outline-success" 
+                                                    onclick="updateSessionStatus({{ session.id }}, 'completed')"
+                                                    title="Mark as Completed">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No past sessions</h5>
+                    <p class="text-muted">Past sessions will appear here once you have completed some sessions.</p>
+                </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+
+<script>
+let calendar;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        height: 'auto',
+        events: '{{ url_for("api_sessions") }}',
+        eventClick: function(info) {
+            showSessionDetails(info.event);
+        },
+        dateClick: function(info) {
+            // Handle date clicking for quick scheduling
+            const selectedDate = info.dateStr;
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Only allow scheduling for today or future dates
+            if (selectedDate >= today) {
+                showQuickScheduleModal(selectedDate);
+            } else {
+                // Show info for past dates
+                showPastDateInfo(selectedDate);
+            }
+        },
+        selectable: true,
+        selectMirror: true,
+        select: function(info) {
+            // Handle date range selection for scheduling
+            const startDate = info.startStr;
+            const endDate = info.endStr;
+            const today = new Date().toISOString().split('T')[0];
+            
+            if (startDate >= today) {
+                showQuickScheduleModal(startDate);
+            }
+        },eventContent: function(arg) {
+            // Create custom event content with action buttons
+            const event = arg.event;
+            const status = event.extendedProps.status;
+            
+            // Create the main event container
+            const container = document.createElement('div');
+            container.className = 'fc-event-content-custom';
+            container.style.padding = '2px 4px';
+            container.style.fontSize = '11px';
+            container.style.lineHeight = '1.2';
+            
+            // Event title
+            const title = document.createElement('div');
+            title.className = 'fc-event-title';
+            title.style.fontWeight = 'bold';
+            title.style.marginBottom = '2px';
+            
+            if (event.extendedProps.isSummary) {
+                // For summary events (completed sessions)
+                title.textContent = event.title;
+                title.style.textAlign = 'center';
+                container.appendChild(title);
+                
+                // Add a subtitle for summary events
+                const subtitle = document.createElement('div');
+                subtitle.style.fontSize = '9px';
+                subtitle.style.color = 'rgba(255,255,255,0.8)';
+                subtitle.style.textAlign = 'center';
+                subtitle.textContent = 'Click for details';
+                container.appendChild(subtitle);
+            } else {
+                // For individual events
+                title.textContent = event.title;
+                container.appendChild(title);
+                
+                // Time display
+                const time = document.createElement('div');
+                time.className = 'fc-event-time';
+                time.style.fontSize = '10px';
+                time.style.color = 'rgba(255,255,255,0.8)';
+                time.textContent = '12:30 PM (Lunch)';
+                container.appendChild(time);
+                
+                // Action buttons for scheduled sessions
+                if (status === 'scheduled') {
+                    const actions = document.createElement('div');
+                    actions.className = 'fc-event-actions';
+                    actions.style.marginTop = '3px';
+                    actions.style.display = 'flex';
+                    actions.style.gap = '2px';
+                    
+                    // Complete button
+                    const completeBtn = document.createElement('button');
+                    completeBtn.className = 'btn btn-success btn-xs';
+                    completeBtn.style.fontSize = '8px';
+                    completeBtn.style.padding = '1px 3px';
+                    completeBtn.style.border = 'none';
+                    completeBtn.innerHTML = '✓';
+                    completeBtn.title = 'Mark Complete';
+                    completeBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        updateSessionStatus(event.id, 'completed');
+                    };
+                    
+                    // Reschedule button
+                    const rescheduleBtn = document.createElement('button');
+                    rescheduleBtn.className = 'btn btn-warning btn-xs';
+                    rescheduleBtn.style.fontSize = '8px';
+                    rescheduleBtn.style.padding = '1px 3px';
+                    rescheduleBtn.style.border = 'none';
+                    rescheduleBtn.innerHTML = '⏰';
+                    rescheduleBtn.title = 'Reschedule';
+                    rescheduleBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        showRescheduleModal(event.id);
+                    };
+                    
+                    // Miss button
+                    const missBtn = document.createElement('button');
+                    missBtn.className = 'btn btn-danger btn-xs';
+                    missBtn.style.fontSize = '8px';
+                    missBtn.style.padding = '1px 3px';
+                    missBtn.style.border = 'none';
+                    missBtn.innerHTML = '✗';
+                    missBtn.title = 'Mark Missed';
+                    missBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        updateSessionStatus(event.id, 'missed');
+                    };
+                    
+                    actions.appendChild(completeBtn);
+                    actions.appendChild(rescheduleBtn);
+                    actions.appendChild(missBtn);
+                    container.appendChild(actions);
+                }
+            }
+            
+            return { domNodes: [container] };
+        },eventDrop: function(info) {
+            // Handle drag and drop rescheduling
+            const newDate = info.event.start.toISOString().split('T')[0];
+            rescheduleSession(info.event.id, newDate);
+        },
+        editable: true    });
+    
+    calendar.render();    // Add event listener for quick schedule modal to clear calendar selection when closed
+    const quickScheduleModal = document.getElementById('quickScheduleModal');
+    quickScheduleModal.addEventListener('hidden.bs.modal', function() {
+        // Clear any calendar selection when modal is closed
+        if (calendar) {
+            calendar.unselect();
+        }
+        // Reset the form completely
+        resetQuickScheduleForm();
+    });
+      // Add explicit click handlers for modal dismiss buttons
+    const modalCancelBtn = quickScheduleModal.querySelector('[data-bs-dismiss="modal"]');
+    const modalCloseBtn = quickScheduleModal.querySelector('.btn-close');
+    
+    if (modalCancelBtn) {
+        modalCancelBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const modal = bootstrap.Modal.getOrCreateInstance(quickScheduleModal);
+            modal.hide();
+            // Force cleanup if modal doesn't hide properly
+            setTimeout(() => {
+                document.body.classList.remove('modal-open');
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+            }, 300);
+        });
+    }
+    
+    if (modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const modal = bootstrap.Modal.getOrCreateInstance(quickScheduleModal);
+            modal.hide();
+            // Force cleanup if modal doesn't hide properly
+            setTimeout(() => {
+                document.body.classList.remove('modal-open');
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }            }, 300);
+        });
+    }
+    
+    // Add keyboard event handler for Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = bootstrap.Modal.getOrCreateInstance(quickScheduleModal);
+            if (quickScheduleModal.classList.contains('show')) {
+                modal.hide();
+                // Force cleanup if needed
+                setTimeout(() => {
+                    document.body.classList.remove('modal-open');
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+                }, 300);
+            }
+        }
+    });
+});
+
+function showSessionDetails(event) {
+    let details = '';
+    let modalTitle = '';
+    
+    if (event.extendedProps.isSummary) {
+        // Handle completed sessions summary
+        const sessions = event.extendedProps.sessions;
+        const count = event.extendedProps.count;
+        const eventDate = event.start.toLocaleDateString();
+        
+        modalTitle = `Completed Sessions Summary - ${eventDate}`;
+        
+        details = `
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-success">
+                        <h6><i class="fas fa-check-circle me-2"></i>Completed Sessions Summary</h6>
+                        <p class="mb-0"><strong>${count}</strong> sessions completed on ${eventDate}</p>
+                    </div>
+                    
+                    <strong>Session Details:</strong>
+                    <div class="table-responsive mt-2">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Mentor</th>
+                                    <th>Mentee</th>
+                                    <th>Subject</th>
+                                    <th>Duration</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${sessions.map(session => `
+                                    <tr>
+                                        <td>${session.mentor}</td>
+                                        <td>${session.mentee}</td>
+                                        <td><span class="badge bg-info">${session.subject}</span></td>
+                                        <td>${session.duration} min</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <strong>Summary:</strong>
+                        <ul class="list-unstyled mt-2">
+                            <li><strong>Mentors involved:</strong> ${event.extendedProps.mentors.join(', ')}</li>
+                            <li><strong>Subjects covered:</strong> ${event.extendedProps.subjects.join(', ')}</li>
+                            <li><strong>Total sessions:</strong> ${count}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        // Handle individual session
+        modalTitle = 'Session Details';
+        
+        details = `
+            <div class="row">
+                <div class="col-md-8">
+                    <strong>Session Information:</strong>
+                    <ul class="list-unstyled mt-2">
+                        <li><strong>Mentor:</strong> ${event.extendedProps.mentor}</li>
+                        <li><strong>Mentee:</strong> ${event.extendedProps.mentee}</li>
+                        <li><strong>Subject:</strong> ${event.extendedProps.subject}</li>
+                        <li><strong>Date:</strong> ${event.start.toLocaleDateString()}</li>
+                        <li><strong>Time:</strong> 12:30 PM (Lunch Time)</li>
+                        <li><strong>Duration:</strong> ${event.extendedProps.duration} minutes</li>
+                        <li><strong>Status:</strong> <span class="badge" style="background-color: ${event.color}">${event.extendedProps.status}</span></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <strong>Quick Actions:</strong>
+                    <div class="d-grid gap-2 mt-2">
+                        ${event.extendedProps.status === 'scheduled' ? `
+                            <button class="btn btn-success btn-sm" onclick="updateSessionStatus(${event.id}, 'completed'); closeSessionModal();">
+                                <i class="fas fa-check me-1"></i>Mark Complete
+                            </button>
+                            <button class="btn btn-warning btn-sm" onclick="showRescheduleModal(${event.id}); closeSessionModal();">
+                                <i class="fas fa-clock me-1"></i>Reschedule
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="updateSessionStatus(${event.id}, 'canceled'); closeSessionModal();">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </button>
+                            <button class="btn btn-dark btn-sm" onclick="updateSessionStatus(${event.id}, 'missed'); closeSessionModal();">
+                                <i class="fas fa-user-times me-1"></i>Mark Missed
+                            </button>
+                        ` : event.extendedProps.status === 'completed' ? `
+                            <button class="btn btn-outline-warning btn-sm" onclick="updateSessionStatus(${event.id}, 'scheduled'); closeSessionModal();">
+                                <i class="fas fa-undo me-1"></i>Mark as Scheduled
+                            </button>
+                        ` : event.extendedProps.status in ['canceled', 'missed'] ? `
+                            <button class="btn btn-outline-primary btn-sm" onclick="updateSessionStatus(${event.id}, 'scheduled'); closeSessionModal();">
+                                <i class="fas fa-undo me-1"></i>Restore to Scheduled
+                            </button>
+                        ` : `
+                            <button class="btn btn-outline-primary btn-sm" onclick="updateSessionStatus(${event.id}, 'scheduled'); closeSessionModal();">
+                                <i class="fas fa-undo me-1"></i>Restore to Scheduled
+                            </button>
+                        `}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Update modal title and content
+    document.querySelector('#sessionModal .modal-title').textContent = modalTitle;
+    document.getElementById('session-details').innerHTML = details;
+    const modal = new bootstrap.Modal(document.getElementById('sessionModal'));
+    modal.show();
+}
+
+function updateSessionStatus(sessionId, status) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ url_for("update_session_status") }}';
+    
+    const sessionInput = document.createElement('input');
+    sessionInput.type = 'hidden';
+    sessionInput.name = 'session_id';
+    sessionInput.value = sessionId;
+    
+    const statusInput = document.createElement('input');
+    statusInput.type = 'hidden';
+    statusInput.name = 'status';
+    statusInput.value = status;
+    
+    form.appendChild(sessionInput);
+    form.appendChild(statusInput);
+    
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function showRescheduleModal(sessionId) {
+    document.getElementById('reschedule-session-id').value = sessionId;
+    const modal = new bootstrap.Modal(document.getElementById('rescheduleModal'));
+    modal.show();
+}
+
+function rescheduleSession(sessionId, newDate) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ url_for("reschedule_session") }}';
+    
+    const sessionInput = document.createElement('input');
+    sessionInput.type = 'hidden';
+    sessionInput.name = 'session_id';
+    sessionInput.value = sessionId;
+    
+    const dateInput = document.createElement('input');
+    dateInput.type = 'hidden';
+    dateInput.name = 'new_date';
+    dateInput.value = newDate;
+    
+    form.appendChild(sessionInput);
+    form.appendChild(dateInput);
+    
+    document.body.appendChild(form);
+    form.submit();
+}
+
+// Set minimum date for reschedule modal
+document.addEventListener('DOMContentLoaded', function() {
+    const rescheduleModal = document.getElementById('rescheduleModal');
+    rescheduleModal.addEventListener('show.bs.modal', function() {
+        const dateInput = document.getElementById('new_date');
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const minDate = tomorrow.toISOString().split('T')[0];
+        dateInput.min = minDate;
+    });
+});
+
+// Search functionality for current and past sessions tables
+document.addEventListener('DOMContentLoaded', function() {
+    const currentSearchInput = document.getElementById('currentSessionSearch');
+    const pastSearchInput = document.getElementById('pastSessionSearch');
+    const currentTable = document.getElementById('current-sessions-table');
+    const pastTable = document.getElementById('past-sessions-table');
+    
+    // Update session counts
+    updateSessionCounts();
+    
+    // Current sessions search
+    if (currentSearchInput && currentTable) {
+        currentSearchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = currentTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const text = row.textContent.toLowerCase();
+                
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    }
+      // Past sessions search
+    if (pastSearchInput && pastTable) {
+        pastSearchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = pastTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const text = row.textContent.toLowerCase();
+                
+                // Check if row is already hidden by filters
+                const isHiddenByFilters = row.style.display === 'none' && 
+                    (document.getElementById('pastDateFrom').value || 
+                     document.getElementById('pastDateTo').value || 
+                     document.getElementById('pastMentorFilter').value || 
+                     document.getElementById('pastStatusFilter').value);
+                
+                if (isHiddenByFilters) {
+                    // Don't show rows that are hidden by filters
+                    continue;
+                }
+                
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    }
+    
+    // Collapse chevron rotation for current sessions
+    const currentCollapse = document.getElementById('currentSessionsTable');
+    const currentChevron = document.getElementById('current-sessions-chevron');
+    if (currentCollapse && currentChevron) {
+        currentCollapse.addEventListener('shown.bs.collapse', function() {
+            currentChevron.classList.remove('fa-chevron-down');
+            currentChevron.classList.add('fa-chevron-up');
+        });
+        
+        currentCollapse.addEventListener('hidden.bs.collapse', function() {
+            currentChevron.classList.remove('fa-chevron-up');
+            currentChevron.classList.add('fa-chevron-down');
+        });
+    }
+    
+    // Collapse chevron rotation for past sessions
+    const pastCollapse = document.getElementById('pastSessionsTable');
+    const pastChevron = document.getElementById('past-sessions-chevron');
+    if (pastCollapse && pastChevron) {
+        pastCollapse.addEventListener('shown.bs.collapse', function() {
+            pastChevron.classList.remove('fa-chevron-down');
+            pastChevron.classList.add('fa-chevron-up');
+        });
+        
+        pastCollapse.addEventListener('hidden.bs.collapse', function() {
+            pastChevron.classList.remove('fa-chevron-up');
+            pastChevron.classList.add('fa-chevron-down');
+        });
+    }
+});
+
+function updateSessionCounts() {
+    const currentTable = document.getElementById('current-sessions-table');
+    const pastTable = document.getElementById('past-sessions-table');
+    const currentCountBadge = document.getElementById('current-sessions-count');
+    const pastCountBadge = document.getElementById('past-sessions-count');
+    
+    if (currentTable && currentCountBadge) {
+        const currentRows = currentTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        currentCountBadge.textContent = currentRows.length;
+    }
+    
+    if (pastTable && pastCountBadge) {
+        const pastRows = pastTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        pastCountBadge.textContent = pastRows.length;
+    }
+}
+
+function clearCurrentSearch() {
+    const searchInput = document.getElementById('currentSessionSearch');
+    const table = document.getElementById('current-sessions-table');
+    
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+    if (table) {
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].style.display = '';
+        }
+    }
+}
+
+function clearPastSearch() {
+    const searchInput = document.getElementById('pastSessionSearch');
+    
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+    // Re-apply filters to reset the view
+    filterPastSessions();
+}
+
+function filterPastSessions() {
+    const dateFrom = document.getElementById('pastDateFrom').value;
+    const dateTo = document.getElementById('pastDateTo').value;
+    const mentorFilter = document.getElementById('pastMentorFilter').value.toLowerCase();
+    const statusFilter = document.getElementById('pastStatusFilter').value.toLowerCase();
+    const table = document.getElementById('past-sessions-table');
+    const filterStatus = document.getElementById('pastFilterStatus');
+    
+    if (!table) return;
+    
+    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    let visibleCount = 0;
+    let totalCount = rows.length;
+    
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        let shouldShow = true;
+        
+        // Get row data
+        const cells = row.getElementsByTagName('td');
+        if (cells.length < 6) continue;
+        
+        // Extract date from first cell (format: MM/DD/YYYY)
+        const dateText = cells[0].querySelector('strong').textContent;
+        const sessionDate = new Date(dateText);
+        
+        // Extract mentor name from second cell
+        const mentorText = cells[1].textContent.toLowerCase();
+        
+        // Extract status from badge in status cell
+        const statusText = cells[5].querySelector('.badge').textContent.toLowerCase();
+        
+        // Apply date filters
+        if (dateFrom) {
+            const fromDate = new Date(dateFrom);
+            if (sessionDate < fromDate) shouldShow = false;
+        }
+        
+        if (dateTo) {
+            const toDate = new Date(dateTo);
+            if (sessionDate > toDate) shouldShow = false;
+        }
+        
+        // Apply mentor filter
+        if (mentorFilter && !mentorText.includes(mentorFilter)) {
+            shouldShow = false;
+        }
+        
+        // Apply status filter
+        if (statusFilter && !statusText.includes(statusFilter)) {
+            shouldShow = false;
+        }
+        
+        // Show/hide row
+        row.style.display = shouldShow ? '' : 'none';
+        if (shouldShow) visibleCount++;
+    }
+    
+    // Update filter status
+    if (dateFrom || dateTo || mentorFilter || statusFilter) {
+        filterStatus.textContent = `Showing ${visibleCount} of ${totalCount} sessions`;
+    } else {
+        filterStatus.textContent = 'Showing all sessions';
+    }
+}
+
+function clearPastFilters() {
+    // Clear all filter inputs
+    document.getElementById('pastDateFrom').value = '';
+    document.getElementById('pastDateTo').value = '';
+    document.getElementById('pastMentorFilter').value = '';
+    document.getElementById('pastStatusFilter').value = '';
+    
+    // Clear search input
+    document.getElementById('pastSessionSearch').value = '';
+    
+    // Reset all rows to visible
+    const table = document.getElementById('past-sessions-table');
+    if (table) {
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].style.display = '';
+        }
+    }
+    
+    // Update filter status
+    const filterStatus = document.getElementById('pastFilterStatus');
+    if (filterStatus) {
+        filterStatus.textContent = 'Showing all sessions';
+    }
+}
+
+// Legacy function for backward compatibility
+function clearSearch() {
+    clearCurrentSearch();
+    clearPastSearch();
+}
+
+function closeSessionModal() {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('sessionModal'));
+    if (modal) {
+        modal.hide();
+    }
+}
+
+function showQuickScheduleModal(selectedDate) {
+    // Format the date for display
+    const dateObj = new Date(selectedDate + 'T00:00:00');
+    const formattedDate = dateObj.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    
+    // Set the date values
+    document.getElementById('quick-schedule-date').value = selectedDate;
+    document.getElementById('selectedDateDisplay').textContent = formattedDate;
+    document.getElementById('quickScheduleDateDisplay').textContent = formattedDate;    // Reset form completely
+    resetQuickScheduleForm();
+    
+    // Show the modal using Bootstrap's built-in method
+    const modalElement = document.getElementById('quickScheduleModal');
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modal.show();
+}
+
+function resetQuickScheduleForm() {
+    // Clear form fields
+    document.getElementById('quick-mentor-id').value = '';
+    document.getElementById('quick-mentee-id').value = '';
+    
+    // Hide compatibility messages
+    document.getElementById('compatibilityCheck').style.display = 'none';
+    document.getElementById('compatibilityWarning').style.display = 'none';
+    document.getElementById('compatibilitySuccess').style.display = 'none';
+    
+    // Reset submit button state
+    const submitButton = document.getElementById('quickScheduleSubmit');
+    submitButton.disabled = false;
+    submitButton.classList.remove('disabled');
+}
+
+function showPastDateInfo(selectedDate) {
+    const dateObj = new Date(selectedDate + 'T00:00:00');
+    const formattedDate = dateObj.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    
+    // Simple alert for past dates
+    alert(`${formattedDate} is in the past. You can only schedule sessions for today or future dates.\n\nTo view past sessions for this date, check the "Past Sessions" section below the calendar.`);
+}
+
+function updateMentorInfo() {
+    checkCompatibility();
+}
+
+function updateMenteeInfo() {
+    checkCompatibility();
+}
+
+function checkCompatibility() {
+    const mentorSelect = document.getElementById('quick-mentor-id');
+    const menteeSelect = document.getElementById('quick-mentee-id');
+    const compatibilityCheck = document.getElementById('compatibilityCheck');
+    const compatibilityWarning = document.getElementById('compatibilityWarning');
+    const compatibilitySuccess = document.getElementById('compatibilitySuccess');
+    const compatibilityMessage = document.getElementById('compatibilityMessage');
+    const submitButton = document.getElementById('quickScheduleSubmit');
+    
+    if (mentorSelect.value && menteeSelect.value) {
+        const mentorOption = mentorSelect.options[mentorSelect.selectedIndex];
+        const menteeOption = menteeSelect.options[menteeSelect.selectedIndex];
+        
+        const mentorSubjects = mentorOption.dataset.subjects.toLowerCase();
+        const menteeSubject = menteeOption.dataset.subject.toLowerCase();
+        
+        compatibilityCheck.style.display = 'block';
+        
+        if (mentorSubjects.includes(menteeSubject) || mentorSubjects.includes('all-subjects')) {
+            // Perfect match
+            compatibilitySuccess.style.display = 'block';
+            compatibilityWarning.style.display = 'none';
+            submitButton.disabled = false;
+        } else {
+            // Subject mismatch
+            compatibilityWarning.style.display = 'block';
+            compatibilitySuccess.style.display = 'none';
+            compatibilityMessage.textContent = `⚠️ Subject mismatch: ${mentorOption.textContent.split(' - ')[0]} teaches ${mentorSubjects} but ${menteeOption.textContent.split(' - ')[0]} needs ${menteeSubject}. You can still proceed, but consider finding a better match.`;
+            submitButton.disabled = false; // Allow but warn
+        }
+    } else {
+        compatibilityCheck.style.display = 'none';
+        submitButton.disabled = false;
+    }
+}
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+/* Custom styles for calendar event action buttons */
+.fc-event-content-custom {
+    position: relative;
+    width: 100%;
+}
+
+.fc-event-actions {
+    margin-top: 3px !important;
+    display: flex !important;
+    gap: 2px !important;
+}
+
+.btn-xs {
+    font-size: 8px !important;
+    padding: 1px 3px !important;
+    border: none !important;
+    border-radius: 2px !important;
+    min-width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fc-event .btn-xs:hover {
+    transform: scale(1.1);
+    transition: transform 0.1s;
+}
+
+/* Ensure events have enough height for buttons */
+.fc-daygrid-event {
+    min-height: 40px !important;
+}
+
+.fc-event-title {
+    font-weight: bold !important;
+    font-size: 11px !important;
+}
+
+.fc-event-time {
+    font-size: 10px !important;
+    opacity: 0.8;
+}
+
+/* Quick action buttons styling */
+.btn-success.btn-xs {
+    background-color: #198754 !important;
+    color: white !important;
+}
+
+.btn-warning.btn-xs {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+.btn-danger.btn-xs {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+/* Hover effects */
+.fc-event-content-custom:hover .fc-event-actions {
+    opacity: 1;
+}
+
+.fc-event-actions {
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+/* Filter section styling */
+.form-label-sm {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+.bg-light .card-body {
+    border-radius: 0.375rem;
+}
+
+#pastFilterStatus {
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+/* Compact form controls for filters */
+.form-control-sm, .form-select-sm {
+    font-size: 0.875rem;
+}
+
+/* Filter clear button styling */
+.btn-outline-secondary.btn-sm {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-secondary.btn-sm:hover {    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+/* Calendar Event Text - Force White Text for All Events */
+.fc-event {
+    color: white !important;
+}
+
+.fc-event-title {
+    color: white !important;
+    font-weight: 500 !important;
+}
+
+.fc-event-title-container {
+    color: white !important;
+}
+
+.fc-event-main {
+    color: white !important;
+}
+
+.fc-event-main-frame {
+    color: white !important;
+}
+
+.fc-daygrid-event {
+    color: white !important;
+}
+
+.fc-daygrid-event .fc-event-title {
+    color: white !important;
+}
+
+.fc-daygrid-event .fc-event-main {
+    color: white !important;
+}
+
+.fc-daygrid-block-event {
+    color: white !important;
+}
+
+.fc-daygrid-dot-event {
+    color: white !important;
+}
+
+.fc-timegrid-event {
+    color: white !important;
+}
+
+.fc-timegrid-event .fc-event-title {
+    color: white !important;
+}
+
+/* Ensure all text within events is white */
+.fc-event * {
+    color: white !important;
+}
+
+/* Event hover states */
+.fc-event:hover {
+    color: white !important;
+}
+
+.fc-event:hover .fc-event-title {
+    color: white !important;
+}
+
+.fc-event:hover * {
+    color: white !important;
+}
+
+/* Force white text for all event background colors */
+.fc-event[style*="background-color"] {
+    color: white !important;
+}
+
+.fc-event[style*="background-color"] * {
+    color: white !important;
+}
+
+/* Additional fallback for event text with text shadow */
+.fc-daygrid-event-harness .fc-event-title,
+.fc-timegrid-event-harness .fc-event-title {
+    color: white !important;
+    text-shadow: 0 0 2px rgba(0,0,0,0.5) !important;
+}
+
+/* Custom event content styling */
+.fc-event-content-custom {
+    color: white !important;
+}
+
+.fc-event-content-custom div {
+    color: white !important;
+}
+
+.fc-event-content-custom * {
+    color: white !important;
+}
+
+/* Enhanced Calendar Readability */
+.fc-toolbar-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 1.5rem !important;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.fc-button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.3px;
+}
+
+.fc-col-header-cell {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.4px;
+}
+
+.fc-daygrid-day-number {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.2px;
+}
+
+.fc-event-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 500 !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6) !important;
+    line-height: 1.3 !important;
+}
+
+.fc-event-time {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    letter-spacing: 0.2px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6) !important;
+}
+
+/* Better spacing and readability for event content */
+.fc-event-content {
+    padding: 2px 4px !important;
+    line-height: 1.3 !important;
+}
+
+.fc-daygrid-event {
+    margin: 1px 0 !important;
+}
+
+/* Improved contrast for event text */
+.fc-event {
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7) !important;
+    border-radius: 4px !important;
+}
+</style>
+{% endblock %}

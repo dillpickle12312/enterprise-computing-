@@ -1,0 +1,770 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule Session{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Breadcrumb and Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('calendar') }}">Calendar</a></li>
+                    <li class="breadcrumb-item active">Schedule Session</li>
+                </ol>
+            </nav>
+            
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mb-0">
+                    <i class="fas fa-calendar-plus me-2"></i>Schedule New Session
+                </h1>
+                <a href="{{ url_for('calendar') }}" class="btn btn-outline-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Calendar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scheduling Guidelines -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>Scheduling Guidelines & Tips
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-info mb-3"><i class="fas fa-clock me-1"></i>Timing Rules</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-utensils me-2 text-warning"></i>
+                                    <strong>Lunch Time Only:</strong> All sessions at 12:30 PM
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-timer me-2 text-success"></i>
+                                    <strong>Duration:</strong> 45 minutes standard
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-calendar-check me-2 text-primary"></i>
+                                    <strong>Advance Notice:</strong> Schedule 1+ days ahead
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-info mb-3"><i class="fas fa-users me-1"></i>Matching Rules</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle me-2 text-success"></i>
+                                    <strong>Subject Match:</strong> Mentor must teach subject
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-graduation-cap me-2 text-info"></i>
+                                    <strong>Lesson Limits:</strong> 7 lessons max per mentor
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-balance-scale me-2 text-warning"></i>
+                                    <strong>Fair Distribution:</strong> Balance workload
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="row mt-4 pt-3 border-top">
+                        <div class="col-md-3 text-center">
+                            <div class="h4 text-info mb-0">{{ mentors|length }}</div>
+                            <small class="text-muted">Total Mentors</small>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="h4 text-success mb-0">{{ available_mentors|length }}</div>
+                            <small class="text-muted">Available Mentors</small>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="h4 text-warning mb-0">{{ unassigned_mentees|length }}</div>
+                            <small class="text-muted">Unassigned Mentees</small>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="h4 text-primary mb-0">{{ pairs|length if pairs else 0 }}</div>
+                            <small class="text-muted">Ready Pairs</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if pairs %}
+    <!-- Main Scheduling Section -->
+    <div class="row">
+        <!-- Scheduling Form -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calendar-edit me-2"></i>Session Scheduling Form
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row">
+                            <!-- Mentor-Mentee Pair Selection -->
+                            <div class="col-md-6 mb-3">
+                                <label for="mentor_mentee_pair" class="form-label">
+                                    <i class="fas fa-handshake me-1"></i>Mentor - Mentee Pair *
+                                </label>
+                                <select class="form-select" id="mentor_mentee_pair" name="mentor_mentee_pair" required 
+                                        onchange="updatePairInfo()">
+                                    <option value="">Select a mentor-mentee pair...</option>                                    {% for pair in pairs %}
+                                    <option value="{{ pair.mentor.id }},{{ pair.mentee.id }}" 
+                                            data-mentor="{{ pair.mentor.name }}"
+                                            data-mentee="{{ pair.mentee.name }}"
+                                            data-subject="{{ pair.mentee.subject }}"
+                                            data-lessons="{{ pair.mentee.lessons_remaining }}"
+                                            data-mentor-lessons="{{ pair.mentor.lessons_left }}">
+                                        {{ pair.mentor.name }} → {{ pair.mentee.name }} ({{ pair.mentee.subject }})
+                                        {% if pair.mentor.lessons_left <= 2 %}
+                                            ⚠️ Only {{ pair.mentor.lessons_left }} lessons left
+                                        {% endif %}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" id="mentor_id" name="mentor_id">
+                                <input type="hidden" id="mentee_id" name="mentee_id">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>Only compatible mentor-mentee pairs are shown
+                                </div>
+                            </div>
+                            
+                            <!-- Session Date -->
+                            <div class="col-md-6 mb-3">
+                                <label for="scheduled_date" class="form-label">
+                                    <i class="fas fa-calendar me-1"></i>Session Date *
+                                </label>
+                                <input type="date" class="form-control" id="scheduled_date" name="scheduled_date" required>
+                                <div class="form-text">
+                                    <i class="fas fa-utensils me-1"></i>Session will be at lunch time (12:30 PM)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Session Summary Card -->
+                        <div class="card bg-light mb-4" id="sessionSummary" style="display: none;">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="fas fa-clipboard-check me-1"></i>Session Summary
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div id="pairInfo">
+                                            <strong>Mentor:</strong> <span id="selectedMentor">-</span><br>
+                                            <strong>Mentee:</strong> <span id="selectedMentee">-</span><br>
+                                            <strong>Subject:</strong> <span id="selectedSubject" class="badge bg-info">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="sessionInfo">
+                                            <strong>Date:</strong> <span id="selectedDate">-</span><br>
+                                            <strong>Time:</strong> <i class="fas fa-utensils me-1"></i>12:30 PM (Lunch)<br>
+                                            <strong>Duration:</strong> 45 minutes
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3" id="lessonInfo">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <small class="text-muted">
+                                                <strong>Mentee Lessons Remaining:</strong> 
+                                                <span id="menteeRemaining" class="badge bg-secondary">-</span>
+                                            </small>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <small class="text-muted">
+                                                <strong>Mentor Lessons Left:</strong> 
+                                                <span id="mentorRemaining" class="badge bg-secondary">-</span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('calendar') }}" class="btn btn-outline-light">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Calendar
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-calendar-check me-2"></i>Schedule Session
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Mentor Availability -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-user-tie me-1"></i>Mentor Availability
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for mentor in mentors %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small">{{ mentor.name }}</span>
+                        <div>
+                            {% if mentor.lessons_left > 3 %}
+                                <span class="badge bg-success">{{ mentor.lessons_left }} lessons</span>
+                            {% elif mentor.lessons_left > 0 %}
+                                <span class="badge bg-warning">{{ mentor.lessons_left }} lessons</span>
+                            {% else %}
+                                <span class="badge bg-danger">Full</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Available Pairs -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-users me-1"></i>Available Pairs ({{ pairs|length }})
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for mentor, mentee in pairs[:5] %}
+                    <div class="card mb-2">
+                        <div class="card-body p-2">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong class="text-primary">{{ mentor.name }}</strong><br>
+                                    <small class="text-muted">→ {{ mentee.name }}</small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-info">{{ mentee.subject }}</span><br>
+                                    <small class="text-muted">{{ mentee.lessons_remaining }} left</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% if pairs|length > 5 %}
+                    <small class="text-muted">... and {{ pairs|length - 5 }} more pairs</small>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-clock me-1"></i>Recent Activity
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% set recent_sessions = sessions|sort(attribute='scheduled_date', reverse=True)|list|slice(5)|first %}
+                    {% if recent_sessions %}
+                        {% for session in recent_sessions %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="small">
+                                <div class="fw-bold">{{ session.session_mentor.name }}</div>
+                                <div class="text-muted">{{ session.session_mentee.name }}</div>
+                            </div>
+                            <div class="text-end">
+                                <div class="small">{{ session.scheduled_date.strftime('%m/%d') }}</div>
+                                <span class="badge bg-{{ 'success' if session.status == 'completed' else 'primary' if session.status == 'scheduled' else 'secondary' }}">
+                                    {{ session.status }}
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted small">No recent sessions</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-bolt me-1"></i>Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('calendar') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-calendar me-1"></i>View Calendar
+                        </a>
+                        <a href="{{ url_for('mentors') }}" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-users me-1"></i>Manage Mentors
+                        </a>
+                        <a href="{{ url_for('mentees') }}" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-user-graduate me-1"></i>Manage Mentees
+                        </a>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-home me-1"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>        </div>
+    </div>
+    
+    {% endif %}
+    <!-- End of pairs section -->
+
+    <!-- Flexible Scheduling Section - Available regardless of pairs -->
+    {% if flexible_pairs %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-magic me-2"></i>Flexible Session Scheduling
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Smart Scheduling:</strong> Choose any compatible mentor-mentee combination. 
+                        If they're not already paired, we'll assign them automatically when you schedule the session.
+                    </div>
+                    
+                    <form method="POST">
+                        <div class="row">
+                            <!-- Mentor Selection -->
+                            <div class="col-md-6 mb-3">
+                                <label for="mentor_id" class="form-label">
+                                    <i class="fas fa-user-tie me-1"></i>Select Mentor *
+                                </label>
+                                <select class="form-select" id="mentor_id" name="mentor_id" required onchange="updateCompatibleMentees()">
+                                    <option value="">Choose a mentor...</option>
+                                    {% for mentor in available_mentors %}
+                                    <option value="{{ mentor.id }}" 
+                                            data-subjects="{{ mentor.subjects }}"
+                                            data-lessons-left="{{ mentor.lessons_left }}">
+                                        {{ mentor.name }} - {{ mentor.subjects }}
+                                        ({{ mentor.lessons_left }} lessons left)
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <!-- Mentee Selection -->
+                            <div class="col-md-6 mb-3">
+                                <label for="mentee_id" class="form-label">
+                                    <i class="fas fa-user-graduate me-1"></i>Select Mentee *
+                                </label>
+                                <select class="form-select" id="mentee_id" name="mentee_id" required onchange="validateCompatibility()">
+                                    <option value="">Choose a mentee...</option>
+                                    {% for mentee in available_mentees %}
+                                    <option value="{{ mentee.id }}" 
+                                            data-subject="{{ mentee.subject }}"
+                                            data-lessons-remaining="{{ mentee.lessons_remaining }}"
+                                            data-assigned-mentor="{{ mentee.mentor_id or '' }}">
+                                        {{ mentee.name }} - {{ mentee.subject }}
+                                        {% if mentee.mentor_id %}
+                                            (Assigned)
+                                        {% else %}
+                                            (Unassigned)
+                                        {% endif %}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <div id="compatibility-alert" class="mt-2" style="display: none;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Session Date -->
+                            <div class="col-md-6 mb-3">
+                                <label for="date" class="form-label">
+                                    <i class="fas fa-calendar me-1"></i>Session Date *
+                                </label>
+                                <input type="date" class="form-control" id="date" name="date" required>
+                                <div class="form-text">
+                                    <i class="fas fa-utensils me-1"></i>Session will be at lunch time (12:30 PM) for 45 minutes
+                                </div>
+                            </div>
+                            
+                            <!-- Assignment Status -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-link me-1"></i>Assignment Status
+                                </label>
+                                <div id="assignment-status" class="p-3 border rounded bg-light">
+                                    <div class="text-muted text-center">
+                                        <i class="fas fa-arrow-up me-1"></i>Select mentor and mentee above
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <a href="{{ url_for('calendar') }}" class="btn btn-outline-light">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Calendar
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg" id="schedule-btn" disabled>
+                                <i class="fas fa-calendar-plus me-2"></i>Schedule Session
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <!-- No Mentors or Mentees Available -->
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-exclamation-triangle fa-4x text-warning mb-4"></i>
+                <h3 class="text-warning mb-3">No Sessions Can Be Scheduled</h3>
+                <p class="text-muted lead mb-4">
+                    You need mentors and mentees in the system before scheduling sessions.
+                </p>
+                
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center p-4">
+                                <i class="fas fa-user-tie fa-3x text-primary mb-3"></i>
+                                <h5>Add Mentors</h5>
+                                <p class="text-muted">Add experienced teachers to guide students</p>
+                                <a href="{{ url_for('add_mentor') }}" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-plus me-2"></i>Add Mentors
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center p-4">
+                                <i class="fas fa-user-graduate fa-3x text-success mb-3"></i>
+                                <h5>Add Mentees</h5>
+                                <p class="text-muted">Add new students to the system</p>
+                                <a href="{{ url_for('add_mentee') }}" class="btn btn-success btn-lg">
+                                    <i class="fas fa-plus me-2"></i>Add Mentees
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center p-4">
+                                <i class="fas fa-link fa-3x text-info mb-3"></i>
+                                <h5>Assign Mentors</h5>
+                                <p class="text-muted">Connect mentors with existing mentees</p>
+                                <a href="{{ url_for('assign_mentor') }}" class="btn btn-info btn-lg">
+                                    <i class="fas fa-link me-2"></i>Assign Mentors
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light me-2">
+                        <i class="fas fa-home me-1"></i>Return to Dashboard                    </a>
+                    <a href="{{ url_for('calendar') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-calendar me-1"></i>View Calendar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- End of flexible pairs section -->
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set minimum date to tomorrow for both date inputs
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(function(dateInput) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const minDate = tomorrow.toISOString().split('T')[0];
+        dateInput.min = minDate;
+        
+        dateInput.addEventListener('change', function() {
+            if (dateInput.id === 'scheduled_date') {
+                updateSessionSummary();
+            } else if (dateInput.id === 'date') {
+                updateAssignmentStatus();
+            }
+        });
+    });
+    
+    // Initialize form
+    updateSessionSummary();
+    updateAssignmentStatus();
+    
+    // Auto-fill date if coming from calendar with date parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const preSelectedDate = urlParams.get('date');
+    if (preSelectedDate) {
+        dateInputs.forEach(function(dateInput) {
+            dateInput.value = preSelectedDate;
+        });
+        updateSessionSummary();
+        updateAssignmentStatus();
+        
+        // Show a helpful message
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-info alert-dismissible fade show';
+        alert.innerHTML = `
+            <i class="fas fa-calendar me-2"></i>
+            <strong>Date Pre-selected:</strong> You clicked on ${new Date(preSelectedDate + 'T00:00:00').toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            })} in the calendar.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        // Insert the alert at the top of the main content
+        const mainContent = document.querySelector('.row');
+        if (mainContent) {
+            mainContent.parentNode.insertBefore(alert, mainContent);
+        }
+    }
+});
+
+function updatePairInfo() {
+    const select = document.getElementById('mentor_mentee_pair');
+    const option = select.options[select.selectedIndex];
+    
+    if (option.value) {
+        const [mentorId, menteeId] = option.value.split(',');
+        document.getElementById('mentor_id').value = mentorId;
+        document.getElementById('mentee_id').value = menteeId;
+        
+        // Update summary display
+        updateSessionSummary();
+    } else {
+        document.getElementById('mentor_id').value = '';
+        document.getElementById('mentee_id').value = '';
+        const summaryCard = document.getElementById('sessionSummary');
+        if (summaryCard) {
+            summaryCard.style.display = 'none';
+        }
+    }
+}
+
+function updateSessionSummary() {
+    const pairSelect = document.getElementById('mentor_mentee_pair');
+    const dateInput = document.getElementById('scheduled_date');
+    const summaryCard = document.getElementById('sessionSummary');
+    
+    if (!summaryCard) return;
+    
+    if (pairSelect && pairSelect.value || dateInput && dateInput.value) {
+        summaryCard.style.display = 'block';
+        
+        // Update pair information
+        if (pairSelect && pairSelect.value) {
+            const option = pairSelect.options[pairSelect.selectedIndex];
+            const selectedMentor = document.getElementById('selectedMentor');
+            const selectedMentee = document.getElementById('selectedMentee');
+            const selectedSubject = document.getElementById('selectedSubject');
+            const menteeRemaining = document.getElementById('menteeRemaining');
+            const mentorRemaining = document.getElementById('mentorRemaining');
+            
+            if (selectedMentor) selectedMentor.textContent = option.dataset.mentor || '-';
+            if (selectedMentee) selectedMentee.textContent = option.dataset.mentee || '-';
+            if (selectedSubject) selectedSubject.textContent = option.dataset.subject || '-';
+            if (menteeRemaining) menteeRemaining.textContent = option.dataset.lessons || '-';
+            if (mentorRemaining) mentorRemaining.textContent = option.dataset.mentorLessons || '-';
+            
+            // Update badge colors based on remaining lessons
+            const menteeRemainingCount = parseInt(option.dataset.lessons || 0);
+            const mentorRemainingCount = parseInt(option.dataset.mentorLessons || 0);
+            
+            if (menteeRemaining) {
+                menteeRemaining.className = 'badge ' + (menteeRemainingCount > 3 ? 'bg-success' : 
+                                                      menteeRemainingCount > 1 ? 'bg-warning' : 'bg-danger');
+            }
+            
+            if (mentorRemaining) {
+                mentorRemaining.className = 'badge ' + (mentorRemainingCount > 3 ? 'bg-success' : 
+                                                       mentorRemainingCount > 1 ? 'bg-warning' : 'bg-danger');
+            }
+        }
+        
+        // Update date information
+        if (dateInput && dateInput.value) {
+            const selectedDate = new Date(dateInput.value + 'T00:00:00');
+            const formattedDate = selectedDate.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            const selectedDateSpan = document.getElementById('selectedDate');
+            if (selectedDateSpan) {
+                selectedDateSpan.textContent = formattedDate;
+            }
+        }
+    } else {
+        if (summaryCard) summaryCard.style.display = 'none';
+    }
+}
+
+// New functions for flexible scheduling
+function updateCompatibleMentees() {
+    const mentorSelect = document.getElementById('mentor_id');
+    const menteeSelect = document.getElementById('mentee_id');
+    
+    if (!mentorSelect || !menteeSelect) return;
+    
+    const selectedMentor = mentorSelect.options[mentorSelect.selectedIndex];
+    const mentorSubjects = selectedMentor.dataset.subjects || '';
+    
+    // Reset mentee selection
+    menteeSelect.value = '';
+    
+    // Update mentee options to show compatibility
+    Array.from(menteeSelect.options).forEach(function(option) {
+        if (option.value === '') return; // Skip the default option
+        
+        const menteeSubject = option.dataset.subject || '';
+        const isCompatible = mentorSubjects.includes(menteeSubject);
+        
+        if (isCompatible) {
+            option.style.color = '';
+            option.style.background = '';
+            option.disabled = false;
+        } else {
+            option.style.color = '#6c757d';
+            option.style.background = '#f8f9fa';
+            option.disabled = true;
+        }
+    });
+    
+    updateAssignmentStatus();
+}
+
+function validateCompatibility() {
+    const mentorSelect = document.getElementById('mentor_id');
+    const menteeSelect = document.getElementById('mentee_id');
+    const alertDiv = document.getElementById('compatibility-alert');
+    
+    if (!mentorSelect || !menteeSelect || !alertDiv) return;
+    
+    if (mentorSelect.value && menteeSelect.value) {
+        const selectedMentor = mentorSelect.options[mentorSelect.selectedIndex];
+        const selectedMentee = menteeSelect.options[menteeSelect.selectedIndex];
+        
+        const mentorSubjects = selectedMentor.dataset.subjects || '';
+        const menteeSubject = selectedMentee.dataset.subject || '';
+        
+        if (!mentorSubjects.includes(menteeSubject)) {
+            alertDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Incompatible:</strong> ${selectedMentor.textContent.split(' - ')[0]} cannot teach ${menteeSubject}
+                </div>
+            `;
+            alertDiv.style.display = 'block';
+            document.getElementById('schedule-btn').disabled = true;
+        } else {
+            alertDiv.style.display = 'none';
+            updateAssignmentStatus();
+        }
+    } else {
+        alertDiv.style.display = 'none';
+        updateAssignmentStatus();
+    }
+}
+
+function updateAssignmentStatus() {
+    const mentorSelect = document.getElementById('mentor_id');
+    const menteeSelect = document.getElementById('mentee_id');
+    const dateInput = document.getElementById('date');
+    const statusDiv = document.getElementById('assignment-status');
+    const scheduleBtn = document.getElementById('schedule-btn');
+    
+    if (!statusDiv || !scheduleBtn) return;
+    
+    if (mentorSelect && menteeSelect && mentorSelect.value && menteeSelect.value) {
+        const selectedMentor = mentorSelect.options[mentorSelect.selectedIndex];
+        const selectedMentee = menteeSelect.options[menteeSelect.selectedIndex];
+        
+        const mentorName = selectedMentor.textContent.split(' - ')[0];
+        const menteeName = selectedMentee.textContent.split(' - ')[0];
+        const isAssigned = selectedMentee.dataset.assignedMentor === mentorSelect.value;
+        
+        const mentorSubjects = selectedMentor.dataset.subjects || '';
+        const menteeSubject = selectedMentee.dataset.subject || '';
+        const isCompatible = mentorSubjects.includes(menteeSubject);
+        
+        if (isCompatible) {
+            if (isAssigned) {
+                statusDiv.innerHTML = `
+                    <div class="text-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Already Assigned:</strong> ${menteeName} is assigned to ${mentorName}
+                    </div>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="text-info">
+                        <i class="fas fa-magic me-2"></i>
+                        <strong>Auto-Assignment:</strong> ${menteeName} will be assigned to ${mentorName} when session is scheduled
+                    </div>
+                `;
+            }
+            
+            // Enable schedule button if date is also selected
+            scheduleBtn.disabled = !(dateInput && dateInput.value);
+        } else {
+            statusDiv.innerHTML = `
+                <div class="text-danger">
+                    <i class="fas fa-times-circle me-2"></i>
+                    <strong>Incompatible:</strong> ${mentorName} cannot teach ${menteeSubject}
+                </div>
+            `;
+            scheduleBtn.disabled = true;
+        }
+    } else {
+        statusDiv.innerHTML = `
+            <div class="text-muted text-center">
+                <i class="fas fa-arrow-up me-1"></i>Select mentor and mentee above
+            </div>
+        `;
+        scheduleBtn.disabled = true;
+    }
+    
+    // Also enable/disable based on date selection
+    if (dateInput && dateInput.addEventListener) {
+        dateInput.addEventListener('change', function() {
+            if (mentorSelect && menteeSelect && mentorSelect.value && menteeSelect.value) {
+                const selectedMentor = mentorSelect.options[mentorSelect.selectedIndex];
+                const selectedMentee = menteeSelect.options[menteeSelect.selectedIndex];
+                const mentorSubjects = selectedMentor.dataset.subjects || '';
+                const menteeSubject = selectedMentee.dataset.subject || '';
+                const isCompatible = mentorSubjects.includes(menteeSubject);
+                
+                scheduleBtn.disabled = !(isCompatible && dateInput.value);
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

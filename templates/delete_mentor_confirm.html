@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+
+{% block title %}Delete {{ mentor.name }} - Confirm{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Deletion
+                </h4>
+                <p class="mb-0 mt-2">This action cannot be undone</p>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning border-0" style="background-color: #ffc10720;">
+                    <h5 class="alert-heading text-warning">
+                        <i class="fas fa-warning me-2"></i>Are you sure you want to delete this mentor?
+                    </h5>
+                    <p class="mb-0">This will permanently remove all data associated with this mentor.</p>
+                </div>
+
+                <!-- Mentor Information -->
+                <div class="card bg-secondary border-0 mb-4">
+                    <div class="card-body">
+                        <h6 class="text-warning mb-3">
+                            <i class="fas fa-chalkboard-teacher me-1"></i>Mentor to be deleted:
+                        </h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <strong>Name:</strong><br>
+                                <span class="fs-5">{{ mentor.name }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <strong>Roll Call:</strong><br>
+                                <code>{{ mentor.roll_call }}</code>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <strong>Subjects:</strong><br>
+                                {% for subject in mentor.subjects.split(',') %}
+                                    <span class="badge bg-primary me-1">{{ subject.strip() }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6 mt-2">
+                                <strong>Student Capacity:</strong><br>
+                                <span class="badge bg-info">{{ mentor.mentees|length }}/{{ mentor.max_mentees }}</span>
+                            </div>
+                            <div class="col-sm-6 mt-2">
+                                <strong>Sessions Remaining:</strong><br>
+                                <span class="badge bg-success">{{ mentor.lessons_left }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Impact Assessment -->
+                <div class="card border-warning mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="mb-0">
+                            <i class="fas fa-impact me-1"></i>Deletion Impact
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Students Impact -->
+                        {% if assigned_mentees %}
+                            <div class="alert alert-danger border-0">
+                                <h6 class="text-danger">
+                                    <i class="fas fa-exclamation-circle me-1"></i>
+                                    Warning: This mentor has {{ assigned_mentees|length }} assigned student(s)
+                                </h6>
+                                <p class="mb-2">These students will become unassigned:</p>
+                                <ul class="mb-0">
+                                    {% for mentee in assigned_mentees %}
+                                        <li>
+                                            <strong>{{ mentee.name }}</strong> ({{ mentee.subject }}) - 
+                                            {{ mentee.lessons_remaining }} lessons remaining
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info border-0">
+                                <h6 class="text-info">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    No assigned students
+                                </h6>
+                                <p class="mb-0">This mentor has no students currently assigned.</p>
+                            </div>
+                        {% endif %}
+
+                        <!-- Sessions Impact -->
+                        {% if has_sessions %}
+                            <div class="alert alert-warning border-0 mt-3">
+                                <h6 class="text-warning">
+                                    <i class="fas fa-calendar-times me-1"></i>
+                                    Session Data Impact: {{ sessions|length }} session(s) will be deleted
+                                </h6>
+                                <p class="mb-2">Deleting this mentor will also remove:</p>
+                                <ul class="mb-0">
+                                    {% set completed_sessions = sessions|selectattr('status', 'equalto', 'completed')|list|length %}
+                                    {% set scheduled_sessions = sessions|selectattr('status', 'equalto', 'scheduled')|list|length %}
+                                    {% set other_sessions = sessions|length - completed_sessions - scheduled_sessions %}
+                                    
+                                    {% if completed_sessions > 0 %}
+                                        <li><strong>{{ completed_sessions }}</strong> completed session(s) and their history</li>
+                                    {% endif %}
+                                    {% if scheduled_sessions > 0 %}
+                                        <li><strong>{{ scheduled_sessions }}</strong> scheduled session(s) (these will be cancelled)</li>
+                                    {% endif %}
+                                    {% if other_sessions > 0 %}
+                                        <li><strong>{{ other_sessions }}</strong> other session(s) (cancelled, missed, etc.)</li>
+                                    {% endif %}
+                                    <li>All session notes and progress tracking</li>
+                                    <li>Historical tutoring data</li>
+                                </ul>
+                            </div>
+
+                            <!-- Sessions Summary -->
+                            <div class="table-responsive mt-3">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Student</th>
+                                            <th>Status</th>
+                                            <th>Duration</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for session in sessions|sort(attribute='scheduled_date', reverse=true) %}
+                                        <tr>
+                                            <td>
+                                                <small>{{ session.scheduled_date.strftime('%b %d, %Y %I:%M %p') }}</small>
+                                            </td>
+                                            <td>
+                                                <small>{{ session.session_mentee.name }}</small>
+                                            </td>
+                                            <td>
+                                                {% if session.status == 'completed' %}
+                                                    <span class="badge bg-success">Completed</span>
+                                                {% elif session.status == 'scheduled' %}
+                                                    <span class="badge bg-primary">Scheduled</span>
+                                                {% elif session.status == 'cancelled' %}
+                                                    <span class="badge bg-danger">Cancelled</span>
+                                                {% elif session.status == 'missed' %}
+                                                    <span class="badge bg-warning">Missed</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">{{ session.status|title }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <small>{{ session.duration_minutes }} min</small>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info border-0 mt-3">
+                                <h6 class="text-info">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    No session data
+                                </h6>
+                                <p class="mb-0">This mentor has no associated sessions.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Alternatives -->
+                <div class="card bg-info text-white border-0 mb-4">
+                    <div class="card-body">
+                        <h6 class="mb-2">
+                            <i class="fas fa-lightbulb me-1"></i>Consider alternatives:
+                        </h6>
+                        <ul class="mb-0">
+                            {% if assigned_mentees %}
+                                <li>Use "Reassign Students" to move students to other mentors first</li>
+                            {% endif %}
+                            <li>If the mentor has completed their service, they may have retired naturally</li>
+                            <li>Individual sessions can be cancelled or rescheduled without deleting the mentor</li>
+                            <li>Consider temporarily removing students instead of deleting the entire mentor record</li>
+                            <li>Export mentor data for backup before deletion</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ url_for('mentor_detail', id=mentor.id) }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Cancel & Go Back
+                    </a>
+                    <a href="{{ url_for('mentors') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-list me-2"></i>Back to All Mentors
+                    </a>
+                    
+                    {% if assigned_mentees %}
+                        <a href="{{ url_for('reassign_mentees', mentor_id=mentor.id) }}" class="btn btn-warning">
+                            <i class="fas fa-exchange-alt me-2"></i>Reassign Students First
+                        </a>
+                    {% endif %}
+                    
+                    <!-- Deletion Form -->
+                    <form method="POST" action="{{ url_for('delete_mentor', id=mentor.id) }}" class="d-inline">
+                        <button type="submit" 
+                                class="btn btn-danger"
+                                onclick="return confirmDeletion(event)">
+                            <i class="fas fa-trash me-2"></i>Yes, Delete Permanently
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Warning -->
+        <div class="alert alert-danger mt-3 border-0">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                <div>
+                    <strong>This action is permanent and cannot be undone.</strong><br>
+                    <small>All mentor data, student assignments, and session history will be lost forever.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDeletion(event) {
+    const mentorName = "{{ mentor.name }}";
+    const studentsCount = {{ assigned_mentees|length }};
+    const sessionsCount = {{ sessions|length }};
+    
+    let message = `Are you absolutely sure you want to permanently delete "${mentorName}"?\n\n`;
+    
+    if (studentsCount > 0) {
+        message += `This will unassign ${studentsCount} student(s).\n`;
+    }
+    
+    if (sessionsCount > 0) {
+        message += `This will also delete ${sessionsCount} session(s) and all associated data.\n`;
+    }
+    
+    message += "\nThis action CANNOT be undone!\n\nType 'DELETE' to confirm:";
+    
+    const userInput = prompt(message);
+    
+    if (userInput !== 'DELETE') {
+        event.preventDefault();
+        alert('Deletion cancelled. You must type exactly "DELETE" to confirm.');
+        return false;
+    }
+    
+    // Final confirmation
+    return confirm(`Last chance! Really delete "${mentorName}" and all their data permanently?`);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}All Mentees{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">
+                <i class="fas fa-user-graduate me-2"></i>Mentees
+            </h1>
+            <div>
+                <a href="{{ url_for('add_mentee') }}" class="btn btn-success">
+                    <i class="fas fa-plus me-2"></i>Add New Mentee
+                </a>
+                <a href="{{ url_for('assign_mentor') }}" class="btn btn-info">
+                    <i class="fas fa-link me-2"></i>Assign Mentor
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Row -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-2x mb-2"></i>
+                <h4>{{ mentees|length }}</h4>
+                <small>Total Mentees</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-user-times fa-2x mb-2"></i>
+                <h4>{{ mentees|selectattr('mentor_id', 'none')|list|length }}</h4>
+                <small>Unassigned</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-book fa-2x mb-2"></i>
+                <h4>{{ mentees|sum(attribute='lessons_remaining') }}</h4>
+                <small>Total Lessons Remaining</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-graduation-cap fa-2x mb-2"></i>
+                <h4>{{ mentees|selectattr('lessons_remaining', 'equalto', 0)|list|length }}</h4>
+                <small>Graduated</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mentees Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>All Mentees
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if mentees %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Roll Call</th>
+                                    <th>Subject</th>
+                                    <th>Lessons Left</th>
+                                    <th>Assigned Mentor</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for mentee in mentees %}
+                                <tr>                                    <td>
+                                        <a href="{{ url_for('mentee_detail', id=mentee.id) }}" 
+                                           class="text-decoration-none fw-bold">
+                                            <i class="fas fa-user-graduate me-1"></i>
+                                            {{ mentee.name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <code>{{ mentee.roll_call }}</code>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ mentee.subject }}</span>
+                                    </td>
+                                    <td>
+                                        {% if mentee.lessons_remaining > 0 %}
+                                            <span class="badge bg-info">{{ mentee.lessons_remaining }}</span>
+                                        {% else %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-graduation-cap me-1"></i>Graduated
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if mentee.assigned_mentor %}
+                                            <a href="{{ url_for('mentor_detail', id=mentee.assigned_mentor.id) }}" 
+                                               class="text-decoration-none">
+                                                <i class="fas fa-chalkboard-teacher me-1"></i>
+                                                {{ mentee.assigned_mentor.name }}
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted">
+                                                <i class="fas fa-user-times me-1"></i>Unassigned
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if mentee.lessons_remaining == 0 %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>Completed
+                                            </span>
+                                        {% elif mentee.assigned_mentor %}
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-play me-1"></i>Active
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-warning">
+                                                <i class="fas fa-pause me-1"></i>Waiting
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{{ url_for('mentee_detail', id=mentee.id) }}" 
+                                               class="btn btn-outline-primary" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {% if not mentee.assigned_mentor %}
+                                                <a href="{{ url_for('assign_mentor') }}?mentee_id={{ mentee.id }}" 
+                                                   class="btn btn-outline-success" title="Assign Mentor">
+                                                    <i class="fas fa-link"></i>
+                                                </a>
+                                            {% endif %}
+                                            <a href="{{ url_for('delete_mentee_confirm', id=mentee.id) }}" 
+                                               class="btn btn-outline-danger" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Bulk Actions -->
+                    <div class="mt-3">
+                        <div class="card bg-secondary">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-tasks me-2"></i>Bulk Actions
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="mb-2"><strong>Quick Actions:</strong></p>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ url_for('bulk_assign_mentors') }}" class="btn btn-info btn-sm">
+                                                <i class="fas fa-users me-1"></i>Bulk Assign Mentors
+                                            </a>
+                                            <button class="btn btn-warning btn-sm" onclick="exportMentees()">
+                                                <i class="fas fa-download me-1"></i>Export to CSV
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-2"><strong>Statistics:</strong></p>
+                                        <small class="text-muted">
+                                            Assigned: {{ mentees|selectattr('assigned_mentor')|list|length }} | 
+                                            Unassigned: {{ mentees|selectattr('mentor_id', 'none')|list|length }} |
+                                            Graduated: {{ mentees|selectattr('lessons_remaining', 'equalto', 0)|list|length }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-user-graduate fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">No Mentees Found</h4>
+                        <p class="text-muted mb-4">Start by adding your first mentee to the system.</p>
+                        <a href="{{ url_for('add_mentee') }}" class="btn btn-success btn-lg">
+                            <i class="fas fa-plus me-2"></i>Add First Mentee
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function exportMentees() {
+    window.location.href = "{{ url_for('export_data', data_type='mentees') }}";
+}
+</script>
+{% endblock %}

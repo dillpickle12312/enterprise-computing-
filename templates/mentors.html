@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}Mentors{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="fas fa-chalkboard-teacher me-2"></i>All Mentors
+            </h1>
+            <div>
+                <a href="{{ url_for('add_mentor') }}" class="btn btn-success me-2">
+                    <i class="fas fa-plus me-2"></i>Add New Mentor
+                </a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-danger dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-trash me-1"></i>Bulk Actions
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>                        <form method="POST" action="{{ url_for('bulk_delete_mentors') }}" class="d-inline">
+                                <button type="submit" class="dropdown-item text-danger" 
+                                        onclick="return confirm('Delete ALL mentors? This only works if no mentees are assigned!')"
+                                        {{ 'disabled' if not mentor_data else '' }}>
+                                    <i class="fas fa-chalkboard-teacher me-2"></i>Delete All Mentors
+                                </button>
+                            </form>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ url_for('clear_all_data') }}">
+                                <i class="fas fa-database me-2"></i>Clear All System Data
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter Controls -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input type="text" class="form-control" id="mentorSearch" placeholder="Search mentors by name or roll call...">
+        </div>
+    </div>
+    <div class="col-md-2">
+        <select class="form-select" id="subjectFilter">
+            <option value="">All Subjects</option>
+            <option value="Math">Math</option>
+            <option value="English">English</option>
+            <option value="Science">Science</option>
+            <option value="Chess">Chess</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select class="form-select" id="statusFilter">
+            <option value="">All Status Levels</option>
+            <option value="ACTIVE">🟢 Active (0-2 lessons)</option>
+            <option value="MID-TERM">🔵 Mid-term (3-4 lessons)</option>
+            <option value="NEAR RETIREMENT">🟡 Near Retirement (5 lessons)</option>
+            <option value="CRITICAL">🟠 Critical (6 lessons)</option>
+            <option value="RETIRED">🔴 Retired (7+ lessons)</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <select class="form-select" id="capacityFilter">
+            <option value="">All Capacities</option>
+            <option value="available">Available Slots</option>
+            <option value="full">At Capacity</option>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <button type="button" class="btn btn-outline-secondary" onclick="clearFilters()" title="Clear all filters">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+
+{% if mentor_data %}
+<!-- Search Results Info -->
+<div class="row mb-3">
+    <div class="col-12">
+        <p class="text-muted mb-0">
+            <i class="fas fa-info-circle me-1"></i>
+            <span id="mentorResults">Showing all {{ mentor_data|length }} mentors</span>
+        </p>
+    </div>
+</div>
+<div class="row">    {% for item in mentor_data %}
+        {% set mentor = item.mentor %}
+    <div class="col-md-6 col-lg-4 mb-4 mentor-card" 
+         data-name="{{ mentor.name.lower() }}"
+         data-roll-call="{{ mentor.roll_call.lower() }}"
+         data-subjects="{{ mentor.subjects.lower() }}"
+         data-status="{{ item.status }}"
+         data-capacity-status="{% if mentor.mentees|length >= mentor.max_mentees %}full{% else %}available{% endif %}">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">{{ mentor.name }}</h5>
+                <span class="badge bg-primary">{{ mentor.roll_call }}</span>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <small class="text-muted">Subjects:</small>
+                    <div>
+                        {% for subject in mentor.subjects.split(',') %}
+                            <span class="badge bg-secondary me-1">{{ subject.strip() }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Lesson Progress Section -->
+                <div class="mb-3">
+                    <small class="text-muted">Tutoring Progress:</small>
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="small">{{ item.completed_sessions }}/7 lessons taught</span>
+                        <span class="badge bg-{{ item.status_class }} small">{{ item.status }}</span>
+                    </div>
+                    <div class="progress mb-2" style="height: 8px;">
+                        <div class="progress-bar bg-{{ item.status_class }}" role="progressbar" 
+                             style="width: {{ item.progress_percentage }}%" 
+                             aria-valuenow="{{ item.completed_sessions }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="7">
+                        </div>
+                    </div>
+                    <small class="text-muted">
+                        {% if item.remaining_sessions > 0 %}
+                            {{ item.remaining_sessions }} lessons remaining until retirement
+                        {% else %}
+                            Should be retired - exceeded 7 lesson limit
+                        {% endif %}
+                    </small>
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted">Mentees:</small>
+                    <div class="progress mb-2">
+                        {% set capacity_percentage = (mentor.mentees|length / mentor.max_mentees * 100)|int %}
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ capacity_percentage }}%" 
+                             aria-valuenow="{{ mentor.mentees|length }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="{{ mentor.max_mentees }}">
+                        </div>
+                    </div>
+                    <small>{{ mentor.mentees|length }} / {{ mentor.max_mentees }} mentees assigned</small>
+                </div>
+
+                {% if mentor.mentees %}
+                <div class="mb-3">
+                    <small class="text-muted">Current Mentees:</small>
+                    <ul class="list-unstyled">
+                        {% for mentee in mentor.mentees %}
+                        <li class="small">
+                            <i class="fas fa-user me-1"></i>{{ mentee.name }} 
+                            <span class="text-muted">({{ mentee.subject }})</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{{ url_for('mentor_detail', id=mentor.id) }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>View Details
+                        </a>
+                        <a href="{{ url_for('delete_mentor_confirm', id=mentor.id) }}" 
+                           class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-trash me-1"></i>Delete
+                        </a>
+                    </div>
+                    <small class="text-muted">
+                        Added {{ mentor.created_at.strftime('%m/%d/%Y') }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <div class="text-center py-5">
+            <i class="fas fa-chalkboard-teacher fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">No mentors added yet</h4>
+            <p class="text-muted">Start by adding your first mentor to the system.</p>
+            <a href="{{ url_for('add_mentor') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add First Mentor
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('mentorSearch');
+    const subjectFilter = document.getElementById('subjectFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const capacityFilter = document.getElementById('capacityFilter');
+    const mentorCards = document.querySelectorAll('.mentor-card');
+    const resultsInfo = document.getElementById('mentorResults');
+
+    function filterMentors() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedSubject = subjectFilter.value;
+        const selectedStatus = statusFilter.value;
+        const selectedCapacity = capacityFilter.value;
+        
+        let visibleCount = 0;
+
+        mentorCards.forEach(card => {
+            const name = card.dataset.name;
+            const rollCall = card.dataset.rollCall;
+            const subjects = card.dataset.subjects;
+            const status = card.dataset.status;
+            const capacityStatus = card.dataset.capacityStatus;            // Search filter (name or roll call)
+            const matchesSearch = !searchTerm || 
+                name.includes(searchTerm) || 
+                rollCall.includes(searchTerm);
+            
+            // Subject filter - split subjects and check each one
+            const matchesSubject = !selectedSubject || 
+                subjects.split(',').some(subject => 
+                    subject.trim().toLowerCase() === selectedSubject.toLowerCase()
+                );
+
+            // Status filter
+            const matchesStatus = !selectedStatus || 
+                status === selectedStatus;
+
+            // Capacity filter
+            const matchesCapacity = !selectedCapacity || 
+                capacityStatus === selectedCapacity;
+
+            // Show/hide card based on all filters
+            if (matchesSearch && matchesSubject && matchesStatus && matchesCapacity) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Update results info
+        const totalCount = mentorCards.length;
+        if (visibleCount === totalCount) {
+            resultsInfo.textContent = `Showing all ${totalCount} mentors`;
+        } else {
+            resultsInfo.textContent = `Showing ${visibleCount} of ${totalCount} mentors`;
+        }
+    }
+
+    // Add event listeners
+    searchInput.addEventListener('input', filterMentors);
+    subjectFilter.addEventListener('change', filterMentors);
+    statusFilter.addEventListener('change', filterMentors);
+    capacityFilter.addEventListener('change', filterMentors);
+
+    // Clear filters function
+    window.clearFilters = function() {
+        searchInput.value = '';
+        subjectFilter.value = '';
+        statusFilter.value = '';
+        capacityFilter.value = '';
+        filterMentors();
+    };
+});
+</script>
+
+{% endblock %}

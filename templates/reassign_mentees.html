@@ -1,0 +1,413 @@
+{% extends "base.html" %}
+
+{% block title %}Reassign Students from {{ mentor.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="mb-0">
+                    <i class="fas fa-exchange-alt me-2"></i>Reassign Students
+                </h1>
+                <p class="text-muted mb-0">Move students from {{ mentor.name }} to other mentors</p>
+            </div>
+            <div>
+                <a href="{{ url_for('mentor_detail', id=mentor.id) }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Mentor
+                </a>
+                <a href="{{ url_for('mentors') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-list me-2"></i>All Mentors
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Current Mentor Info -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Current Mentor: {{ mentor.name }}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Roll Call:</strong> <code>{{ mentor.roll_call }}</code><br>
+                        <strong>Subjects:</strong> 
+                        {% for subject in mentor.subjects.split(',') %}
+                            <span class="badge bg-secondary me-1">{{ subject.strip() }}</span>
+                        {% endfor %}<br>
+                        <strong>Current Students:</strong> {{ mentor.mentees|length }}/{{ mentor.max_mentees }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Sessions Remaining:</strong> <span class="badge bg-info">{{ mentor.lessons_left }}</span><br>
+                        <strong>Total Sessions:</strong> {{ mentor.sessions|length }}<br>
+                        <strong>Status:</strong> 
+                        {% if mentor.lessons_left <= 0 %}
+                            <span class="badge bg-danger">Retired</span>
+                        {% elif mentor.lessons_left <= 2 %}
+                            <span class="badge bg-warning">Near Retirement</span>
+                        {% else %}
+                            <span class="badge bg-success">Active</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if assigned_mentees and available_mentors %}
+    <form method="POST">
+        <div class="row">
+            <!-- Students to Reassign -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-graduate me-2"></i>Students to Reassign
+                            <span class="badge bg-warning ms-2">{{ assigned_mentees|length }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for mentee in assigned_mentees %}
+                            <div class="card mb-3 border-warning">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">{{ mentee.name }}</h6>
+                                            <small class="text-muted">{{ mentee.roll_call }}</small><br>
+                                            <span class="badge bg-secondary">{{ mentee.subject }}</span>
+                                            <span class="badge bg-info">{{ mentee.lessons_remaining }} lessons</span>
+                                            
+                                            <!-- Show if student has upcoming sessions -->
+                                            {% set upcoming_sessions = mentee.sessions|selectattr('status', 'equalto', 'scheduled')|selectattr('scheduled_date', 'ge', moment())|list %}
+                                            {% if upcoming_sessions %}
+                                                <br><small class="text-warning">
+                                                    <i class="fas fa-calendar-exclamation me-1"></i>
+                                                    {{ upcoming_sessions|length }} upcoming session(s)
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="text-end">
+                                            <label class="form-label small">New mentor:</label>
+                                            <select name="reassignments" class="form-select form-select-sm mentee-reassignment" 
+                                                    data-mentee-id="{{ mentee.id }}"
+                                                    data-subject="{{ mentee.subject }}"
+                                                    data-mentee-name="{{ mentee.name }}">
+                                                <option value="">Select new mentor...</option>
+                                                {% for mentor_info in available_mentors %}
+                                                    {% if mentee.subject in mentor_info.mentor.subjects.split(',') %}
+                                                        <option value="{{ mentee.id }}-{{ mentor_info.mentor.id }}"
+                                                                data-mentor-id="{{ mentor_info.mentor.id }}"
+                                                                data-available-slots="{{ mentor_info.available_slots }}"
+                                                                data-mentor-name="{{ mentor_info.mentor.name }}">
+                                                            {{ mentor_info.mentor.name }} 
+                                                            ({{ mentor_info.available_slots }} slots available)
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <option value="{{ mentee.id }}-unassign" class="text-warning">
+                                                    ⚠️ Leave Unassigned
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Mentors -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chalkboard-teacher me-2"></i>Available Mentors
+                            <span class="badge bg-success ms-2">{{ available_mentors|length }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for mentor_info in available_mentors %}
+                            <div class="card mb-3 border-success" id="target-mentor-{{ mentor_info.mentor.id }}">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">{{ mentor_info.mentor.name }}</h6>
+                                            <small class="text-muted">{{ mentor_info.mentor.roll_call }}</small><br>
+                                            <div class="mt-1">
+                                                {% for subject in mentor_info.mentor.subjects.split(',') %}
+                                                    <span class="badge bg-secondary me-1">{{ subject.strip() }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="badge bg-success mb-1">
+                                                <span id="target-available-slots-{{ mentor_info.mentor.id }}">{{ mentor_info.available_slots }}</span> 
+                                                / {{ mentor_info.mentor.max_mentees }} slots
+                                            </div><br>
+                                            <div class="badge bg-info mb-1">
+                                                {{ mentor_info.mentor.lessons_left }} sessions left
+                                            </div><br>
+                                            <small class="text-muted">
+                                                <span id="target-assignments-{{ mentor_info.mentor.id }}">0</span> new assignments
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reassignment Summary -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clipboard-check me-2"></i>Reassignment Summary
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="reassignment-summary" class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Ready to reassign:</strong> Select new mentors for students to see reassignment summary.
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-outline-secondary" onclick="clearAllReassignments()">
+                                <i class="fas fa-eraser me-2"></i>Clear All
+                            </button>
+                            <button type="button" class="btn btn-outline-warning" onclick="selectAllUnassign()">
+                                <i class="fas fa-unlink me-2"></i>Unassign All
+                            </button>
+                            <button type="submit" class="btn btn-warning" id="reassign-button" disabled>
+                                <i class="fas fa-exchange-alt me-2"></i>Confirm Reassignments
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% elif not assigned_mentees %}
+    <div class="alert alert-info">
+        <h5 class="alert-heading">
+            <i class="fas fa-info-circle me-2"></i>No Students to Reassign
+        </h5>
+        <p>{{ mentor.name }} doesn't have any students assigned.</p>
+        <hr>
+        <a href="{{ url_for('mentor_detail', id=mentor.id) }}" class="btn btn-primary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Mentor Details
+        </a>
+    </div>
+
+{% elif not available_mentors %}
+    <div class="alert alert-warning">
+        <h5 class="alert-heading">
+            <i class="fas fa-exclamation-triangle me-2"></i>No Available Mentors
+        </h5>
+        <p>There are no other mentors available to take these {{ assigned_mentees|length }} student(s).</p>
+        <p><strong>Options:</strong></p>
+        <ul>
+            <li>Add new mentors to the system</li>
+            <li>Increase capacity of existing mentors</li>
+            <li>Leave students unassigned temporarily</li>
+        </ul>
+        <hr>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('add_mentor') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add New Mentor
+            </a>
+            <a href="{{ url_for('mentors') }}" class="btn btn-outline-primary">
+                <i class="fas fa-list me-2"></i>View All Mentors
+            </a>
+            <button type="button" class="btn btn-warning" onclick="unassignAll()">
+                <i class="fas fa-unlink me-2"></i>Unassign All Students
+            </button>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Impact Warning -->
+{% if assigned_mentees %}
+<div class="card mt-4 bg-secondary border-0">
+    <div class="card-header">
+        <h6 class="mb-0">
+            <i class="fas fa-exclamation-triangle me-2"></i>Important Notes
+        </h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="text-warning">Reassignment Impact</h6>
+                <ul class="text-light small">
+                    <li>Students will be moved to new mentors immediately</li>
+                    <li>Scheduled sessions will remain with students</li>
+                    <li>Session history will be preserved</li>
+                    <li>New mentors can schedule additional sessions</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 class="text-warning">Unassignment Impact</h6>
+                <ul class="text-light small">
+                    <li>Students left unassigned need new mentors later</li>
+                    <li>Scheduled sessions may need to be cancelled</li>
+                    <li>Use "Assign Mentor" to reassign later</li>
+                    <li>Progress tracking continues independently</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reassignmentSelects = document.querySelectorAll('.mentee-reassignment');
+    const reassignButton = document.getElementById('reassign-button');
+    const reassignmentSummary = document.getElementById('reassignment-summary');
+    
+    // Track mentor assignments
+    const mentorAssignments = {};
+    const mentorCapacity = {};
+    
+    // Initialize mentor capacity tracking
+    {% for mentor_info in available_mentors %}
+        mentorCapacity[{{ mentor_info.mentor.id }}] = {{ mentor_info.available_slots }};
+        mentorAssignments[{{ mentor_info.mentor.id }}] = 0;
+    {% endfor %}
+    
+    function updateAssignmentCounts() {
+        // Reset counts
+        {% for mentor_info in available_mentors %}
+            mentorAssignments[{{ mentor_info.mentor.id }}] = 0;
+        {% endfor %}
+        
+        let totalReassignments = 0;
+        let unassignments = 0;
+        
+        // Count current assignments
+        reassignmentSelects.forEach(select => {
+            if (select.value) {
+                if (select.value.includes('-unassign')) {
+                    unassignments++;
+                } else {
+                    const mentorId = select.querySelector('option:checked').getAttribute('data-mentor-id');
+                    if (mentorId) {
+                        mentorAssignments[parseInt(mentorId)]++;
+                    }
+                }
+                totalReassignments++;
+            }
+        });
+        
+        // Update UI
+        {% for mentor_info in available_mentors %}
+            const mentorId = {{ mentor_info.mentor.id }};
+            const assignedCount = mentorAssignments[mentorId];
+            const availableSlots = mentorCapacity[mentorId] - assignedCount;
+            
+            document.getElementById(`target-assignments-${mentorId}`).textContent = assignedCount;
+            document.getElementById(`target-available-slots-${mentorId}`).textContent = availableSlots;
+            
+            const mentorCard = document.getElementById(`target-mentor-${mentorId}`);
+            if (availableSlots <= 0) {
+                mentorCard.classList.remove('border-success');
+                mentorCard.classList.add('border-warning');
+            } else {
+                mentorCard.classList.remove('border-warning');
+                mentorCard.classList.add('border-success');
+            }
+        {% endfor %}
+        
+        updateReassignmentSummary(totalReassignments, unassignments);
+    }
+    
+    function updateReassignmentSummary(totalReassignments, unassignments) {
+        if (totalReassignments === 0) {
+            reassignmentSummary.className = 'alert alert-info';
+            reassignmentSummary.innerHTML = `
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Ready to reassign:</strong> Select new mentors for students to see reassignment summary.
+            `;
+            reassignButton.disabled = true;
+        } else {
+            reassignmentSummary.className = 'alert alert-warning';
+            let summaryText = `
+                <i class="fas fa-exchange-alt me-2"></i>
+                <strong>Ready to process ${totalReassignments} change(s):</strong><br>
+            `;
+            
+            let reassignments = totalReassignments - unassignments;
+            if (reassignments > 0) {
+                summaryText += `• ${reassignments} student(s) will be reassigned to new mentors<br>`;
+            }
+            if (unassignments > 0) {
+                summaryText += `• ${unassignments} student(s) will be left unassigned<br>`;
+            }
+            
+            {% for mentor_info in available_mentors %}
+                const mentorId = {{ mentor_info.mentor.id }};
+                const count = mentorAssignments[mentorId];
+                if (count > 0) {
+                    summaryText += `• {{ mentor_info.mentor.name }}: +${count} student(s)<br>`;
+                }
+            {% endfor %}
+            
+            reassignmentSummary.innerHTML = summaryText;
+            reassignButton.disabled = false;
+        }
+    }
+    
+    // Add event listeners
+    reassignmentSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            updateAssignmentCounts();
+        });
+    });
+    
+    // Helper functions
+    window.clearAllReassignments = function() {
+        reassignmentSelects.forEach(select => {
+            select.value = '';
+        });
+        updateAssignmentCounts();
+    };
+    
+    window.selectAllUnassign = function() {
+        reassignmentSelects.forEach(select => {
+            const unassignOption = Array.from(select.options).find(option => option.value.includes('-unassign'));
+            if (unassignOption) {
+                select.value = unassignOption.value;
+            }
+        });
+        updateAssignmentCounts();
+    };
+    
+    window.unassignAll = function() {
+        if (confirm('Are you sure you want to unassign all students from {{ mentor.name }}? They will need to be manually reassigned later.')) {
+            // Submit form to unassign all
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = "{{ url_for('unassign_all_mentees', mentor_id=mentor.id) }}";
+            document.body.appendChild(form);
+            form.submit();
+        }
+    };
+    
+    // Initial update
+    updateAssignmentCounts();
+});
+</script>
+{% endblock %}

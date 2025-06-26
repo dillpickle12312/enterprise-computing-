@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+
+{% block title %}User Guide{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-dark border-secondary">
+            <div class="card-header">
+                <h2 class="mb-0 text-white">
+                    <i class="fas fa-book-open me-2"></i>
+                    Complete User Guide for the Mentorship System
+                </h2>
+                <p class="text-muted mb-0 mt-2">A step-by-step guide to using the mentorship management system</p>
+            </div>
+            
+            <div class="card-body">
+                <!-- Quick Navigation -->
+                <div class="alert alert-info border-0" style="background-color: #0d6efd20;">
+                    <h5 class="alert-heading text-info"><i class="fas fa-compass me-2"></i>Quick Navigation</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#getting-started" class="text-decoration-none"><i class="fas fa-play-circle me-1"></i>Getting Started</a></li>
+                                <li><a href="#managing-mentors" class="text-decoration-none"><i class="fas fa-chalkboard-teacher me-1"></i>Managing Mentors</a></li>
+                                <li><a href="#managing-mentees" class="text-decoration-none"><i class="fas fa-user-graduate me-1"></i>Managing Mentees</a></li>
+                                <li><a href="#scheduling-sessions" class="text-decoration-none"><i class="fas fa-calendar-plus me-1"></i>Scheduling Sessions</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#using-calendar" class="text-decoration-none"><i class="fas fa-calendar-alt me-1"></i>Using the Calendar</a></li>
+                                <li><a href="#tracking-progress" class="text-decoration-none"><i class="fas fa-chart-line me-1"></i>Tracking Progress</a></li>
+                                <li><a href="#troubleshooting" class="text-decoration-none"><i class="fas fa-tools me-1"></i>Common Issues</a></li>
+                                <li><a href="#tips-best-practices" class="text-decoration-none"><i class="fas fa-lightbulb me-1"></i>Tips & Best Practices</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Getting Started -->
+                <section id="getting-started" class="mb-5">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-play-circle me-2"></i>Getting Started
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-info-circle me-2"></i>What is this system?</h5>
+                            <p class="mb-2">This mentorship management system helps you:</p>
+                            <ul class="text-light">
+                                <li>Add and manage mentors and mentees</li>
+                                <li>Schedule tutoring sessions</li>
+                                <li>Track progress and completion</li>
+                                <li>View everything in a user-friendly calendar</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-route me-2"></i>Your First Steps</h5>
+                            <ol class="text-light">
+                                <li><strong>Add Mentors:</strong> Go to "Mentors" → "Add New Mentor" to add tutors</li>
+                                <li><strong>Add Mentees:</strong> Go to "Mentees" → "Add New Mentee" to add students</li>
+                                <li><strong>Assign Mentors:</strong> Use "Mentees" → "Assign Mentor" to pair them up</li>
+                                <li><strong>Schedule Sessions:</strong> Use "Sessions" → "Schedule Session" to book tutoring times</li>
+                                <li><strong>Track Progress:</strong> Check the Dashboard and Calendar to monitor everything</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Managing Mentors -->
+                <section id="managing-mentors" class="mb-5">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>Managing Mentors (Tutors)
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-plus-circle me-2"></i>Adding a New Mentor</h5>
+                            <ol class="text-light">
+                                <li>Click on "Mentors" in the top navigation menu</li>
+                                <li>Click "Add New Mentor"</li>
+                                <li>Fill in the required information:
+                                    <ul>
+                                        <li><strong>Name:</strong> The mentor's full name</li>
+                                        <li><strong>Roll Call:</strong> A unique identifier (like student ID)</li>
+                                        <li><strong>Subjects:</strong> What subjects they can teach (separate with commas)</li>
+                                        <li><strong>Max Students:</strong> How many students they can handle at once (default is 5)</li>
+                                    </ul>
+                                </li>
+                                <li>Click "Add Mentor" to save</li>
+                            </ol>
+                            <div class="alert alert-warning border-0 mt-3" style="background-color: #ffc10720;">
+                                <small><i class="fas fa-exclamation-triangle me-1"></i><strong>Important:</strong> Each mentor can only conduct 7 total sessions before they retire from the system.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-eye me-2"></i>Viewing Mentor Information</h5>
+                            <ul class="text-light">
+                                <li>Go to "Mentors" → "View All Mentors"</li>
+                                <li>Click on any mentor's name to see detailed information</li>
+                                <li>You'll see their assigned students, completed sessions, and remaining capacity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Managing Mentees -->
+                <section id="managing-mentees" class="mb-5">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-user-graduate me-2"></i>Managing Mentees (Students)
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-plus-circle me-2"></i>Adding a New Mentee</h5>
+                            <ol class="text-light">
+                                <li>Click on "Mentees" in the navigation menu</li>
+                                <li>Click "Add New Mentee"</li>
+                                <li>Fill in the information:
+                                    <ul>
+                                        <li><strong>Name:</strong> The student's full name</li>
+                                        <li><strong>Roll Call:</strong> A unique identifier</li>
+                                        <li><strong>Subject:</strong> What subject they need help with</li>
+                                        <li><strong>Lessons Remaining:</strong> How many tutoring sessions they need</li>
+                                    </ul>
+                                </li>
+                                <li>Click "Add Mentee" to save</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-link me-2"></i>Assigning Mentors to Mentees</h5>
+                            <ol class="text-light">
+                                <li>Go to "Mentees" → "Assign Mentor"</li>
+                                <li>Select a student who doesn't have a mentor yet</li>
+                                <li>Choose an available mentor who teaches that subject</li>
+                                <li>Click "Assign Mentor"</li>
+                            </ol>
+                            <div class="alert alert-info border-0 mt-3" style="background-color: #0d6efd20;">
+                                <small><i class="fas fa-info-circle me-1"></i><strong>Note:</strong> The system will only show mentors who have space for more students and teach the right subject.</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Scheduling Sessions -->
+                <section id="scheduling-sessions" class="mb-5">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-calendar-plus me-2"></i>Scheduling Sessions
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-calendar-check me-2"></i>How to Schedule a Session</h5>
+                            <ol class="text-light">
+                                <li>Go to "Sessions" → "Schedule Session"</li>
+                                <li>Select the mentor and mentee for the session</li>
+                                <li>Choose a date and time</li>
+                                <li>Optionally add notes about what to cover</li>
+                                <li>Click "Schedule Session"</li>
+                            </ol>
+                            <div class="alert alert-success border-0 mt-3" style="background-color: #19875420;">
+                                <small><i class="fas fa-lightbulb me-1"></i><strong>Tip:</strong> You can also quickly schedule sessions from the calendar by clicking on any date!</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-edit me-2"></i>Managing Session Status</h5>
+                            <p class="text-light">Sessions can have different statuses:</p>
+                            <ul class="text-light">
+                                <li><span class="badge bg-primary">Scheduled</span> - Session is planned but hasn't happened yet</li>
+                                <li><span class="badge bg-success">Completed</span> - Session finished successfully</li>
+                                <li><span class="badge bg-danger">Cancelled</span> - Session was cancelled</li>
+                                <li><span class="badge bg-warning">Missed</span> - Someone didn't show up</li>
+                                <li><span class="badge bg-info">Rescheduled</span> - Session moved to a different time</li>
+                            </ul>
+                            <p class="text-light mt-3">You can update these statuses from the calendar view by clicking on any session.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Using Calendar -->
+                <section id="using-calendar" class="mb-5">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-calendar-alt me-2"></i>Using the Calendar View
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-eye me-2"></i>Reading the Calendar</h5>
+                            <ul class="text-light">
+                                <li><strong>Blue events:</strong> Scheduled sessions</li>
+                                <li><strong>Green events:</strong> Completed sessions</li>
+                                <li><strong>Red events:</strong> Cancelled or missed sessions</li>
+                                <li><strong>Gray events:</strong> Session summaries (e.g., "Completed: 3")</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-mouse me-2"></i>Calendar Actions</h5>
+                            <ul class="text-light">
+                                <li><strong>Click on a date:</strong> Quickly schedule a new session</li>
+                                <li><strong>Click on an event:</strong> View details and update status</li>
+                                <li><strong>Use the view buttons:</strong> Switch between month, week, and day views</li>
+                                <li><strong>Navigation arrows:</strong> Move between different time periods</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-filter me-2"></i>Filtering Sessions</h5>
+                            <p class="text-light">Use the filter section to:</p>
+                            <ul class="text-light">
+                                <li>View sessions by specific date ranges</li>
+                                <li>Filter by mentor or status</li>
+                                <li>Find past sessions quickly</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tracking Progress -->
+                <section id="tracking-progress" class="mb-5">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-chart-line me-2"></i>Tracking Progress
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-tachometer-alt me-2"></i>Dashboard Overview</h5>
+                            <p class="text-light">The dashboard shows you:</p>
+                            <ul class="text-light">
+                                <li>Total number of mentors, mentees, and sessions</li>
+                                <li>Sessions happening today</li>
+                                <li>Quick actions for urgent tasks</li>
+                                <li>System status and alerts</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-bell me-2"></i>Sessions Due Today</h5>
+                            <p class="text-light">The dashboard highlights sessions scheduled for today, allowing you to:</p>
+                            <ul class="text-light">
+                                <li>See which sessions are coming up</li>
+                                <li>Quickly mark sessions as completed, cancelled, or missed</li>
+                                <li>Contact participants if needed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Troubleshooting -->
+                <section id="troubleshooting" class="mb-5">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-tools me-2"></i>Common Issues & Solutions
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Can't Assign a Mentor</h5>
+                            <p class="text-light"><strong>Problem:</strong> No mentors appear in the assignment dropdown</p>
+                            <p class="text-light"><strong>Solutions:</strong></p>
+                            <ul class="text-light">
+                                <li>Check if the mentor teaches the subject the mentee needs</li>
+                                <li>Verify the mentor hasn't reached their student limit</li>
+                                <li>Make sure the mentor hasn't completed 7 sessions (retirement limit)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-danger"><i class="fas fa-calendar-times me-2"></i>Can't Schedule a Session</h5>
+                            <p class="text-light"><strong>Problem:</strong> Error when trying to schedule</p>
+                            <p class="text-light"><strong>Solutions:</strong></p>
+                            <ul class="text-light">
+                                <li>Make sure the mentee is assigned to the selected mentor</li>
+                                <li>Check that both participants are available</li>
+                                <li>Verify the date and time are in the future</li>
+                                <li>Ensure the mentee has remaining lessons</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-danger"><i class="fas fa-question-circle me-2"></i>Data Not Showing</h5>
+                            <p class="text-light"><strong>Problem:</strong> Information seems missing or outdated</p>
+                            <p class="text-light"><strong>Solutions:</strong></p>
+                            <ul class="text-light">
+                                <li>Refresh the page (F5 or Ctrl+R)</li>
+                                <li>Check if you're viewing the correct date range</li>
+                                <li>Clear any active filters</li>
+                                <li>Make sure data was saved properly (look for success messages)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tips & Best Practices -->
+                <section id="tips-best-practices" class="mb-5">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-lightbulb me-2"></i>Tips & Best Practices
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-star me-2"></i>Getting the Most From the System</h5>
+                            <ul class="text-light">
+                                <li><strong>Regular Updates:</strong> Mark session statuses promptly to keep accurate records</li>
+                                <li><strong>Use Notes:</strong> Add session notes to track what was covered</li>
+                                <li><strong>Check the Dashboard:</strong> Start each day by reviewing today's sessions</li>
+                                <li><strong>Plan Ahead:</strong> Schedule sessions in advance to avoid last-minute conflicts</li>
+                                <li><strong>Monitor Limits:</strong> Keep an eye on mentor session counts and mentee lesson remaining</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-shield-alt me-2"></i>Data Safety</h5>
+                            <ul class="text-light">
+                                <li>Double-check information before saving</li>
+                                <li>Use clear, consistent naming for roll calls</li>
+                                <li>Regularly review assignments to ensure they're still appropriate</li>
+                                <li>Look for success/error messages after each action</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card bg-secondary border-0 mb-3">
+                        <div class="card-body">
+                            <h5 class="text-success"><i class="fas fa-rocket me-2"></i>Efficiency Tips</h5>
+                            <ul class="text-light">
+                                <li><strong>Keyboard Shortcuts:</strong> Use Tab to navigate between form fields quickly</li>
+                                <li><strong>Quick Schedule:</strong> Click directly on calendar dates for faster scheduling</li>
+                                <li><strong>Bulk Actions:</strong> Use the bulk assignment feature for multiple mentees</li>
+                                <li><strong>Filters:</strong> Save time by using calendar filters to find specific sessions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact & Support -->
+                <section id="support" class="mb-4">
+                    <h3 class="text-warning border-bottom border-warning pb-2">
+                        <i class="fas fa-life-ring me-2"></i>Need More Help?
+                    </h3>
+                    
+                    <div class="card bg-secondary border-0">
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <i class="fas fa-envelope fa-2x text-primary mb-2"></i>
+                                    <h6 class="text-light">Email Support</h6>
+                                    <p class="text-muted small">Contact your system administrator</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <i class="fas fa-phone fa-2x text-success mb-2"></i>
+                                    <h6 class="text-light">Phone Support</h6>
+                                    <p class="text-muted small">Call during business hours</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <i class="fas fa-comments fa-2x text-info mb-2"></i>
+                                    <h6 class="text-light">Live Chat</h6>
+                                    <p class="text-muted small">Quick help when you need it</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Back to Top -->
+                <div class="text-center mt-4">
+                    <a href="#" class="btn btn-outline-light" onclick="window.scrollTo(0,0); return false;">
+                        <i class="fas fa-arrow-up me-2"></i>Back to Top
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Improve readability of sections */
+section {
+    scroll-margin-top: 20px;
+}
+
+/* Style for code/technical terms */
+code {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Enhanced cards */
+.card .card-body h5 {
+    margin-bottom: 1rem;
+}
+
+/* Better link visibility */
+a {
+    color: #61dafb !important;
+}
+
+a:hover {
+    color: #4fc3f7 !important;
+}
+
+/* Status badge styling */
+.badge {
+    font-size: 0.8em;
+    padding: 4px 8px;
+}
+</style>
+{% endblock %}

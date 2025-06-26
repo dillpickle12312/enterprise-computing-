@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+
+{% block title %}{{ mentee.name }} - Mentee Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="mb-0">
+                    <i class="fas fa-user-graduate me-2"></i>{{ mentee.name }}
+                </h1>
+                <p class="text-muted mb-0">Mentee Details</p>
+            </div>
+            <div>
+                <a href="{{ url_for('mentees') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Mentees
+                </a>
+                {% if not mentee.assigned_mentor %}
+                    <a href="{{ url_for('assign_mentor') }}?mentee_id={{ mentee.id }}" class="btn btn-success">
+                        <i class="fas fa-link me-2"></i>Assign Mentor
+                    </a>
+                {% endif %}
+                <a href="{{ url_for('schedule_session') }}?mentee_id={{ mentee.id }}" class="btn btn-primary">
+                    <i class="fas fa-calendar-plus me-2"></i>Schedule Session
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Student Information -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-id-card me-2"></i>Student Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <strong>Name:</strong><br>
+                        <span class="fs-5">{{ mentee.name }}</span>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <strong>Roll Call:</strong><br>
+                        <code class="fs-6">{{ mentee.roll_call }}</code>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <strong>Subject:</strong><br>
+                        <span class="badge bg-primary fs-6">{{ mentee.subject }}</span>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <strong>Lessons Remaining:</strong><br>
+                        {% if mentee.lessons_remaining > 0 %}
+                            <span class="badge bg-info fs-6">{{ mentee.lessons_remaining }}</span>
+                        {% else %}
+                            <span class="badge bg-success fs-6">
+                                <i class="fas fa-graduation-cap me-1"></i>Graduated
+                            </span>
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        <strong>Joined:</strong><br>
+                        <small class="text-muted">{{ mentee.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Mentor Assignment
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if mentee.assigned_mentor %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <i class="fas fa-user-tie fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">
+                                <a href="{{ url_for('mentor_detail', id=mentee.assigned_mentor.id) }}" 
+                                   class="text-decoration-none">
+                                    {{ mentee.assigned_mentor.name }}
+                                </a>
+                            </h6>
+                            <small class="text-muted">{{ mentee.assigned_mentor.roll_call }}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Subjects:</strong><br>
+                            {% for subject in mentee.assigned_mentor.subjects.split(',') %}
+                                <span class="badge bg-secondary me-1">{{ subject.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="col-6">
+                            <strong>Capacity:</strong><br>
+                            <span class="text-muted">{{ mentee.assigned_mentor.mentees|length }}/{{ mentee.assigned_mentor.max_mentees }} students</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <form method="POST" action="{{ url_for('unassign_mentor', id=mentee.id) }}" class="d-inline">
+                            <input type="hidden" name="mentee_id" value="{{ mentee.id }}">
+                            <button type="submit" class="btn btn-outline-warning btn-sm" 
+                                    onclick="return confirm('Are you sure you want to unassign this mentor?')">
+                                <i class="fas fa-unlink me-1"></i>Unassign Mentor
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-user-times fa-3x text-muted mb-3"></i>
+                        <h6 class="text-muted">No Mentor Assigned</h6>
+                        <p class="text-muted mb-3">This student needs to be paired with a mentor.</p>
+                        <a href="{{ url_for('assign_mentor') }}?mentee_id={{ mentee.id }}" class="btn btn-success">
+                            <i class="fas fa-link me-2"></i>Assign Mentor
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Progress Overview -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-line me-2"></i>Learning Progress
+                </h5>
+            </div>
+            <div class="card-body">
+                {% set total_sessions = sessions|length %}
+                {% set completed_sessions = sessions|selectattr('status', 'equalto', 'completed')|list|length %}
+                {% set scheduled_sessions = sessions|selectattr('status', 'equalto', 'scheduled')|list|length %}
+                {% set cancelled_sessions = sessions|selectattr('status', 'in', ['cancelled', 'missed'])|list|length %}
+                
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <div class="border rounded p-3">
+                            <h4 class="text-primary">{{ total_sessions }}</h4>
+                            <small class="text-muted">Total Sessions</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="border rounded p-3">
+                            <h4 class="text-success">{{ completed_sessions }}</h4>
+                            <small class="text-muted">Completed</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="border rounded p-3">
+                            <h4 class="text-info">{{ scheduled_sessions }}</h4>
+                            <small class="text-muted">Scheduled</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="border rounded p-3">
+                            <h4 class="text-warning">{{ cancelled_sessions }}</h4>
+                            <small class="text-muted">Cancelled/Missed</small>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if total_sessions > 0 %}
+                    <div class="mt-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>Completion Rate:</strong>
+                                <div class="progress mt-2">
+                                    {% set completion_rate = (completed_sessions / total_sessions * 100)|round(1) %}
+                                    <div class="progress-bar bg-success" style="width: {{ completion_rate }}%">
+                                        {{ completion_rate }}%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Progress Status:</strong><br>
+                                {% if mentee.lessons_remaining == 0 %}
+                                    <span class="badge bg-success fs-6">
+                                        <i class="fas fa-graduation-cap me-1"></i>Graduated
+                                    </span>
+                                {% elif scheduled_sessions > 0 %}
+                                    <span class="badge bg-primary fs-6">
+                                        <i class="fas fa-clock me-1"></i>Active ({{ scheduled_sessions }} upcoming)
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-warning fs-6">
+                                        <i class="fas fa-pause me-1"></i>Needs Scheduling
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sessions History -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Session History
+                    <span class="badge bg-primary ms-2">{{ sessions|length }}</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if sessions %}
+                    <!-- Upcoming Sessions -->
+                    {% if upcoming_sessions %}
+                        <h6 class="text-success mb-3">
+                            <i class="fas fa-calendar-check me-1"></i>Upcoming Sessions ({{ upcoming_sessions|length }})
+                        </h6>
+                        <div class="row mb-4">
+                            {% for session in upcoming_sessions %}
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="card border-primary">
+                                        <div class="card-body">
+                                            <h6 class="card-title">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ session.scheduled_date.strftime('%B %d, %Y') }}
+                                            </h6>
+                                            <p class="card-text">
+                                                <strong>Time:</strong> {{ session.scheduled_date.strftime('%I:%M %p') }}<br>
+                                                <strong>Duration:</strong> {{ session.duration_minutes }} minutes<br>
+                                                {% if session.notes %}
+                                                    <strong>Notes:</strong> {{ session.notes }}
+                                                {% endif %}
+                                            </p>
+                                            <div class="d-flex gap-1">
+                                                <form method="POST" action="{{ url_for('update_session_status') }}" class="d-inline">
+                                                    <input type="hidden" name="session_id" value="{{ session.id }}">
+                                                    <input type="hidden" name="status" value="completed">
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        <i class="fas fa-check"></i> Complete
+                                                    </button>
+                                                </form>
+                                                <a href="{{ url_for('calendar') }}" class="btn btn-outline-primary btn-sm">
+                                                    <i class="fas fa-calendar"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                    {% endif %}
+                    
+                    <!-- All Sessions Table -->
+                    <h6 class="text-muted mb-3">
+                        <i class="fas fa-list me-1"></i>All Sessions
+                    </h6>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Notes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for session in sessions|sort(attribute='scheduled_date', reverse=true) %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ session.scheduled_date.strftime('%B %d, %Y') }}</strong><br>
+                                        <small class="text-muted">{{ session.scheduled_date.strftime('%I:%M %p') }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ session.duration_minutes }} min</span>
+                                    </td>
+                                    <td>
+                                        {% if session.status == 'completed' %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>Completed
+                                            </span>
+                                        {% elif session.status == 'scheduled' %}
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-clock me-1"></i>Scheduled
+                                            </span>
+                                        {% elif session.status == 'cancelled' %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times me-1"></i>Cancelled
+                                            </span>
+                                        {% elif session.status == 'missed' %}
+                                            <span class="badge bg-warning">
+                                                <i class="fas fa-exclamation me-1"></i>Missed
+                                            </span>
+                                        {% elif session.status == 'rescheduled' %}
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-sync me-1"></i>Rescheduled
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if session.notes %}
+                                            <small>{{ session.notes[:50] }}{% if session.notes|length > 50 %}...{% endif %}</small>
+                                        {% else %}
+                                            <span class="text-muted">No notes</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            {% if session.status == 'scheduled' %}
+                                                <form method="POST" action="{{ url_for('update_session_status') }}" class="d-inline">
+                                                    <input type="hidden" name="session_id" value="{{ session.id }}">
+                                                    <input type="hidden" name="status" value="completed">
+                                                    <button type="submit" class="btn btn-outline-success" title="Mark Complete">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                            <a href="{{ url_for('calendar') }}" class="btn btn-outline-primary" title="View in Calendar">
+                                                <i class="fas fa-calendar"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+                        <h5 class="text-muted">No Sessions Yet</h5>
+                        <p class="text-muted mb-4">No tutoring sessions have been scheduled for this student.</p>
+                        {% if mentee.assigned_mentor %}
+                            <a href="{{ url_for('schedule_session') }}?mentee_id={{ mentee.id }}" class="btn btn-primary">
+                                <i class="fas fa-calendar-plus me-2"></i>Schedule First Session
+                            </a>
+                        {% else %}
+                            <p class="text-warning">
+                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                A mentor must be assigned before scheduling sessions.
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Danger Zone -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h6 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Danger Zone
+                </h6>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">
+                    Permanent actions that cannot be undone. Please be careful.
+                </p>
+                <a href="{{ url_for('delete_mentee_confirm', mentee_id=mentee.id) }}" class="btn btn-outline-danger">
+                    <i class="fas fa-trash me-2"></i>Delete Mentee
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
