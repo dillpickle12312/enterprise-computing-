@@ -14,12 +14,18 @@ import os
 
 # Initialize Flask app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
 
-# Use absolute path for database to avoid any confusion
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "mentorship.db")}'
+# Configuration using environment variables with fallbacks
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Database configuration
+basedir = os.path.abspath(os.path.dirname(__file__))
+database_url = os.environ.get('DATABASE_URL')
+if database_url:
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "mentorship.db")}'
 
 # Initialize database
 db = SQLAlchemy(app)
@@ -1121,5 +1127,14 @@ def init_db():
 
 if __name__ == '__main__':
     init_db()
+    
+    # Get configuration from environment variables
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=False, host='0.0.0.0', port=port)
+    host = os.environ.get('HOST', '0.0.0.0')
+    debug = os.environ.get('DEBUG', 'False').lower() == 'true'
+    
+    print(f"🌐 Starting Mentorship System on {host}:{port}")
+    print(f"🔧 Debug mode: {debug}")
+    print(f"🔑 Secret key configured: {'✅' if app.config['SECRET_KEY'] != 'dev-key-change-in-production' else '⚠️  Using development key'}")
+    
+    app.run(debug=debug, host=host, port=port)
