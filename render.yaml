@@ -3,7 +3,12 @@ services:
     name: mentorship-system
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python app.py
+    startCommand: python start.py
+    plan: free
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.1
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
