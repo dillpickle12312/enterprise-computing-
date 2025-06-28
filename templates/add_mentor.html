@@ -76,45 +76,53 @@
 
                             <!-- Role -->
                             <div class="mb-3">
-                                <label for="role" class="form-label fw-bold">
+                                <label class="form-label fw-bold">
                                     Role *
                                 </label>
-                                <select class="form-select" id="role" name="role" required>
-                                    <option value="">Select role...</option>
-                                    <option value="Teacher">Teacher</option>
-                                    <option value="Tutor">Tutor</option>
-                                    <option value="Mentor">Mentor</option>
-                                    <option value="Senior Student">Senior Student</option>
-                                    <option value="Teaching Assistant">Teaching Assistant</option>
-                                    <option value="Subject Coordinator">Subject Coordinator</option>
-                                    <option value="Academic Support">Academic Support</option>
-                                </select>
+                                <div class="btn-group w-100" role="group" aria-label="Role selection">
+                                    <input type="radio" class="btn-check" name="role" id="role_presenter" value="Presenter" required>
+                                    <label class="btn btn-outline-primary" for="role_presenter">
+                                        <i class="fas fa-chalkboard-teacher me-2"></i>Presenter
+                                    </label>
+                                    
+                                    <input type="radio" class="btn-check" name="role" id="role_helper" value="Helper" required>
+                                    <label class="btn btn-outline-primary" for="role_helper">
+                                        <i class="fas fa-hands-helping me-2"></i>Helper
+                                    </label>
+                                </div>
                                 <div class="invalid-feedback">
                                     Please select a role.
                                 </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    <strong>Presenter:</strong> Leads sessions and teaches content. <strong>Helper:</strong> Assists and supports students.
+                                </div>
                             </div>
 
-                            <!-- Staff ID -->
+                            <!-- Roll Call Class -->
                             <div class="mb-3">
                                 <label for="roll_call" class="form-label fw-bold">
-                                    Staff ID / Employee Code *
+                                    Roll Call Class *
                                 </label>
                                 <div class="input-group">
                                     <span class="input-group-text">
-                                        <i class="fas fa-hashtag"></i>
+                                        <i class="fas fa-graduation-cap"></i>
                                     </span>
                                     <input type="text" 
                                            class="form-control" 
                                            id="roll_call" 
                                            name="roll_call" 
                                            required 
-                                           placeholder="e.g., MENT001, T123456"
-                                           autocomplete="username"
-                                           pattern="[A-Za-z0-9]{3,20}"
-                                           title="Staff ID should be 3-20 characters (letters and numbers only)">
+                                           placeholder="e.g., 11/7, 12/3, 8G, 9A"
+                                           pattern="^((7|8|9|10|11|12)\/[1-9][0-9]?|[7-9][A-Z]|1[0-2][A-Z])$"
+                                           title="Enter roll call class (e.g., 11/7 or 8G)">
                                     <div class="invalid-feedback">
-                                        Please enter a valid Staff ID.
+                                        Please enter a valid roll call class (e.g., 11/7 or 8G).
                                     </div>
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Format: Year/Class (e.g., 11/7) or Year+Letter (e.g., 8G)
                                 </div>
                             </div>
                         </div>
@@ -214,19 +222,46 @@
                                 <label for="subjects" class="form-label fw-bold">
                                     Subjects to Teach *
                                 </label>
-                                <div class="mb-2">
-                                    <small class="text-muted">Quick select:</small>
-                                    <div class="btn-group-sm mt-1" role="group">
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Mathematics">Mathematics</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="English">English</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Science">Science</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Physics">Physics</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Chemistry">Chemistry</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Biology">Biology</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="History">History</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Geography">Geography</button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Chess">Chess</button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="clearSubjects">Clear</button>
+                                <div class="mb-3">
+                                    <small class="text-muted">Quick select (click multiple subjects):</small>
+                                    <div class="row mt-2">
+                                        <div class="col-md-6">
+                                            <div class="d-grid gap-1">
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="English">English</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Mathematics">Mathematics</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Science">Science</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="History">History</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Geography">Geography</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="PDHPE">PDHPE</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Technology Mandatory">Technology Mandatory</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Visual Arts">Visual Arts</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Music">Music</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Drama">Drama</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Dance">Dance</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Commerce">Commerce</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="d-grid gap-1">
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Design & Technology">Design & Technology</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Food Technology">Food Technology</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Industrial Technology">Industrial Technology</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Digital Technologies">Digital Technologies</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Graphics Technology">Graphics Technology</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Textiles Technology">Textiles Technology</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Agricultural Technology">Agricultural Technology</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Photography and Digital Media">Photography & Digital Media</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Visual Design">Visual Design</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Japanese">Japanese</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="French">French</button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Other Languages">Other Languages</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="clearSubjects">
+                                            <i class="fas fa-eraser me-1"></i>Clear All
+                                        </button>
                                     </div>
                                 </div>
                                 <textarea class="form-control" 
@@ -382,8 +417,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission validation
     form.addEventListener('submit', function(e) {
         let isValid = true;
-        const requiredFields = ['first_name', 'last_name', 'role', 'roll_call', 'subjects'];
+        const requiredFields = ['first_name', 'last_name', 'roll_call', 'subjects'];
         
+        // Check required text fields
         requiredFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
             if (!field.value.trim()) {
@@ -394,6 +430,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 field.classList.add('is-valid');
             }
         });
+        
+        // Check role selection
+        const roleSelected = document.querySelector('input[name="role"]:checked');
+        if (!roleSelected) {
+            // Add visual feedback for role selection
+            document.querySelectorAll('label[for^="role_"]').forEach(label => {
+                label.classList.add('border-danger');
+            });
+            isValid = false;
+        } else {
+            document.querySelectorAll('label[for^="role_"]').forEach(label => {
+                label.classList.remove('border-danger');
+            });
+        }
         
         if (!isValid) {
             e.preventDefault();

@@ -52,31 +52,30 @@
                         </div>
                     </div>
 
-                    <!-- Student ID -->
+                    <!-- Roll Call Class -->
                     <div class="mb-4">
                         <label for="roll_call" class="form-label fw-bold">
-                            <i class="fas fa-id-badge me-2 text-success"></i>Student ID / Roll Number *
+                            <i class="fas fa-graduation-cap me-2 text-success"></i>Roll Call Class *
                         </label>
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="fas fa-hashtag"></i>
+                                <i class="fas fa-school"></i>
                             </span>
                             <input type="text" 
                                    class="form-control form-control-lg" 
                                    id="roll_call" 
                                    name="roll_call" 
                                    required 
-                                   placeholder="e.g., STU001, 123456"
-                                   autocomplete="username"
-                                   pattern="[A-Za-z0-9]{3,20}"
-                                   title="Student ID should be 3-20 characters (letters and numbers only)">
+                                   placeholder="e.g., 7/3, 8/5, 9G, 10A"
+                                   pattern="^((7|8|9|10|11|12)\/[1-9][0-9]?|[7-9][A-Z]|1[0-2][A-Z])$"
+                                   title="Enter roll call class (e.g., 7/3 or 8G)">
                             <div class="invalid-feedback">
-                                Please enter a valid Student ID (3-20 characters, letters and numbers only).
+                                Please enter a valid roll call class (e.g., 7/3 or 8G).
                             </div>
                         </div>
                         <div class="form-text">
                             <i class="fas fa-info-circle me-1"></i>
-                            A unique identifier for this student (student ID, roll number, etc.)
+                            Format: Year/Class (e.g., 7/3) or Year+Letter (e.g., 8G)
                         </div>
                     </div>
 
@@ -88,37 +87,135 @@
                         
                         <!-- Subject Cards for Visual Selection -->
                         <div class="row g-2 mb-3">
-                            <div class="col-6 col-md-3">
-                                <div class="card subject-card h-100" data-subject="Math">
-                                    <div class="card-body text-center p-3">
-                                        <i class="fas fa-calculator fa-2x text-primary mb-2"></i>
-                                        <h6 class="card-title mb-1">Math</h6>
-                                        <small class="text-muted">7 lessons</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-3">
+                            <div class="col-6 col-md-4 col-lg-3">
                                 <div class="card subject-card h-100" data-subject="English">
-                                    <div class="card-body text-center p-3">
-                                        <i class="fas fa-book-open fa-2x text-info mb-2"></i>
-                                        <h6 class="card-title mb-1">English</h6>
-                                        <small class="text-muted">7 lessons</small>
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-book-open fa-lg text-info mb-1"></i>
+                                        <h6 class="card-title mb-0 small">English</h6>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 col-md-3">
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Mathematics">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-calculator fa-lg text-primary mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Mathematics</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
                                 <div class="card subject-card h-100" data-subject="Science">
-                                    <div class="card-body text-center p-3">
-                                        <i class="fas fa-flask fa-2x text-warning mb-2"></i>
-                                        <h6 class="card-title mb-1">Science</h6>
-                                        <small class="text-muted">3 lessons</small>
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-flask fa-lg text-warning mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Science</h6>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 col-md-3">
-                                <div class="card subject-card h-100" data-subject="Chess">
-                                    <div class="card-body text-center p-3">
-                                        <i class="fas fa-chess fa-2x text-success mb-2"></i>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="History">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-landmark fa-lg text-secondary mb-1"></i>
+                                        <h6 class="card-title mb-0 small">History</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Geography">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-globe fa-lg text-success mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Geography</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="PDHPE">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-running fa-lg text-danger mb-1"></i>
+                                        <h6 class="card-title mb-0 small">PDHPE</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Technology Mandatory">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-cogs fa-lg text-dark mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Technology</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Visual Arts">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-palette fa-lg text-purple mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Visual Arts</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Music">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-music fa-lg text-info mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Music</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Drama">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-theater-masks fa-lg text-warning mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Drama</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Dance">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-person-booth fa-lg text-primary mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Dance</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Commerce">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-chart-line fa-lg text-success mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Commerce</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Design & Technology">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-drafting-compass fa-lg text-secondary mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Design & Tech</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Food Technology">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-utensils fa-lg text-danger mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Food Tech</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Digital Technologies">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-laptop-code fa-lg text-primary mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Digital Tech</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="card subject-card h-100" data-subject="Japanese">
+                                    <div class="card-body text-center p-2">
+                                        <i class="fas fa-language fa-lg text-info mb-1"></i>
+                                        <h6 class="card-title mb-0 small">Japanese</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                                         <h6 class="card-title mb-1">Chess</h6>
                                         <small class="text-muted">6 lessons</small>
                                     </div>

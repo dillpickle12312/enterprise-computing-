@@ -37,7 +37,7 @@ class Mentor(db.Model):
     name = db.Column(db.String(100), nullable=False)  # Keep original field
     first_name = db.Column(db.String(50), nullable=True)  # New optional field
     last_name = db.Column(db.String(50), nullable=True)   # New optional field
-    roll_call = db.Column(db.String(20), unique=True, nullable=False)
+    roll_call = db.Column(db.String(20), nullable=False)  # Removed unique constraint
     role = db.Column(db.String(50), nullable=True, default='Mentor')  # New optional field
     subjects = db.Column(db.String(200), nullable=False)  # Comma-separated subjects
     max_mentees = db.Column(db.Integer, default=5)
@@ -80,7 +80,7 @@ class Mentee(db.Model):
     """Mentee model representing students"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    roll_call = db.Column(db.String(20), unique=True, nullable=False)
+    roll_call = db.Column(db.String(20), nullable=False)  # Removed unique constraint
     subject = db.Column(db.String(50), nullable=False)
     lessons_remaining = db.Column(db.Integer, default=0)
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentor.id'), nullable=True)
@@ -333,10 +333,7 @@ def add_mentor():
         subjects = request.form['subjects'].strip()
         max_mentees = int(request.form['max_mentees'])
         
-        # Check if roll_call already exists
-        if Mentor.query.filter_by(roll_call=roll_call).first():
-            flash(f'Mentor with roll call {roll_call} already exists!', 'error')
-            return render_template('add_mentor.html')
+        # Roll call classes can be shared by multiple students, so no unique check needed
         
         mentor = Mentor(
             name=name,
@@ -412,10 +409,7 @@ def add_mentee():
         roll_call = request.form['roll_call'].strip()
         subject = request.form['subject']
         
-        # Check if roll_call already exists
-        if Mentee.query.filter_by(roll_call=roll_call).first():
-            flash(f'Mentee with roll call {roll_call} already exists!', 'error')
-            return render_template('add_mentee.html')
+        # Roll call classes can be shared by multiple students, so no unique check needed
         
         # Set lessons based on subject
         lesson_counts = {'Math': 7, 'English': 7, 'Science': 3, 'Chess': 6}
