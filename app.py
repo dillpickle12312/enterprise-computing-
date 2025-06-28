@@ -34,17 +34,17 @@ db = SQLAlchemy(app)
 class Mentor(db.Model):
     """Mentor model representing tutors/teachers"""
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    name = db.Column(db.String(100), nullable=False)  # Keep for backward compatibility
+    name = db.Column(db.String(100), nullable=False)  # Keep original field
+    first_name = db.Column(db.String(50), nullable=True)  # New optional field
+    last_name = db.Column(db.String(50), nullable=True)   # New optional field
     roll_call = db.Column(db.String(20), unique=True, nullable=False)
-    role = db.Column(db.String(50), nullable=False, default='Mentor')
+    role = db.Column(db.String(50), nullable=True, default='Mentor')  # New optional field
     subjects = db.Column(db.String(200), nullable=False)  # Comma-separated subjects
     max_mentees = db.Column(db.Integer, default=5)
-    start_date = db.Column(db.Date, nullable=True)
-    term = db.Column(db.String(20), nullable=True)  # e.g., "Term 1", "Semester 1"
-    week = db.Column(db.String(20), nullable=True)  # e.g., "Week 1-5"
-    day = db.Column(db.String(20), nullable=True)   # e.g., "Monday", "Tuesday"
+    start_date = db.Column(db.Date, nullable=True)        # New optional field
+    term = db.Column(db.String(20), nullable=True)        # New optional field
+    week = db.Column(db.String(20), nullable=True)        # New optional field
+    day = db.Column(db.String(20), nullable=True)         # New optional field
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Relationships
@@ -52,8 +52,14 @@ class Mentor(db.Model):
     sessions = db.relationship('Session', backref='mentor', lazy=True)
     
     def get_full_name(self):
-        """Return full name from first and last name"""
-        return f"{self.first_name} {self.last_name}"
+        """Return full name, with fallback to name field"""
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        return self.name
+    
+    def get_display_name(self):
+        """Get the best available name for display"""
+        return self.get_full_name()
     
     def get_subjects_list(self):
         """Return subjects as a list"""
@@ -68,7 +74,7 @@ class Mentor(db.Model):
         return self.current_mentee_count() < self.max_mentees
     
     def __repr__(self):
-        return f'<Mentor {self.get_full_name()}>'
+        return f'<Mentor {self.get_display_name()}>'
 
 class Mentee(db.Model):
     """Mentee model representing students"""
@@ -293,25 +299,39 @@ def mentors():
 def add_mentor():
     """Add a new mentor"""
     if request.method == 'POST':
-        first_name = request.form['first_name'].strip()
-        last_name = request.form['last_name'].strip()
-        name = f"{first_name} {last_name}"  # Backward compatibility
+        # Handle both new and old form formats
+        if 'first_name' in request.form and 'last_name' in request.form:
+            # New detailed format
+            first_name = request.form['first_name'].strip()
+            last_name = request.form['last_name'].strip()
+            name = f"{first_name} {last_name}"
+            role = request.form.get('role', 'Mentor').strip()
+            term = request.form.get('term', '').strip()
+            week = request.form.get('week', '').strip()
+            day = request.form.get('day', '').strip()
+            
+            # Parse start date if provided
+            start_date = None
+            if request.form.get('start_date'):
+                try:
+                    start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d').date()
+                except ValueError:
+                    flash('Invalid date format!', 'error')
+                    return render_template('add_mentor.html')
+        else:
+            # Old simple format (backward compatibility)
+            name = request.form['name'].strip()
+            first_name = None
+            last_name = None
+            role = 'Mentor'
+            start_date = None
+            term = ''
+            week = ''
+            day = ''
+        
         roll_call = request.form['roll_call'].strip()
-        role = request.form['role'].strip()
         subjects = request.form['subjects'].strip()
         max_mentees = int(request.form['max_mentees'])
-        term = request.form.get('term', '').strip()
-        week = request.form.get('week', '').strip()
-        day = request.form.get('day', '').strip()
-        
-        # Parse start date if provided
-        start_date = None
-        if request.form.get('start_date'):
-            try:
-                start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d').date()
-            except ValueError:
-                flash('Invalid date format!', 'error')
-                return render_template('add_mentor.html')
         
         # Check if roll_call already exists
         if Mentor.query.filter_by(roll_call=roll_call).first():
@@ -319,9 +339,9 @@ def add_mentor():
             return render_template('add_mentor.html')
         
         mentor = Mentor(
+            name=name,
             first_name=first_name,
             last_name=last_name,
-            name=name,
             roll_call=roll_call,
             role=role,
             subjects=subjects,
@@ -1374,11 +1394,64 @@ def find_best_available_mentor(mentee):
 
 # Initialize database
 def init_db():
-    """Initialize database tables"""
+    """Initialize database tables and run migrations"""
     with app.app_context():
         try:
-            # Only create tables if they don't exist (don't drop existing data)
+            # Create all tables
             db.create_all()
+            
+            # Run migration for new columns if needed
+            import sqlite3
+            database_url = app.config['SQLALCHEMY_DATABASE_URI']
+            if database_url.startswith('sqlite:///'):
+                db_path = database_url.replace('sqlite:///', '')
+                if os.path.exists(db_path):
+                    try:
+                        conn = sqlite3.connect(db_path)
+                        cursor = conn.cursor()
+                        
+                        # Check if new columns exist
+                        cursor.execute("PRAGMA table_info(mentor)")
+                        columns = [row[1] for row in cursor.fetchall()]
+                        
+                        new_columns = [
+                            ('first_name', 'VARCHAR(50)'),
+                            ('last_name', 'VARCHAR(50)'),
+                            ('role', 'VARCHAR(50) DEFAULT "Mentor"'),
+                            ('start_date', 'DATE'),
+                            ('term', 'VARCHAR(20)'),
+                            ('week', 'VARCHAR(20)'),
+                            ('day', 'VARCHAR(20)')
+                        ]
+                        
+                        # Add missing columns
+                        for column_name, column_type in new_columns:
+                            if column_name not in columns:
+                                cursor.execute(f"ALTER TABLE mentor ADD COLUMN {column_name} {column_type}")
+                        
+                        # Update existing records without first_name/last_name
+                        cursor.execute("SELECT id, name FROM mentor WHERE first_name IS NULL AND name IS NOT NULL")
+                        mentors = cursor.fetchall()
+                        
+                        for mentor_id, full_name in mentors:
+                            name_parts = full_name.split(' ', 1)
+                            first_name = name_parts[0]
+                            last_name = name_parts[1] if len(name_parts) > 1 else ''
+                            
+                            cursor.execute("""
+                                UPDATE mentor 
+                                SET first_name = ?, last_name = ?, role = COALESCE(role, 'Mentor')
+                                WHERE id = ?
+                            """, (first_name, last_name, mentor_id))
+                        
+                        conn.commit()
+                        conn.close()
+                        
+                    except Exception as e:
+                        if 'conn' in locals():
+                            conn.close()
+                        print(f"Migration warning: {e}")
+            
         except Exception as e:
             raise
 

@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}
-    {% if mentor.first_name and mentor.last_name %}
-        {{ mentor.first_name }} {{ mentor.last_name }} - Mentor Details
-    {% else %}
-        {{ mentor.name }} - Mentor Details
-    {% endif %}
-{% endblock %}
+{% block title %}{{ mentor.get_display_name() }} - Mentor Details{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -55,13 +49,7 @@
                 <div class="row">
                     <div class="col-sm-6 mb-3">
                         <strong>Name:</strong><br>
-                        <span class="fs-5">
-                            {% if mentor.first_name and mentor.last_name %}
-                                {{ mentor.first_name }} {{ mentor.last_name }}
-                            {% else %}
-                                {{ mentor.name }}
-                            {% endif %}
-                        </span>
+                        <span class="fs-5">{{ mentor.get_display_name() }}</span>
                     </div>
                     <div class="col-sm-6 mb-3">
                         <strong>Staff ID:</strong><br>
