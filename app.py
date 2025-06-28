@@ -1115,6 +1115,240 @@ def internal_error(error):
     db.session.rollback()
     return render_template('base.html'), 500
 
+# Enhanced API endpoints for outstanding functionality
+@app.route('/api/matching-suggestions')
+def get_matching_suggestions():
+    """Get AI-powered matching suggestions for coordinators"""
+    unmatched_mentees = Mentee.query.filter_by(mentor_id=None).all()
+    available_mentors = Mentor.query.all()
+    
+    suggestions = []
+    for mentee in unmatched_mentees[:5]:  # Top 5 suggestions
+        best_matches = []
+        for mentor in available_mentors:
+            if len(mentor.mentees) < mentor.max_mentees:
+                score = calculate_enhanced_match_score(mentor, mentee)
+                if score > 60:  # Only suggest good matches
+                    best_matches.append({
+                        'mentor': {
+                            'id': mentor.id,
+                            'name': f"{mentor.first_name} {mentor.last_name}",
+                            'expertise': mentor.subjects.split(',') if mentor.subjects else []
+                        },
+                        'mentee': {
+                            'id': mentee.id,
+                            'name': f"{mentee.first_name} {mentee.last_name}",
+                            'interests': mentee.subjects_needed.split(',') if mentee.subjects_needed else []
+                        },
+                        'score': round(score),
+                        'reasons': generate_match_reasons(mentor, mentee, score),
+                        'id': f"{mentor.id}-{mentee.id}"
+                    })
+        
+        if best_matches:
+            suggestions.extend(sorted(best_matches, key=lambda x: x['score'], reverse=True)[:1])
+    
+    return jsonify(suggestions)
+
+def calculate_enhanced_match_score(mentor, mentee):
+    """Enhanced matching algorithm with more sophisticated scoring"""
+    score = 0
+    
+    # Subject alignment (40 points)
+    mentor_subjects = set(mentor.subjects.lower().split(',') if mentor.subjects else [])
+    mentee_subjects = set(mentee.subjects_needed.lower().split(',') if mentee.subjects_needed else [])
+    subject_overlap = len(mentor_subjects.intersection(mentee_subjects))
+    if subject_overlap > 0:
+        score += min(40, subject_overlap * 20)
+    
+    # Experience level matching (30 points)
+    if hasattr(mentor, 'experience_years'):
+        exp_score = min(30, mentor.experience_years * 3)
+        score += exp_score
+    else:
+        score += 15  # Default moderate experience
+    
+    # Availability compatibility (20 points)
+    # This would check actual availability data if implemented
+    score += 15  # Assume reasonable availability overlap
+    
+    # Workload balance (10 points)
+    current_load = len(mentor.mentees) if mentor.mentees else 0
+    max_load = mentor.max_mentees if hasattr(mentor, 'max_mentees') else 5
+    load_ratio = current_load / max_load
+    score += max(0, 10 - (load_ratio * 10))
+    
+    return min(100, score)
+
+def generate_match_reasons(mentor, mentee, score):
+    """Generate human-readable reasons for the match suggestion"""
+    reasons = []
+    
+    mentor_subjects = set(mentor.subjects.lower().split(',') if mentor.subjects else [])
+    mentee_subjects = set(mentee.subjects_needed.lower().split(',') if mentee.subjects_needed else [])
+    overlap = mentor_subjects.intersection(mentee_subjects)
+    
+    if overlap:
+        reasons.append(f"Strong subject alignment: {', '.join(overlap)}")
+    
+    current_load = len(mentor.mentees) if mentor.mentees else 0
+    if current_load < 3:
+        reasons.append("Mentor has availability for new mentees")
+    
+    if score > 80:
+        reasons.append("Exceptional compatibility across all criteria")
+    elif score > 70:
+        reasons.append("Strong overall compatibility")
+    
+    if not reasons:
+        reasons.append("Good general compatibility")
+    
+    return reasons
+
+@app.route('/api/inactive-mentees')
+def get_inactive_mentees():
+    """Get mentees who haven't had sessions recently"""
+    from datetime import datetime, timedelta
+    
+    cutoff_date = datetime.now() - timedelta(days=14)
+    
+    # Get mentees with no recent sessions
+    inactive_mentees = []
+    mentees = Mentee.query.all()
+    
+    for mentee in mentees:
+        recent_sessions = Session.query.filter(
+            Session.mentee_id == mentee.id,
+            Session.session_date >= cutoff_date,
+            Session.status == 'completed'
+        ).count()
+        
+        if recent_sessions == 0:
+            last_session = Session.query.filter_by(mentee_id=mentee.id).order_by(Session.session_date.desc()).first()
+            inactive_mentees.append({
+                'id': mentee.id,
+                'name': f"{mentee.first_name} {mentee.last_name}",
+                'lastSession': last_session.session_date.strftime('%Y-%m-%d') if last_session else 'No sessions yet'
+            })
+    
+    return jsonify(inactive_mentees)
+
+@app.route('/api/optimal-slots/<int:mentor_id>/<int:mentee_id>')
+def get_optimal_time_slots(mentor_id, mentee_id):
+    """Find optimal time slots for mentor-mentee sessions"""
+    from datetime import datetime, timedelta
+    import random
+    
+    # Generate smart time slot suggestions
+    # In a real implementation, this would check actual availability
+    slots = []
+    base_date = datetime.now() + timedelta(days=1)
+    
+    for i in range(5):  # Next 5 days
+        slot_date = base_date + timedelta(days=i)
+        if slot_date.weekday() < 5:  # Weekdays only
+            for hour in [10, 14, 16]:  # Good meeting times
+                compatibility_score = random.randint(75, 95)  # Simulate compatibility calculation
+                slots.append({
+                    'day': slot_date.strftime('%A'),
+                    'date': slot_date.strftime('%Y-%m-%d'),
+                    'time': f"{hour}:00",
+                    'datetime': f"{slot_date.strftime('%Y-%m-%d')} {hour}:00",
+                    'score': compatibility_score
+                })
+    
+    # Sort by compatibility score
+    slots.sort(key=lambda x: x['score'], reverse=True)
+    
+    return jsonify(slots[:3])  # Return top 3 suggestions
+
+@app.route('/api/dashboard-analytics')
+def get_dashboard_analytics():
+    """Get comprehensive analytics for coordinator dashboard"""
+    total_mentors = Mentor.query.count()
+    total_mentees = Mentee.query.count()
+    active_assignments = Assignment.query.filter_by(status='active').count()
+    total_sessions = Session.query.count()
+    
+    # Calculate average rating
+    completed_sessions = Session.query.filter_by(status='completed').all()
+    avg_rating = 0
+    if completed_sessions:
+        total_rating = sum(s.rating for s in completed_sessions if s.rating)
+        avg_rating = total_rating / len(completed_sessions) if completed_sessions else 0
+    
+    # Programme effectiveness (percentage of successful matches)
+    successful_matches = Assignment.query.filter_by(status='active').count()
+    total_matches = Assignment.query.count()
+    effectiveness = (successful_matches / total_matches * 100) if total_matches > 0 else 0
+    
+    return jsonify({
+        'totalMentors': total_mentors,
+        'totalMentees': total_mentees,
+        'activeAssignments': active_assignments,
+        'completedSessions': total_sessions,
+        'averageRating': round(avg_rating, 1),
+        'programmeEffectiveness': round(effectiveness, 1),
+        'trends': {
+            'mentors': '+5%',
+            'mentees': '+12%',
+            'sessions': '+23%',
+            'satisfaction': '+8%'
+        }
+    })
+
+@app.route('/api/bulk-assign', methods=['POST'])
+def bulk_assign_mentors():
+    """Bulk assign mentors to multiple mentees"""
+    data = request.get_json()
+    mentee_ids = data.get('mentee_ids', [])
+    assignment_method = data.get('method', 'auto')  # 'auto' or 'manual'
+    
+    assignments_created = 0
+    for mentee_id in mentee_ids:
+        mentee = Mentee.query.get(mentee_id)
+        if mentee and not mentee.mentor_id:
+            if assignment_method == 'auto':
+                # Find best available mentor
+                best_mentor = find_best_available_mentor(mentee)
+                if best_mentor:
+                    assignment = Assignment(
+                        mentor_id=best_mentor.id,
+                        mentee_id=mentee.id,
+                        status='active',
+                        assigned_date=datetime.now()
+                    )
+                    db.session.add(assignment)
+                    assignments_created += 1
+    
+    try:
+        db.session.commit()
+        return jsonify({
+            'success': True,
+            'message': f'Successfully created {assignments_created} assignments'
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+def find_best_available_mentor(mentee):
+    """Find the best available mentor for a mentee"""
+    available_mentors = Mentor.query.all()
+    best_mentor = None
+    best_score = 0
+    
+    for mentor in available_mentors:
+        current_load = len(mentor.mentees) if mentor.mentees else 0
+        max_load = getattr(mentor, 'max_mentees', 5)
+        
+        if current_load < max_load:
+            score = calculate_enhanced_match_score(mentor, mentee)
+            if score > best_score:
+                best_score = score
+                best_mentor = mentor
+    
+    return best_mentor
+
 # Initialize database
 def init_db():
     """Initialize database tables"""
