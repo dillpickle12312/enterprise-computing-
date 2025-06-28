@@ -10,9 +10,26 @@
                 <i class="fas fa-user-graduate me-2"></i>Mentees
             </h1>
             <div>
-                <a href="{{ url_for('add_mentee') }}" class="btn btn-success">
+                <a href="{{ url_for('add_mentee') }}" class="btn btn-success me-2">
                     <i class="fas fa-plus me-2"></i>Add New Mentee
                 </a>
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-download me-1"></i>Export
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('export_data', data_type='mentees') }}">
+                                <i class="fas fa-file-csv me-2"></i>Export as CSV
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="javascript:window.print()">
+                                <i class="fas fa-print me-2"></i>Print Page
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <a href="{{ url_for('assign_mentor') }}" class="btn btn-info">
                     <i class="fas fa-link me-2"></i>Assign Mentor
                 </a>

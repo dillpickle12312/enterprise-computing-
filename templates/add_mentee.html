@@ -59,195 +59,69 @@
                         </label>
                         <div class="input-group">
                             <span class="input-group-text">
-                                <i class="fas fa-school"></i>
+                                <i class="fas fa-users"></i>
                             </span>
                             <input type="text" 
                                    class="form-control form-control-lg" 
                                    id="roll_call" 
                                    name="roll_call" 
                                    required 
-                                   placeholder="e.g., 7/3, 8/5, 9G, 10A"
-                                   pattern="^((7|8|9|10|11|12)\/[1-9][0-9]?|[7-9][A-Z]|1[0-2][A-Z])$"
-                                   title="Enter roll call class (e.g., 7/3 or 8G)">
+                                   placeholder="e.g., 12/7, 11/2, 9A, 8B"
+                                   autocomplete="off"
+                                   pattern="(1[0-2]\/[1-9]|[7-9][A-Za-z])"
+                                   title="Years 10-12: format like 12/7, 11/2. Years 7-9: format like 9A, 8B"
+                                   style="text-transform: uppercase;">
                             <div class="invalid-feedback">
-                                Please enter a valid roll call class (e.g., 7/3 or 8G).
+                                Please enter a valid roll call (e.g., 12/7, 11/2, 9A, 8B).
                             </div>
                         </div>
                         <div class="form-text">
                             <i class="fas fa-info-circle me-1"></i>
-                            Format: Year/Class (e.g., 7/3) or Year+Letter (e.g., 8G)
+                            Years 10-12: Use format like 12/7, 11/2 (year/class)<br>
+                            Years 7-9: Use format like 9A, 8B (year + letter)<br>
+                            Multiple students can be in the same class.
                         </div>
                     </div>
 
                     <!-- Subject Selection -->
                     <div class="mb-4">
-                        <label for="subject" class="form-label fw-bold">
+                        <label for="subject-search" class="form-label fw-bold">
                             <i class="fas fa-book me-2 text-success"></i>Subject Needed *
                         </label>
                         
-                        <!-- Subject Cards for Visual Selection -->
-                        <div class="row g-2 mb-3">
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="English">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-book-open fa-lg text-info mb-1"></i>
-                                        <h6 class="card-title mb-0 small">English</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Mathematics">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-calculator fa-lg text-primary mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Mathematics</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Science">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-flask fa-lg text-warning mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Science</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="History">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-landmark fa-lg text-secondary mb-1"></i>
-                                        <h6 class="card-title mb-0 small">History</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Geography">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-globe fa-lg text-success mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Geography</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="PDHPE">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-running fa-lg text-danger mb-1"></i>
-                                        <h6 class="card-title mb-0 small">PDHPE</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Technology Mandatory">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-cogs fa-lg text-dark mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Technology</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Visual Arts">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-palette fa-lg text-purple mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Visual Arts</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Music">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-music fa-lg text-info mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Music</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Drama">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-theater-masks fa-lg text-warning mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Drama</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Dance">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-person-booth fa-lg text-primary mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Dance</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Commerce">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-chart-line fa-lg text-success mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Commerce</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Design & Technology">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-drafting-compass fa-lg text-secondary mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Design & Tech</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Food Technology">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-utensils fa-lg text-danger mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Food Tech</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Digital Technologies">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-laptop-code fa-lg text-primary mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Digital Tech</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-4 col-lg-3">
-                                <div class="card subject-card h-100" data-subject="Japanese">
-                                    <div class="card-body text-center p-2">
-                                        <i class="fas fa-language fa-lg text-info mb-1"></i>
-                                        <h6 class="card-title mb-0 small">Japanese</h6>
-                                    </div>
-                                </div>
+                        <!-- Subject Search Box -->
+                        <div class="position-relative mb-2">
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="subject-search" 
+                                   placeholder="Search for a subject..."
+                                   autocomplete="off">
+                            <div id="subject-dropdown" class="dropdown-menu w-100" style="display: none; max-height: 200px; overflow-y: auto;">
+                                <!-- Subjects will be populated here by JavaScript -->
                             </div>
                         </div>
-                                        <h6 class="card-title mb-1">Chess</h6>
-                                        <small class="text-muted">6 lessons</small>
-                                    </div>
+                        
+                        <!-- Selected Subject Display -->
+                        <div id="selected-subject-display" class="d-none">
+                            <div class="alert alert-success d-flex align-items-center">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <div>
+                                    <strong>Selected:</strong> <span id="selected-subject-name"></span>
+                                    <br><small>Lessons will be automatically set based on this subject.</small>
                                 </div>
+                                <button type="button" class="btn btn-sm btn-outline-secondary ms-auto" id="change-subject">
+                                    Change
+                                </button>
                             </div>
                         </div>
 
                         <!-- Hidden select for form submission -->
                         <select class="form-select d-none" id="subject" name="subject" required>
                             <option value="">Choose subject...</option>
-                            <option value="Math">Math</option>
-                            <option value="English">English</option>
-                            <option value="Science">Science</option>
-                            <option value="Chess">Chess</option>
                         </select>
                         
                         <div class="invalid-feedback">
                             Please select a subject for tutoring.
-                        </div>
-                        
-                        <!-- Selected Subject Display -->
-                        <div id="selectedSubjectDisplay" class="d-none">
-                            <div class="alert alert-success d-flex align-items-center">
-                                <i class="fas fa-check-circle me-2"></i>
-                                <div>
-                                    <strong>Selected:</strong> <span id="selectedSubjectName"></span>
-                                    <br><small>Lessons will be automatically set based on this subject.</small>
-                                </div>
-                                <button type="button" class="btn btn-sm btn-outline-secondary ms-auto" id="changeSubject">
-                                    Change
-                                </button>
-                            </div>
                         </div>
                     </div>
 
@@ -328,95 +202,192 @@
 <!-- JavaScript for enhanced functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Available subjects for Australian curriculum
+    const availableSubjects = [
+        'English',
+        'Mathematics',
+        'Science',
+        'History',
+        'Geography',
+        'PDHPE (Personal Development, Health and Physical Education)',
+        'Technology Mandatory',
+        'Visual Arts',
+        'Music',
+        'Drama',
+        'Dance',
+        'Commerce',
+        'Design & Technology',
+        'Food Technology',
+        'Industrial Technology (Wood)',
+        'Industrial Technology (Metal)',
+        'Industrial Technology (Multimedia)',
+        'Digital Technologies / Information & Software Technology',
+        'Graphics Technology',
+        'Textiles Technology',
+        'Agricultural Technology',
+        'Photography and Digital Media',
+        'Visual Design',
+        'Japanese',
+        'French',
+        'Chinese',
+        'Italian',
+        'German',
+        'Spanish',
+        'Korean',
+        'Arabic',
+        'Chemistry',
+        'Physics',
+        'Biology',
+        'Earth and Environmental Science',
+        'Psychology',
+        'Economics',
+        'Business Studies',
+        'Legal Studies',
+        'Society and Culture',
+        'Community and Family Studies',
+        'Studies of Religion',
+        'Modern History',
+        'Ancient History',
+        'Extension History',
+        'Mathematics Advanced',
+        'Mathematics Standard',
+        'Mathematics Extension 1',
+        'Mathematics Extension 2',
+        'English Advanced',
+        'English Standard',
+        'English Extension 1',
+        'English Extension 2',
+        'English Studies'
+    ];
+
     const form = document.getElementById('menteeForm');
     const nameInput = document.getElementById('name');
     const rollCallInput = document.getElementById('roll_call');
     const subjectSelect = document.getElementById('subject');
     const submitBtn = document.getElementById('submitBtn');
-    const subjectCards = document.querySelectorAll('.subject-card');
-    const selectedSubjectDisplay = document.getElementById('selectedSubjectDisplay');
-    const selectedSubjectName = document.getElementById('selectedSubjectName');
-    const changeSubjectBtn = document.getElementById('changeSubject');
-    const lessonInfo = document.getElementById('lessonInfo');
+    
+    // Subject search elements
+    const subjectSearch = document.getElementById('subject-search');
+    const subjectDropdown = document.getElementById('subject-dropdown');
+    const selectedSubjectDisplay = document.getElementById('selected-subject-display');
+    const selectedSubjectName = document.getElementById('selected-subject-name');
+    const changeSubjectBtn = document.getElementById('change-subject');
+    
+    let selectedSubject = '';
 
-    // Subject lesson data
-    const subjectData = {
-        'Math': { lessons: 7, duration: '3-4 weeks', icon: 'fa-calculator', color: 'primary' },
-        'English': { lessons: 7, duration: '3-4 weeks', icon: 'fa-book-open', color: 'info' },
-        'Science': { lessons: 3, duration: '1-2 weeks', icon: 'fa-flask', color: 'warning' },
-        'Chess': { lessons: 6, duration: '2-3 weeks', icon: 'fa-chess', color: 'success' }
-    };
-
-    // Handle subject card selection
-    subjectCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const subject = this.dataset.subject;
-            selectSubject(subject);
-        });
-    });
-
-    function selectSubject(subject) {
-        // Clear previous selections
-        subjectCards.forEach(card => {
-            card.classList.remove('border-primary', 'bg-primary', 'text-white');
-        });
-
-        // Highlight selected card
-        const selectedCard = document.querySelector(`[data-subject="${subject}"]`);
-        selectedCard.classList.add('border-primary', 'bg-primary', 'text-white');
-
-        // Update form
-        subjectSelect.value = subject;
-        selectedSubjectName.textContent = subject;
-        
-        // Show selection display
-        selectedSubjectDisplay.classList.remove('d-none');
-        
-        // Update lesson info
-        const data = subjectData[subject];
-        document.getElementById('totalLessons').textContent = data.lessons;
-        document.getElementById('estimatedDuration').textContent = data.duration;
-        lessonInfo.style.display = 'block';
-
-        // Update validation
-        subjectSelect.classList.remove('is-invalid');
-        subjectSelect.classList.add('is-valid');
+    // Subject search functionality
+    function updateSubjectDisplay() {
+        if (selectedSubject) {
+            selectedSubjectName.textContent = selectedSubject;
+            selectedSubjectDisplay.classList.remove('d-none');
+            subjectSearch.style.display = 'none';
+            subjectSelect.value = selectedSubject;
+            
+            // Update validation
+            subjectSelect.classList.remove('is-invalid');
+            subjectSelect.classList.add('is-valid');
+        } else {
+            selectedSubjectDisplay.classList.add('d-none');
+            subjectSearch.style.display = 'block';
+            subjectSelect.value = '';
+        }
     }
-
+    
+    function selectSubject(subject) {
+        selectedSubject = subject;
+        updateSubjectDisplay();
+        subjectSearch.value = '';
+        subjectDropdown.style.display = 'none';
+    }
+    
+    // Make selectSubject globally available
+    window.selectSubject = selectSubject;
+    
+    subjectSearch.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        if (query.length === 0) {
+            subjectDropdown.style.display = 'none';
+            return;
+        }
+        
+        const filteredSubjects = availableSubjects.filter(subject => 
+            subject.toLowerCase().includes(query)
+        );
+        
+        if (filteredSubjects.length > 0) {
+            subjectDropdown.innerHTML = filteredSubjects.map(subject => 
+                `<a class="dropdown-item" href="#" onclick="selectSubject('${subject}'); return false;">
+                    ${subject}
+                </a>`
+            ).join('');
+            subjectDropdown.style.display = 'block';
+        } else {
+            subjectDropdown.style.display = 'none';
+        }
+    });
+    
     // Change subject button
     changeSubjectBtn.addEventListener('click', function() {
-        // Clear selection
-        subjectCards.forEach(card => {
-            card.classList.remove('border-primary', 'bg-primary', 'text-white');
-        });
-        
-        selectedSubjectDisplay.classList.add('d-none');
-        lessonInfo.style.display = 'none';
-        subjectSelect.value = '';
-        subjectSelect.classList.remove('is-valid');
+        selectedSubject = '';
+        updateSubjectDisplay();
+    });
+    
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!subjectSearch.contains(e.target) && !subjectDropdown.contains(e.target)) {
+            subjectDropdown.style.display = 'none';
+        }
     });
 
-    // Auto-generate student ID suggestion
-    nameInput.addEventListener('blur', function() {
-        if (this.value && !rollCallInput.value) {
-            const nameParts = this.value.trim().split(' ');
-            const firstName = nameParts[0] || '';
-            const lastName = nameParts[nameParts.length - 1] || '';
-            const suggestion = 'STU' + firstName.substring(0, 2).toUpperCase() + lastName.substring(0, 2).toUpperCase();
-            rollCallInput.placeholder = `Suggestion: ${suggestion}`;
+    // Roll call validation and auto-uppercase
+    rollCallInput.addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+        
+        // Real-time validation
+        const rollCallPattern = /^(1[0-2]\/[1-9]|[7-9][A-Za-z])$/;
+        if (rollCallPattern.test(this.value)) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        } else if (this.value.length > 0) {
+            this.classList.remove('is-valid');
+            this.classList.add('is-invalid');
         }
     });
 
     // Form validation
     form.addEventListener('submit', function(e) {
-        if (!form.checkValidity()) {
+        let isValid = true;
+        
+        // Validate name
+        if (!nameInput.value.trim()) {
+            nameInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            nameInput.classList.remove('is-invalid');
+            nameInput.classList.add('is-valid');
+        }
+        
+        // Validate roll call
+        if (!rollCallInput.value.trim()) {
+            rollCallInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            rollCallInput.classList.remove('is-invalid');
+            rollCallInput.classList.add('is-valid');
+        }
+        
+        // Validate subject
+        if (!selectedSubject) {
+            subjectSelect.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            subjectSelect.classList.remove('is-invalid');
+            subjectSelect.classList.add('is-valid');
+        }
+        
+        if (!isValid) {
             e.preventDefault();
             e.stopPropagation();
-            
-            // Show subject selection error if no subject selected
-            if (!subjectSelect.value) {
-                subjectSelect.classList.add('is-invalid');
-            }
         } else {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Adding Mentee...';
             submitBtn.disabled = true;
@@ -425,11 +396,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const autoAssign = document.getElementById('autoAssignMentor').checked;
             if (autoAssign) {
                 // You can add logic here to redirect to assign mentor page after creation
-                form.addEventListener('submit', function() {
-                    setTimeout(() => {
-                        window.location.href = '{{ url_for("assign_mentor") }}';
-                    }, 1500);
-                });
+                setTimeout(() => {
+                    window.location.href = '{{ url_for("assign_mentor") }}';
+                }, 1500);
             }
         }
         
@@ -439,10 +408,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Real-time validation feedback
     [nameInput, rollCallInput].forEach(input => {
         input.addEventListener('input', function() {
-            if (this.checkValidity()) {
+            if (this.checkValidity() && this.value.trim()) {
                 this.classList.remove('is-invalid');
                 this.classList.add('is-valid');
-            } else {
+            } else if (this.value.length > 0) {
                 this.classList.remove('is-valid');
                 this.classList.add('is-invalid');
             }

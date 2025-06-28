@@ -93,119 +93,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-warning">Reschedule</button>
-                </div>            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Quick Schedule Modal -->
-<div class="modal fade" id="quickScheduleModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-calendar-plus me-2"></i>Quick Schedule Session
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <form method="POST" action="{{ url_for('schedule_session') }}">
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <strong>Quick Scheduling:</strong> You clicked on <span id="selectedDateDisplay"></span>. 
-                        All sessions are automatically scheduled at lunch time (12:30 PM) for 45 minutes.
-                    </div>
-                    
-                    <input type="hidden" id="quick-schedule-date" name="date">
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="quick-mentor-id" class="form-label">
-                                    <i class="fas fa-user-tie me-1"></i>Select Mentor
-                                </label>
-                                <select class="form-select" id="quick-mentor-id" name="mentor_id" required onchange="updateMentorInfo()">
-                                    <option value="">Choose a mentor...</option>
-                                    {% for mentor in mentors if mentor.lessons_left > 0 %}
-                                    <option value="{{ mentor.id }}" 
-                                            data-lessons-left="{{ mentor.lessons_left }}" 
-                                            data-subjects="{{ mentor.subjects }}">
-                                        {{ mentor.name }} - {{ mentor.subjects }} ({{ mentor.lessons_left }} lessons left)
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                                <div class="form-text">
-                                    <i class="fas fa-lightbulb me-1"></i>Only mentors with available lessons are shown
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="quick-mentee-id" class="form-label">
-                                    <i class="fas fa-user-graduate me-1"></i>Select Mentee
-                                </label>
-                                <select class="form-select" id="quick-mentee-id" name="mentee_id" required onchange="updateMenteeInfo()">
-                                    <option value="">Choose a mentee...</option>
-                                    {% for mentee in mentees if not mentee.mentor_id %}
-                                    <option value="{{ mentee.id }}" data-subject="{{ mentee.subject }}">
-                                        {{ mentee.name }} - {{ mentee.subject }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                                <div class="form-text">
-                                    <i class="fas fa-lightbulb me-1"></i>Only unassigned mentees are shown
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <h6 class="card-title">
-                                        <i class="fas fa-clock me-1"></i>Session Details
-                                    </h6>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <strong>Date:</strong><br>
-                                            <span id="quickScheduleDateDisplay"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <strong>Time:</strong><br>
-                                            <i class="fas fa-utensils me-1"></i>12:30 PM (Lunch)
-                                        </div>
-                                        <div class="col-md-4">
-                                            <strong>Duration:</strong><br>
-                                            45 minutes (all subjects)
-                                        </div>
-                                    </div>
-                                    <div class="mt-3" id="compatibilityCheck" style="display: none;">
-                                        <div class="alert alert-warning" id="compatibilityWarning" style="display: none;">
-                                            <i class="fas fa-exclamation-triangle me-2"></i>
-                                            <span id="compatibilityMessage"></span>
-                                        </div>
-                                        <div class="alert alert-success" id="compatibilitySuccess" style="display: none;">
-                                            <i class="fas fa-check-circle me-2"></i>
-                                            Perfect match! This mentor can teach this subject.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancel">Cancel</button>
-                    <a href="{{ url_for('schedule_session') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-cog me-1"></i>Advanced Options
-                    </a>
-                    <button type="submit" class="btn btn-primary" id="quickScheduleSubmit">
-                        <i class="fas fa-calendar-check me-1"></i>Schedule Session
-                    </button>
-                </div>
             </form>
         </div>
     </div>
@@ -512,26 +399,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectedDate = info.dateStr;
             const today = new Date().toISOString().split('T')[0];
             
-            // Only allow scheduling for today or future dates
-            if (selectedDate >= today) {
-                showQuickScheduleModal(selectedDate);
-            } else {
-                // Show info for past dates
-                showPastDateInfo(selectedDate);
-            }
+            // Date clicking disabled - users should use the "Schedule New Session" button
+            return false;
         },
-        selectable: true,
-        selectMirror: true,
-        select: function(info) {
-            // Handle date range selection for scheduling
-            const startDate = info.startStr;
-            const endDate = info.endStr;
-            const today = new Date().toISOString().split('T')[0];
-            
-            if (startDate >= today) {
-                showQuickScheduleModal(startDate);
-            }
-        },eventContent: function(arg) {
+        selectable: false,
+        selectMirror: false,eventContent: function(arg) {
             // Create custom event content with action buttons
             const event = arg.event;
             const status = event.extendedProps.status;
@@ -635,72 +507,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const newDate = info.event.start.toISOString().split('T')[0];
             rescheduleSession(info.event.id, newDate);
         },
-        editable: true    });
-    
-    calendar.render();    // Add event listener for quick schedule modal to clear calendar selection when closed
-    const quickScheduleModal = document.getElementById('quickScheduleModal');
-    quickScheduleModal.addEventListener('hidden.bs.modal', function() {
-        // Clear any calendar selection when modal is closed
-        if (calendar) {
-            calendar.unselect();
-        }
-        // Reset the form completely
-        resetQuickScheduleForm();
+        editable: true
     });
-      // Add explicit click handlers for modal dismiss buttons
-    const modalCancelBtn = quickScheduleModal.querySelector('[data-bs-dismiss="modal"]');
-    const modalCloseBtn = quickScheduleModal.querySelector('.btn-close');
     
-    if (modalCancelBtn) {
-        modalCancelBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const modal = bootstrap.Modal.getOrCreateInstance(quickScheduleModal);
-            modal.hide();
-            // Force cleanup if modal doesn't hide properly
-            setTimeout(() => {
-                document.body.classList.remove('modal-open');
-                const backdrop = document.querySelector('.modal-backdrop');
-                if (backdrop) {
-                    backdrop.remove();
-                }
-            }, 300);
-        });
-    }
-    
-    if (modalCloseBtn) {
-        modalCloseBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const modal = bootstrap.Modal.getOrCreateInstance(quickScheduleModal);
-            modal.hide();
-            // Force cleanup if modal doesn't hide properly
-            setTimeout(() => {
-                document.body.classList.remove('modal-open');
-                const backdrop = document.querySelector('.modal-backdrop');
-                if (backdrop) {
-                    backdrop.remove();
-                }            }, 300);
-        });
-    }
-    
-    // Add keyboard event handler for Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            const modal = bootstrap.Modal.getOrCreateInstance(quickScheduleModal);
-            if (quickScheduleModal.classList.contains('show')) {
-                modal.hide();
-                // Force cleanup if needed
-                setTimeout(() => {
-                    document.body.classList.remove('modal-open');
-                    const backdrop = document.querySelector('.modal-backdrop');
-                    if (backdrop) {
-                        backdrop.remove();
-                    }
-                }, 300);
-            }
-        }
-    });
+    calendar.render();
 });
 
 function showSessionDetails(event) {
@@ -1116,101 +926,6 @@ function closeSessionModal() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('sessionModal'));
     if (modal) {
         modal.hide();
-    }
-}
-
-function showQuickScheduleModal(selectedDate) {
-    // Format the date for display
-    const dateObj = new Date(selectedDate + 'T00:00:00');
-    const formattedDate = dateObj.toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    });
-    
-    // Set the date values
-    document.getElementById('quick-schedule-date').value = selectedDate;
-    document.getElementById('selectedDateDisplay').textContent = formattedDate;
-    document.getElementById('quickScheduleDateDisplay').textContent = formattedDate;    // Reset form completely
-    resetQuickScheduleForm();
-    
-    // Show the modal using Bootstrap's built-in method
-    const modalElement = document.getElementById('quickScheduleModal');
-    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-    modal.show();
-}
-
-function resetQuickScheduleForm() {
-    // Clear form fields
-    document.getElementById('quick-mentor-id').value = '';
-    document.getElementById('quick-mentee-id').value = '';
-    
-    // Hide compatibility messages
-    document.getElementById('compatibilityCheck').style.display = 'none';
-    document.getElementById('compatibilityWarning').style.display = 'none';
-    document.getElementById('compatibilitySuccess').style.display = 'none';
-    
-    // Reset submit button state
-    const submitButton = document.getElementById('quickScheduleSubmit');
-    submitButton.disabled = false;
-    submitButton.classList.remove('disabled');
-}
-
-function showPastDateInfo(selectedDate) {
-    const dateObj = new Date(selectedDate + 'T00:00:00');
-    const formattedDate = dateObj.toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    });
-    
-    // Simple alert for past dates
-    alert(`${formattedDate} is in the past. You can only schedule sessions for today or future dates.\n\nTo view past sessions for this date, check the "Past Sessions" section below the calendar.`);
-}
-
-function updateMentorInfo() {
-    checkCompatibility();
-}
-
-function updateMenteeInfo() {
-    checkCompatibility();
-}
-
-function checkCompatibility() {
-    const mentorSelect = document.getElementById('quick-mentor-id');
-    const menteeSelect = document.getElementById('quick-mentee-id');
-    const compatibilityCheck = document.getElementById('compatibilityCheck');
-    const compatibilityWarning = document.getElementById('compatibilityWarning');
-    const compatibilitySuccess = document.getElementById('compatibilitySuccess');
-    const compatibilityMessage = document.getElementById('compatibilityMessage');
-    const submitButton = document.getElementById('quickScheduleSubmit');
-    
-    if (mentorSelect.value && menteeSelect.value) {
-        const mentorOption = mentorSelect.options[mentorSelect.selectedIndex];
-        const menteeOption = menteeSelect.options[menteeSelect.selectedIndex];
-        
-        const mentorSubjects = mentorOption.dataset.subjects.toLowerCase();
-        const menteeSubject = menteeOption.dataset.subject.toLowerCase();
-        
-        compatibilityCheck.style.display = 'block';
-        
-        if (mentorSubjects.includes(menteeSubject) || mentorSubjects.includes('all-subjects')) {
-            // Perfect match
-            compatibilitySuccess.style.display = 'block';
-            compatibilityWarning.style.display = 'none';
-            submitButton.disabled = false;
-        } else {
-            // Subject mismatch
-            compatibilityWarning.style.display = 'block';
-            compatibilitySuccess.style.display = 'none';
-            compatibilityMessage.textContent = `⚠️ Subject mismatch: ${mentorOption.textContent.split(' - ')[0]} teaches ${mentorSubjects} but ${menteeOption.textContent.split(' - ')[0]} needs ${menteeSubject}. You can still proceed, but consider finding a better match.`;
-            submitButton.disabled = false; // Allow but warn
-        }
-    } else {
-        compatibilityCheck.style.display = 'none';
-        submitButton.disabled = false;
     }
 }
 </script>

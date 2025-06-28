@@ -13,6 +13,23 @@
                 <a href="{{ url_for('add_mentor') }}" class="btn btn-success me-2">
                     <i class="fas fa-plus me-2"></i>Add New Mentor
                 </a>
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-download me-1"></i>Export
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('export_data', data_type='mentors') }}">
+                                <i class="fas fa-file-csv me-2"></i>Export as CSV
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="javascript:window.print()">
+                                <i class="fas fa-print me-2"></i>Print Page
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-outline-danger dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fas fa-trash me-1"></i>Bulk Actions
@@ -47,14 +64,13 @@
             <input type="text" class="form-control" id="mentorSearch" placeholder="Search mentors by name or roll call...">
         </div>
     </div>
-    <div class="col-md-2">
-        <select class="form-select" id="subjectFilter">
-            <option value="">All Subjects</option>
-            <option value="Math">Math</option>
-            <option value="English">English</option>
-            <option value="Science">Science</option>
-            <option value="Chess">Chess</option>
-        </select>
+    <div class="col-md-3">
+        <div class="position-relative">
+            <input type="text" class="form-control" id="subjectFilter" placeholder="Search subjects..." autocomplete="off">
+            <div id="subject-filter-dropdown" class="dropdown-menu w-100" style="display: none; max-height: 200px; overflow-y: auto;">
+                <!-- Subjects will be populated here -->
+            </div>
+        </div>
     </div>
     <div class="col-md-3">
         <select class="form-select" id="statusFilter">
@@ -93,35 +109,17 @@
 <div class="row">    {% for item in mentor_data %}
         {% set mentor = item.mentor %}
     <div class="col-md-6 col-lg-4 mb-4 mentor-card" 
-         data-name="{{ mentor.get_display_name().lower() }}"
+         data-name="{{ mentor.name.lower() }}"
          data-roll-call="{{ mentor.roll_call.lower() }}"
          data-subjects="{{ mentor.subjects.lower() }}"
          data-status="{{ item.status }}"
-         data-role="{{ mentor.role if mentor.role else 'Mentor' }}"
          data-capacity-status="{% if mentor.mentees|length >= mentor.max_mentees %}full{% else %}available{% endif %}">
         <div class="card h-100">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="card-title mb-0">{{ mentor.get_display_name() }}</h5>
-                    {% if mentor.role %}
-                        <small class="text-muted">{{ mentor.role }}</small>
-                    {% endif %}
-                </div>
+                <h5 class="card-title mb-0">{{ mentor.name }}</h5>
                 <span class="badge bg-primary">{{ mentor.roll_call }}</span>
             </div>
             <div class="card-body">
-                <!-- Schedule Information -->
-                {% if mentor.term or mentor.week or mentor.day %}
-                <div class="mb-3">
-                    <small class="text-muted">Schedule:</small>
-                    <div class="small">
-                        {% if mentor.term %}<span class="badge bg-info me-1">{{ mentor.term }}</span>{% endif %}
-                        {% if mentor.week %}<span class="badge bg-secondary me-1">{{ mentor.week }}</span>{% endif %}
-                        {% if mentor.day %}<span class="badge bg-success me-1">{{ mentor.day }}</span>{% endif %}
-                    </div>
-                </div>
-                {% endif %}
-                
                 <div class="mb-3">
                     <small class="text-muted">Subjects:</small>
                     <div>
@@ -219,16 +217,117 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Available subjects for Australian curriculum
+    const availableSubjects = [
+        'English',
+        'Mathematics',
+        'Science',
+        'History',
+        'Geography',
+        'PDHPE (Personal Development, Health and Physical Education)',
+        'Technology Mandatory',
+        'Visual Arts',
+        'Music',
+        'Drama',
+        'Dance',
+        'Commerce',
+        'Design & Technology',
+        'Food Technology',
+        'Industrial Technology (Wood)',
+        'Industrial Technology (Metal)',
+        'Industrial Technology (Multimedia)',
+        'Digital Technologies / Information & Software Technology',
+        'Graphics Technology',
+        'Textiles Technology',
+        'Agricultural Technology',
+        'Photography and Digital Media',
+        'Visual Design',
+        'Japanese',
+        'French',
+        'Chinese',
+        'Italian',
+        'German',
+        'Spanish',
+        'Korean',
+        'Arabic',
+        'Chemistry',
+        'Physics',
+        'Biology',
+        'Earth and Environmental Science',
+        'Psychology',
+        'Economics',
+        'Business Studies',
+        'Legal Studies',
+        'Society and Culture',
+        'Community and Family Studies',
+        'Studies of Religion',
+        'Modern History',
+        'Ancient History',
+        'Extension History',
+        'Mathematics Advanced',
+        'Mathematics Standard',
+        'Mathematics Extension 1',
+        'Mathematics Extension 2',
+        'English Advanced',
+        'English Standard',
+        'English Extension 1',
+        'English Extension 2',
+        'English Studies'
+    ];
+
     const searchInput = document.getElementById('mentorSearch');
     const subjectFilter = document.getElementById('subjectFilter');
+    const subjectDropdown = document.getElementById('subject-filter-dropdown');
     const statusFilter = document.getElementById('statusFilter');
     const capacityFilter = document.getElementById('capacityFilter');
     const mentorCards = document.querySelectorAll('.mentor-card');
     const resultsInfo = document.getElementById('mentorResults');
+    
+    let selectedSubjectFilter = '';
+
+    // Subject filter search functionality
+    subjectFilter.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        if (query.length === 0) {
+            subjectDropdown.style.display = 'none';
+            selectedSubjectFilter = '';
+            filterMentors();
+            return;
+        }
+        
+        const filteredSubjects = availableSubjects.filter(subject => 
+            subject.toLowerCase().includes(query)
+        );
+        
+        if (filteredSubjects.length > 0) {
+            subjectDropdown.innerHTML = filteredSubjects.map(subject => 
+                `<a class="dropdown-item" href="#" onclick="selectSubjectFilter('${subject}'); return false;">
+                    ${subject}
+                </a>`
+            ).join('');
+            subjectDropdown.style.display = 'block';
+        } else {
+            subjectDropdown.style.display = 'none';
+        }
+    });
+    
+    // Make selectSubjectFilter globally available
+    window.selectSubjectFilter = function(subject) {
+        selectedSubjectFilter = subject;
+        subjectFilter.value = subject;
+        subjectDropdown.style.display = 'none';
+        filterMentors();
+    };
+    
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!subjectFilter.contains(e.target) && !subjectDropdown.contains(e.target)) {
+            subjectDropdown.style.display = 'none';
+        }
+    });
 
     function filterMentors() {
         const searchTerm = searchInput.value.toLowerCase();
-        const selectedSubject = subjectFilter.value;
         const selectedStatus = statusFilter.value;
         const selectedCapacity = capacityFilter.value;
         
@@ -239,15 +338,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const rollCall = card.dataset.rollCall;
             const subjects = card.dataset.subjects;
             const status = card.dataset.status;
-            const capacityStatus = card.dataset.capacityStatus;            // Search filter (name or roll call)
+            const capacityStatus = card.dataset.capacityStatus;
+            
+            // Search filter (name or roll call)
             const matchesSearch = !searchTerm || 
                 name.includes(searchTerm) || 
                 rollCall.includes(searchTerm);
             
             // Subject filter - split subjects and check each one
-            const matchesSubject = !selectedSubject || 
+            const matchesSubject = !selectedSubjectFilter || 
                 subjects.split(',').some(subject => 
-                    subject.trim().toLowerCase() === selectedSubject.toLowerCase()
+                    subject.trim().toLowerCase().includes(selectedSubjectFilter.toLowerCase())
                 );
 
             // Status filter
@@ -278,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add event listeners
     searchInput.addEventListener('input', filterMentors);
-    subjectFilter.addEventListener('change', filterMentors);
+    searchInput.addEventListener('input', filterMentors);
     statusFilter.addEventListener('change', filterMentors);
     capacityFilter.addEventListener('change', filterMentors);
 
@@ -286,8 +387,10 @@ document.addEventListener('DOMContentLoaded', function() {
     window.clearFilters = function() {
         searchInput.value = '';
         subjectFilter.value = '';
+        selectedSubjectFilter = '';
         statusFilter.value = '';
         capacityFilter.value = '';
+        subjectDropdown.style.display = 'none';
         filterMentors();
     };
 });

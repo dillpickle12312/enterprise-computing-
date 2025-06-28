@@ -76,30 +76,25 @@
 
                             <!-- Role -->
                             <div class="mb-3">
-                                <label class="form-label fw-bold">
+                                <label for="role" class="form-label fw-bold">
                                     Role *
                                 </label>
-                                <div class="btn-group w-100" role="group" aria-label="Role selection">
-                                    <input type="radio" class="btn-check" name="role" id="role_presenter" value="Presenter" required>
-                                    <label class="btn btn-outline-primary" for="role_presenter">
-                                        <i class="fas fa-chalkboard-teacher me-2"></i>Presenter
-                                    </label>
-                                    
-                                    <input type="radio" class="btn-check" name="role" id="role_helper" value="Helper" required>
-                                    <label class="btn btn-outline-primary" for="role_helper">
-                                        <i class="fas fa-hands-helping me-2"></i>Helper
-                                    </label>
-                                </div>
+                                <select class="form-select" id="role" name="role" required>
+                                    <option value="">Select role...</option>
+                                    <option value="Teacher">Teacher</option>
+                                    <option value="Tutor">Tutor</option>
+                                    <option value="Mentor">Mentor</option>
+                                    <option value="Senior Student">Senior Student</option>
+                                    <option value="Teaching Assistant">Teaching Assistant</option>
+                                    <option value="Subject Coordinator">Subject Coordinator</option>
+                                    <option value="Academic Support">Academic Support</option>
+                                </select>
                                 <div class="invalid-feedback">
                                     Please select a role.
                                 </div>
-                                <div class="form-text">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    <strong>Presenter:</strong> Leads sessions and teaches content. <strong>Helper:</strong> Assists and supports students.
-                                </div>
                             </div>
 
-                            <!-- Roll Call Class -->
+                            <!-- Roll Call -->
                             <div class="mb-3">
                                 <label for="roll_call" class="form-label fw-bold">
                                     Roll Call Class *
@@ -113,99 +108,40 @@
                                            id="roll_call" 
                                            name="roll_call" 
                                            required 
-                                           placeholder="e.g., 11/7, 12/3, 8G, 9A"
-                                           pattern="^((7|8|9|10|11|12)\/[1-9][0-9]?|[7-9][A-Z]|1[0-2][A-Z])$"
-                                           title="Enter roll call class (e.g., 11/7 or 8G)">
+                                           placeholder="e.g., 12/7, 11/2, 9A, 8B"
+                                           autocomplete="off"
+                                           pattern="(1[0-2]\/[1-9]|[7-9][A-Za-z])"
+                                           title="Years 10-12: format like 12/7, 11/2. Years 7-9: format like 9A, 8B"
+                                           style="text-transform: uppercase;">
                                     <div class="invalid-feedback">
-                                        Please enter a valid roll call class (e.g., 11/7 or 8G).
+                                        Please enter a valid roll call (e.g., 12/7, 11/2, 9A, 8B).
                                     </div>
                                 </div>
                                 <div class="form-text">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    Format: Year/Class (e.g., 11/7) or Year+Letter (e.g., 8G)
+                                    Years 10-12: Use format like 12/7, 11/2 (year/class)<br>
+                                    Years 7-9: Use format like 9A, 8B (year + letter)
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Schedule and Subject Information -->
+                        <!-- Contact Information -->
                         <div class="col-md-6">
                             <h5 class="text-primary mb-3">
-                                <i class="fas fa-calendar me-2"></i>Schedule & Subject Information
+                                <i class="fas fa-envelope me-2"></i>Additional Information
                             </h5>
                             
-                            <!-- Start Date -->
-                            <div class="mb-3">
-                                <label for="start_date" class="form-label fw-bold">
-                                    Start Date
-                                </label>
-                                <input type="date" 
-                                       class="form-control" 
-                                       id="start_date" 
-                                       name="start_date"
-                                       value="">
-                                <div class="form-text">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    When the mentor started or will start.
+                            <!-- Contact info or availability can be added here in the future if needed -->
+                            <div class="card bg-light border-0">
+                                <div class="card-body p-3">
+                                    <h6 class="card-title text-info">
+                                        <i class="fas fa-info-circle me-1"></i>Mentor Profile
+                                    </h6>
+                                    <p class="small mb-0 text-muted">
+                                        Your mentor profile will be automatically created with the information provided. 
+                                        You can update availability and scheduling preferences after registration.
+                                    </p>
                                 </div>
-                            </div>
-
-                            <!-- Term -->
-                            <div class="mb-3">
-                                <label for="term" class="form-label fw-bold">
-                                    Term
-                                </label>
-                                <select class="form-select" id="term" name="term">
-                                    <option value="">Select term...</option>
-                                    <option value="Term 1">Term 1</option>
-                                    <option value="Term 2">Term 2</option>
-                                    <option value="Term 3">Term 3</option>
-                                    <option value="Term 4">Term 4</option>
-                                    <option value="Semester 1">Semester 1</option>
-                                    <option value="Semester 2">Semester 2</option>
-                                    <option value="Full Year">Full Year</option>
-                                </select>
-                            </div>
-
-                            <!-- Week -->
-                            <div class="mb-3">
-                                <label for="week" class="form-label fw-bold">
-                                    Week
-                                </label>
-                                <select class="form-select" id="week" name="week">
-                                    <option value="">Select week...</option>
-                                    <option value="Week 1">Week 1</option>
-                                    <option value="Week 2">Week 2</option>
-                                    <option value="Week 3">Week 3</option>
-                                    <option value="Week 4">Week 4</option>
-                                    <option value="Week 5">Week 5</option>
-                                    <option value="Week 6">Week 6</option>
-                                    <option value="Week 7">Week 7</option>
-                                    <option value="Week 8">Week 8</option>
-                                    <option value="Week 9">Week 9</option>
-                                    <option value="Week 10">Week 10</option>
-                                    <option value="Week 1-5">Week 1-5</option>
-                                    <option value="Week 6-10">Week 6-10</option>
-                                    <option value="All Weeks">All Weeks</option>
-                                </select>
-                            </div>
-
-                            <!-- Day -->
-                            <div class="mb-3">
-                                <label for="day" class="form-label fw-bold">
-                                    Day
-                                </label>
-                                <select class="form-select" id="day" name="day">
-                                    <option value="">Select day...</option>
-                                    <option value="Monday">Monday</option>
-                                    <option value="Tuesday">Tuesday</option>
-                                    <option value="Wednesday">Wednesday</option>
-                                    <option value="Thursday">Thursday</option>
-                                    <option value="Friday">Friday</option>
-                                    <option value="Monday-Wednesday">Monday-Wednesday</option>
-                                    <option value="Tuesday-Thursday">Tuesday-Thursday</option>
-                                    <option value="Weekdays">Weekdays</option>
-                                    <option value="Flexible">Flexible</option>
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -219,64 +155,36 @@
                             
                             <!-- Subjects -->
                             <div class="mb-4">
-                                <label for="subjects" class="form-label fw-bold">
+                                <label for="subjects-search" class="form-label fw-bold">
                                     Subjects to Teach *
                                 </label>
-                                <div class="mb-3">
-                                    <small class="text-muted">Quick select (click multiple subjects):</small>
-                                    <div class="row mt-2">
-                                        <div class="col-md-6">
-                                            <div class="d-grid gap-1">
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="English">English</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Mathematics">Mathematics</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Science">Science</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="History">History</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Geography">Geography</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="PDHPE">PDHPE</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Technology Mandatory">Technology Mandatory</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Visual Arts">Visual Arts</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Music">Music</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Drama">Drama</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Dance">Dance</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Commerce">Commerce</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-grid gap-1">
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Design & Technology">Design & Technology</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Food Technology">Food Technology</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Industrial Technology">Industrial Technology</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Digital Technologies">Digital Technologies</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Graphics Technology">Graphics Technology</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Textiles Technology">Textiles Technology</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Agricultural Technology">Agricultural Technology</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Photography and Digital Media">Photography & Digital Media</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Visual Design">Visual Design</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Japanese">Japanese</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="French">French</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm subject-quick-add" data-subject="Other Languages">Other Languages</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-2">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" id="clearSubjects">
-                                            <i class="fas fa-eraser me-1"></i>Clear All
-                                        </button>
+                                
+                                <!-- Subject Search Box -->
+                                <div class="position-relative mb-2">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="subjects-search" 
+                                           placeholder="Search for subjects to add..."
+                                           autocomplete="off">
+                                    <div id="subjects-dropdown" class="dropdown-menu w-100" style="display: none; max-height: 200px; overflow-y: auto;">
+                                        <!-- Subjects will be populated here by JavaScript -->
                                     </div>
                                 </div>
-                                <textarea class="form-control" 
-                                          id="subjects" 
-                                          name="subjects" 
-                                          required 
-                                          rows="3"
-                                          placeholder="Enter subjects separated by commas (e.g., Mathematics, Physics, Chemistry)"
-                                          title="Enter at least one subject"></textarea>
+                                
+                                <!-- Selected Subjects Display -->
+                                <div id="selected-subjects" class="mb-2" style="min-height: 40px; border: 1px solid #ced4da; border-radius: 0.375rem; padding: 8px;">
+                                    <small class="text-muted">Selected subjects will appear here...</small>
+                                </div>
+                                
+                                <!-- Hidden input for form submission -->
+                                <input type="hidden" id="subjects" name="subjects" required>
+                                
                                 <div class="invalid-feedback">
-                                    Please enter at least one subject.
+                                    Please select at least one subject.
                                 </div>
                                 <div class="form-text">
                                     <i class="fas fa-lightbulb me-1"></i>
-                                    Use the quick buttons above or type subjects separated by commas.
+                                    Search and click to add subjects. Click on selected subjects to remove them.
                                 </div>
                             </div>
 
@@ -377,49 +285,167 @@ document.addEventListener('DOMContentLoaded', function() {
         slider.value = this.value;
     });
     
-    // Subject quick-add functionality
-    const subjectButtons = document.querySelectorAll('.subject-quick-add');
-    const subjectsTextarea = document.getElementById('subjects');
-    const clearButton = document.getElementById('clearSubjects');
+    // Available subjects for Australian curriculum
+    const availableSubjects = [
+        'English',
+        'Mathematics',
+        'Science',
+        'History',
+        'Geography',
+        'PDHPE (Personal Development, Health and Physical Education)',
+        'Technology Mandatory',
+        'Visual Arts',
+        'Music',
+        'Drama',
+        'Dance',
+        'Commerce',
+        'Design & Technology',
+        'Food Technology',
+        'Industrial Technology (Wood)',
+        'Industrial Technology (Metal)',
+        'Industrial Technology (Multimedia)',
+        'Digital Technologies / Information & Software Technology',
+        'Graphics Technology',
+        'Textiles Technology',
+        'Agricultural Technology',
+        'Photography and Digital Media',
+        'Visual Design',
+        'Japanese',
+        'French',
+        'Chinese',
+        'Italian',
+        'German',
+        'Spanish',
+        'Korean',
+        'Arabic',
+        'Chemistry',
+        'Physics',
+        'Biology',
+        'Earth and Environmental Science',
+        'Psychology',
+        'Economics',
+        'Business Studies',
+        'Legal Studies',
+        'Society and Culture',
+        'Community and Family Studies',
+        'Studies of Religion',
+        'Modern History',
+        'Ancient History',
+        'Extension History',
+        'Mathematics Advanced',
+        'Mathematics Standard',
+        'Mathematics Extension 1',
+        'Mathematics Extension 2',
+        'English Advanced',
+        'English Standard',
+        'English Extension 1',
+        'English Extension 2',
+        'English Studies'
+    ];
+
+    let selectedSubjects = [];
     
-    subjectButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const subject = this.getAttribute('data-subject');
-            let currentSubjects = subjectsTextarea.value.trim();
-            
-            // Check if subject is already added
-            const subjectsList = currentSubjects.split(',').map(s => s.trim()).filter(s => s);
-            if (!subjectsList.includes(subject)) {
-                if (currentSubjects) {
-                    subjectsTextarea.value = currentSubjects + ', ' + subject;
-                } else {
-                    subjectsTextarea.value = subject;
-                }
-                // Visual feedback
-                this.classList.remove('btn-outline-primary');
-                this.classList.add('btn-success');
-                setTimeout(() => {
-                    this.classList.remove('btn-success');
-                    this.classList.add('btn-outline-primary');
-                }, 1000);
-            }
-        });
+    // Subject search functionality
+    const subjectSearch = document.getElementById('subjects-search');
+    const subjectDropdown = document.getElementById('subjects-dropdown');
+    const selectedSubjectsDiv = document.getElementById('selected-subjects');
+    const subjectsHidden = document.getElementById('subjects');
+    
+    function updateSelectedSubjectsDisplay() {
+        if (selectedSubjects.length === 0) {
+            selectedSubjectsDiv.innerHTML = '<small class="text-muted">Selected subjects will appear here...</small>';
+        } else {
+            selectedSubjectsDiv.innerHTML = selectedSubjects.map(subject => 
+                `<span class="badge bg-primary me-1 mb-1" style="cursor: pointer;" onclick="removeSubject('${subject}')">
+                    ${subject} <i class="fas fa-times ms-1"></i>
+                </span>`
+            ).join('');
+        }
+        
+        // Update hidden input
+        subjectsHidden.value = selectedSubjects.join(', ');
+        
+        // Update validation
+        if (selectedSubjects.length > 0) {
+            subjectsHidden.classList.remove('is-invalid');
+            subjectsHidden.classList.add('is-valid');
+        } else {
+            subjectsHidden.classList.remove('is-valid');
+            subjectsHidden.classList.add('is-invalid');
+        }
+    }
+    
+    function addSubject(subject) {
+        if (!selectedSubjects.includes(subject)) {
+            selectedSubjects.push(subject);
+            updateSelectedSubjectsDisplay();
+        }
+        subjectSearch.value = '';
+        subjectDropdown.style.display = 'none';
+    }
+    
+    function removeSubject(subject) {
+        selectedSubjects = selectedSubjects.filter(s => s !== subject);
+        updateSelectedSubjectsDisplay();
+    }
+    
+    // Make removeSubject globally available
+    window.removeSubject = removeSubject;
+    
+    subjectSearch.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        if (query.length === 0) {
+            subjectDropdown.style.display = 'none';
+            return;
+        }
+        
+        const filteredSubjects = availableSubjects.filter(subject => 
+            subject.toLowerCase().includes(query) && !selectedSubjects.includes(subject)
+        );
+        
+        if (filteredSubjects.length > 0) {
+            subjectDropdown.innerHTML = filteredSubjects.map(subject => 
+                `<a class="dropdown-item" href="#" onclick="addSubject('${subject}'); return false;">
+                    ${subject}
+                </a>`
+            ).join('');
+            subjectDropdown.style.display = 'block';
+        } else {
+            subjectDropdown.style.display = 'none';
+        }
     });
     
-    clearButton.addEventListener('click', function() {
-        subjectsTextarea.value = '';
+    // Make addSubject globally available
+    window.addSubject = addSubject;
+    
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!subjectSearch.contains(e.target) && !subjectDropdown.contains(e.target)) {
+            subjectDropdown.style.display = 'none';
+        }
     });
     
-    // Set today's date as default for start_date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('start_date').value = today;
+    // Roll call validation and auto-uppercase
+    const rollCallInput = document.getElementById('roll_call');
+    rollCallInput.addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+        
+        // Real-time validation
+        const rollCallPattern = /^(1[0-2]\/[1-9]|[7-9][A-Za-z])$/;
+        if (rollCallPattern.test(this.value)) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        } else if (this.value.length > 0) {
+            this.classList.remove('is-valid');
+            this.classList.add('is-invalid');
+        }
+    });
     
     // Form submission validation
     form.addEventListener('submit', function(e) {
         let isValid = true;
-        const requiredFields = ['first_name', 'last_name', 'roll_call', 'subjects'];
+        const requiredFields = ['first_name', 'last_name', 'role', 'roll_call'];
         
-        // Check required text fields
         requiredFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
             if (!field.value.trim()) {
@@ -431,18 +457,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Check role selection
-        const roleSelected = document.querySelector('input[name="role"]:checked');
-        if (!roleSelected) {
-            // Add visual feedback for role selection
-            document.querySelectorAll('label[for^="role_"]').forEach(label => {
-                label.classList.add('border-danger');
-            });
+        // Validate subjects
+        if (selectedSubjects.length === 0) {
+            subjectsHidden.classList.add('is-invalid');
             isValid = false;
-        } else {
-            document.querySelectorAll('label[for^="role_"]').forEach(label => {
-                label.classList.remove('border-danger');
-            });
         }
         
         if (!isValid) {

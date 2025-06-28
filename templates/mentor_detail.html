@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ mentor.get_display_name() }} - Mentor Details{% endblock %}
+{% block title %}{{ mentor.name }} - Mentor Details{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -49,32 +49,12 @@
                 <div class="row">
                     <div class="col-sm-6 mb-3">
                         <strong>Name:</strong><br>
-                        <span class="fs-5">{{ mentor.get_display_name() }}</span>
+                        <span class="fs-5">{{ mentor.name }}</span>
                     </div>
                     <div class="col-sm-6 mb-3">
-                        <strong>Staff ID:</strong><br>
+                        <strong>Roll Call:</strong><br>
                         <code class="fs-6">{{ mentor.roll_call }}</code>
                     </div>
-                    {% if mentor.role %}
-                    <div class="col-sm-6 mb-3">
-                        <strong>Role:</strong><br>
-                        <span class="badge bg-primary">{{ mentor.role }}</span>
-                    </div>
-                    {% endif %}
-                    {% if mentor.start_date %}
-                    <div class="col-sm-6 mb-3">
-                        <strong>Start Date:</strong><br>
-                        <span>{{ mentor.start_date.strftime('%d %B %Y') }}</span>
-                    </div>
-                    {% endif %}
-                    {% if mentor.term or mentor.week or mentor.day %}
-                    <div class="col-12 mb-3">
-                        <strong>Schedule:</strong><br>
-                        {% if mentor.term %}<span class="badge bg-info me-2">{{ mentor.term }}</span>{% endif %}
-                        {% if mentor.week %}<span class="badge bg-secondary me-2">{{ mentor.week }}</span>{% endif %}
-                        {% if mentor.day %}<span class="badge bg-success me-2">{{ mentor.day }}</span>{% endif %}
-                    </div>
-                    {% endif %}
                     <div class="col-12 mb-3">
                         <strong>Subjects:</strong><br>
                         {% for subject in mentor.subjects.split(',') %}

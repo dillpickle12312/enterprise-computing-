@@ -30,36 +30,100 @@ else:
 # Initialize database
 db = SQLAlchemy(app)
 
+# Australian curriculum subjects
+AUSTRALIAN_SUBJECTS = [
+    'English',
+    'Mathematics',
+    'Science',
+    'History',
+    'Geography',
+    'PDHPE (Personal Development, Health and Physical Education)',
+    'Technology Mandatory',
+    'Visual Arts',
+    'Music',
+    'Drama',
+    'Dance',
+    'Commerce',
+    'Design & Technology',
+    'Food Technology',
+    'Industrial Technology (Wood)',
+    'Industrial Technology (Metal)',
+    'Industrial Technology (Multimedia)',
+    'Digital Technologies / Information & Software Technology',
+    'Graphics Technology',
+    'Textiles Technology',
+    'Agricultural Technology',
+    'Photography and Digital Media',
+    'Visual Design',
+    'Japanese',
+    'French',
+    'Chinese',
+    'Italian',
+    'German',
+    'Spanish',
+    'Korean',
+    'Arabic',
+    'Chemistry',
+    'Physics',
+    'Biology',
+    'Earth and Environmental Science',
+    'Psychology',
+    'Economics',
+    'Business Studies',
+    'Legal Studies',
+    'Society and Culture',
+    'Community and Family Studies',
+    'Studies of Religion',
+    'Modern History',
+    'Ancient History',
+    'Extension History',
+    'Mathematics Advanced',
+    'Mathematics Standard',
+    'Mathematics Extension 1',
+    'Mathematics Extension 2',
+    'English Advanced',
+    'English Standard',
+    'English Extension 1',
+    'English Extension 2',
+    'English Studies'
+]
+
+# Utility functions
+def validate_roll_call(roll_call):
+    """Validate roll call format for Australian schools"""
+    import re
+    
+    if not roll_call or len(roll_call.strip()) < 2:
+        return False
+    
+    roll_call = roll_call.strip().upper()
+    
+    # Pattern 1: Year + Letter (7A, 8B, 9C, etc.) for years 7-9
+    pattern1 = r'^[789][A-Z]$'
+    
+    # Pattern 2: Year/Class Number (10/1, 11/2, 12/3, etc.) for years 10-12
+    pattern2 = r'^(1[0-2])/[1-9]$'
+    
+    # Pattern 3: Year + Subject code + Class (10MAT1, 11ENG2, 12SCI3, etc.)
+    pattern3 = r'^(1[0-2])[A-Z]{2,4}[1-9]$'
+    
+    return bool(re.match(pattern1, roll_call) or 
+                re.match(pattern2, roll_call) or 
+                re.match(pattern3, roll_call))
+
 # Database Models
 class Mentor(db.Model):
     """Mentor model representing tutors/teachers"""
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)  # Keep original field
-    first_name = db.Column(db.String(50), nullable=True)  # New optional field
-    last_name = db.Column(db.String(50), nullable=True)   # New optional field
-    roll_call = db.Column(db.String(20), nullable=False)  # Removed unique constraint
-    role = db.Column(db.String(50), nullable=True, default='Mentor')  # New optional field
-    subjects = db.Column(db.String(200), nullable=False)  # Comma-separated subjects
+    name = db.Column(db.String(100), nullable=False)
+    roll_call = db.Column(db.String(20), nullable=False)  # Multiple mentors can be in same class
+    subjects = db.Column(db.String(500), nullable=False)  # Increased length for more subjects
     max_mentees = db.Column(db.Integer, default=5)
-    start_date = db.Column(db.Date, nullable=True)        # New optional field
-    term = db.Column(db.String(20), nullable=True)        # New optional field
-    week = db.Column(db.String(20), nullable=True)        # New optional field
-    day = db.Column(db.String(20), nullable=True)         # New optional field
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Relationships
     mentees = db.relationship('Mentee', backref='assigned_mentor', lazy=True)
     sessions = db.relationship('Session', backref='mentor', lazy=True)
-    
-    def get_full_name(self):
-        """Return full name, with fallback to name field"""
-        if self.first_name and self.last_name:
-            return f"{self.first_name} {self.last_name}"
-        return self.name
-    
-    def get_display_name(self):
-        """Get the best available name for display"""
-        return self.get_full_name()
     
     def get_subjects_list(self):
         """Return subjects as a list"""
@@ -74,14 +138,14 @@ class Mentor(db.Model):
         return self.current_mentee_count() < self.max_mentees
     
     def __repr__(self):
-        return f'<Mentor {self.get_display_name()}>'
+        return f'<Mentor {self.name}>'
 
 class Mentee(db.Model):
     """Mentee model representing students"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    roll_call = db.Column(db.String(20), nullable=False)  # Removed unique constraint
-    subject = db.Column(db.String(50), nullable=False)
+    roll_call = db.Column(db.String(20), nullable=False)  # Multiple students can be in same class
+    subject = db.Column(db.String(100), nullable=False)  # Increased length for longer subject names
     lessons_remaining = db.Column(db.Integer, default=0)
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentor.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -299,54 +363,29 @@ def mentors():
 def add_mentor():
     """Add a new mentor"""
     if request.method == 'POST':
-        # Handle both new and old form formats
-        if 'first_name' in request.form and 'last_name' in request.form:
-            # New detailed format
-            first_name = request.form['first_name'].strip()
-            last_name = request.form['last_name'].strip()
-            name = f"{first_name} {last_name}"
-            role = request.form.get('role', 'Mentor').strip()
-            term = request.form.get('term', '').strip()
-            week = request.form.get('week', '').strip()
-            day = request.form.get('day', '').strip()
-            
-            # Parse start date if provided
-            start_date = None
-            if request.form.get('start_date'):
-                try:
-                    start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d').date()
-                except ValueError:
-                    flash('Invalid date format!', 'error')
-                    return render_template('add_mentor.html')
-        else:
-            # Old simple format (backward compatibility)
-            name = request.form['name'].strip()
-            first_name = None
-            last_name = None
-            role = 'Mentor'
-            start_date = None
-            term = ''
-            week = ''
-            day = ''
-        
-        roll_call = request.form['roll_call'].strip()
+        first_name = request.form['first_name'].strip()
+        last_name = request.form['last_name'].strip()
+        name = f"{first_name} {last_name}"  # Combine first and last name
+        role = request.form.get('role', '').strip()  # Optional field
+        roll_call = request.form['roll_call'].strip().upper()  # Convert to uppercase
         subjects = request.form['subjects'].strip()
         max_mentees = int(request.form['max_mentees'])
         
-        # Roll call classes can be shared by multiple students, so no unique check needed
+        # Validate required fields
+        if not first_name or not last_name or not roll_call or not subjects:
+            flash('Please fill in all required fields.', 'error')
+            return render_template('add_mentor.html')
+        
+        # Validate roll call format
+        if not validate_roll_call(roll_call):
+            flash('Invalid roll call format. Please use format like "12ENG1" (Year + Subject + Class).', 'error')
+            return render_template('add_mentor.html')
         
         mentor = Mentor(
             name=name,
-            first_name=first_name,
-            last_name=last_name,
             roll_call=roll_call,
-            role=role,
             subjects=subjects,
-            max_mentees=max_mentees,
-            start_date=start_date,
-            term=term,
-            week=week,
-            day=day
+            max_mentees=max_mentees
         )
         
         try:
@@ -406,14 +445,30 @@ def add_mentee():
     """Add a new mentee"""
     if request.method == 'POST':
         name = request.form['name'].strip()
-        roll_call = request.form['roll_call'].strip()
-        subject = request.form['subject']
+        roll_call = request.form['roll_call'].strip().upper()  # Convert to uppercase
+        subject = request.form['subject'].strip()
         
-        # Roll call classes can be shared by multiple students, so no unique check needed
+        # Validate required fields
+        if not name or not roll_call or not subject:
+            flash('Please fill in all required fields.', 'error')
+            return render_template('add_mentee.html')
         
-        # Set lessons based on subject
-        lesson_counts = {'Math': 7, 'English': 7, 'Science': 3, 'Chess': 6}
-        lessons_remaining = lesson_counts.get(subject, 5)
+        # Validate roll call format
+        if not validate_roll_call(roll_call):
+            flash('Invalid roll call format. Please use format like "10MAT2" (Year + Subject + Class).', 'error')
+            return render_template('add_mentee.html')
+        
+        # Set lessons based on subject (you can update this mapping as needed)
+        lesson_counts = {
+            'Mathematics': 7, 'English': 7, 'Science': 5, 'History': 4, 'Geography': 4,
+            'PDHPE (Personal Development, Health and Physical Education)': 6,
+            'Technology Mandatory': 5, 'Visual Arts': 4, 'Music': 4, 'Drama': 4,
+            'Dance': 4, 'Commerce': 5, 'Design & Technology': 6, 'Food Technology': 6,
+            'Industrial Technology': 6, 'Digital Technologies / Information & Software Technology': 6,
+            'Graphics Technology': 5, 'Textiles Technology': 5, 'Agricultural Technology': 5,
+            'Photography and Digital Media': 4, 'Visual Design': 4
+        }
+        lessons_remaining = lesson_counts.get(subject, 5)  # Default to 5 if subject not found
         
         mentee = Mentee(
             name=name,
@@ -1122,37 +1177,260 @@ def unassign_mentor(id):
     
     return redirect(url_for('mentee_detail', id=id))
 
-# Template filters
-@app.template_filter('datetime')
-def datetime_filter(value, format='%Y-%m-%d %H:%M'):
-    """Format datetime for templates"""
-    if isinstance(value, str):
-        return value
-    return value.strftime(format) if value else ''
+# Statistics and analytics route
+@app.route('/statistics')
+def statistics():
+    """Advanced statistics and analytics page"""
+    from collections import Counter, defaultdict
+    from datetime import date, timedelta
+    import json
+    
+    # Basic counts
+    total_mentors = Mentor.query.count()
+    total_mentees = Mentee.query.count() 
+    total_sessions = Session.query.count()
+    assigned_mentees = Mentee.query.filter(Mentee.mentor_id.isnot(None)).count()
+    active_mentors = len([m for m in Mentor.query.all() if len(m.sessions) > 0])
+    
+    # Session status breakdown
+    completed_sessions = Session.query.filter_by(status='completed').count()
+    success_rate = round((completed_sessions / total_sessions * 100) if total_sessions > 0 else 0, 1)
+    
+    session_status_breakdown = [
+        ('completed', Session.query.filter_by(status='completed').count()),
+        ('scheduled', Session.query.filter_by(status='scheduled').count()),
+        ('canceled', Session.query.filter_by(status='canceled').count()),
+        ('missed', Session.query.filter_by(status='missed').count()),
+        ('rescheduled', Session.query.filter_by(status='rescheduled').count())
+    ]
+    
+    # Most popular subjects (from mentees)
+    all_mentees = Mentee.query.all()
+    subject_counts = Counter([mentee.subject for mentee in all_mentees])
+    popular_subjects = subject_counts.most_common(10)
+    
+    # Year level distribution
+    year_counts = defaultdict(int)
+    for mentee in all_mentees:
+        roll_call = mentee.roll_call
+        if roll_call:
+            # Extract year from roll call (7A -> 7, 10/1 -> 10)
+            if '/' in roll_call:
+                year = roll_call.split('/')[0]
+            else:
+                year = roll_call[0] if roll_call[0].isdigit() else roll_call[:2] if roll_call[:2].isdigit() else 'Unknown'
+            year_counts[year] += 1
+    
+    year_distribution = sorted([(year, count) for year, count in year_counts.items()])
+    max_year_count = max(year_counts.values()) if year_counts else 1
+    
+    # Top performing mentors
+    all_mentors = Mentor.query.all()
+    mentor_performance = []
+    for mentor in all_mentors:
+        sessions = mentor.sessions
+        completed = len([s for s in sessions if s.status == 'completed'])
+        total_mentor_sessions = len(sessions)
+        success_rate_mentor = (completed / total_mentor_sessions * 100) if total_mentor_sessions > 0 else 0
+        
+        if total_mentor_sessions > 0:
+            mentor_performance.append({
+                'name': mentor.name,
+                'subjects': mentor.subjects,
+                'session_count': total_mentor_sessions,
+                'success_rate': round(success_rate_mentor, 1)
+            })
+    
+    top_mentors = sorted(mentor_performance, key=lambda x: (x['session_count'], x['success_rate']), reverse=True)[:5]
+    
+    # Monthly session trends
+    all_sessions = Session.query.all()
+    monthly_counts = defaultdict(int)
+    for session in all_sessions:
+        if session.status == 'completed':
+            month_key = session.date.strftime('%Y-%m')
+            monthly_counts[month_key] += 1
+    
+    # Get last 6 months
+    current_date = date.today()
+    monthly_data = []
+    monthly_labels = []
+    for i in range(5, -1, -1):
+        month_date = current_date.replace(day=1) - timedelta(days=32*i)
+        month_key = month_date.strftime('%Y-%m')
+        month_label = month_date.strftime('%b %Y')
+        monthly_labels.append(month_label)
+        monthly_data.append(monthly_counts.get(month_key, 0))
+    
+    current_month_sessions = monthly_data[-1] if monthly_data else 0
+    avg_monthly_sessions = round(sum(monthly_data) / len(monthly_data)) if monthly_data else 0
+    peak_month = monthly_labels[monthly_data.index(max(monthly_data))] if monthly_data else 'N/A'
+    growth_rate = round(((monthly_data[-1] - monthly_data[-2]) / monthly_data[-2] * 100) if len(monthly_data) >= 2 and monthly_data[-2] > 0 else 0, 1)
+    
+    # Subject coverage analysis
+    mentor_subjects = defaultdict(int)
+    for mentor in all_mentors:
+        for subject in mentor.get_subjects_list():
+            mentor_subjects[subject.strip()] += 1
+    
+    mentee_subjects = Counter([mentee.subject for mentee in all_mentees])
+    
+    subject_coverage = []
+    all_subjects = set(list(mentor_subjects.keys()) + list(mentee_subjects.keys()))
+    for subject in sorted(all_subjects):
+        mentee_count = mentee_subjects.get(subject, 0)
+        mentor_count = mentor_subjects.get(subject, 0)
+        ratio = mentor_count / mentee_count if mentee_count > 0 else float('inf') if mentor_count > 0 else 0
+        
+        subject_coverage.append({
+            'subject': subject,
+            'mentee_count': mentee_count,
+            'mentor_count': mentor_count,
+            'ratio': ratio
+        })
+    
+    # Recent activities (last 10 activities)
+    recent_activities = []
+    recent_sessions = Session.query.order_by(Session.created_at.desc()).limit(5).all()
+    for session in recent_sessions:
+        activity = {
+            'title': f'Session {session.status.title()}',
+            'description': f'{session.mentor.name} and {session.mentee.name} - {session.mentee.subject}',
+            'time': session.created_at.strftime('%b %d, %Y at %I:%M %p'),
+            'color': 'success' if session.status == 'completed' else 'primary' if session.status == 'scheduled' else 'warning',
+            'icon': 'check' if session.status == 'completed' else 'calendar' if session.status == 'scheduled' else 'clock'
+        }
+        recent_activities.append(activity)
+    
+    recent_mentees = Mentee.query.order_by(Mentee.created_at.desc()).limit(3).all()
+    for mentee in recent_mentees:
+        activity = {
+            'title': 'New Mentee Added',
+            'description': f'{mentee.name} needs help with {mentee.subject}',
+            'time': mentee.created_at.strftime('%b %d, %Y at %I:%M %p'),
+            'color': 'info',
+            'icon': 'user-plus'
+        }
+        recent_activities.append(activity)
+    
+    recent_mentors = Mentor.query.order_by(Mentor.created_at.desc()).limit(2).all()
+    for mentor in recent_mentors:
+        activity = {
+            'title': 'New Mentor Added',
+            'description': f'{mentor.name} can teach {mentor.subjects.split(",")[0]}...',
+            'time': mentor.created_at.strftime('%b %d, %Y at %I:%M %p'),
+            'color': 'primary',
+            'icon': 'user-tie'
+        }
+        recent_activities.append(activity)
+    
+    # Sort activities by time and limit to 10
+    recent_activities = sorted(recent_activities, key=lambda x: x['time'], reverse=True)[:10]
+    
+    # Prepare chart data as JSON
+    popular_subjects_labels = json.dumps([subject for subject, count in popular_subjects])
+    popular_subjects_data = json.dumps([count for subject, count in popular_subjects])
+    
+    year_level_labels = json.dumps([f'Year {year}' for year, count in year_distribution])
+    year_level_data = json.dumps([count for year, count in year_distribution])
+    
+    session_status_labels = json.dumps([status.title() for status, count in session_status_breakdown])
+    session_status_data = json.dumps([count for status, count in session_status_breakdown])
+    
+    monthly_labels_json = json.dumps(monthly_labels)
+    monthly_data_json = json.dumps(monthly_data)
+    
+    return render_template('statistics.html',
+                         # Basic stats
+                         total_mentors=total_mentors,
+                         total_mentees=total_mentees,
+                         total_sessions=total_sessions,
+                         assigned_mentees=assigned_mentees,
+                         active_mentors=active_mentors,
+                         completed_sessions=completed_sessions,
+                         success_rate=success_rate,
+                         # Chart data
+                         popular_subjects=popular_subjects,
+                         popular_subjects_labels=popular_subjects_labels,
+                         popular_subjects_data=popular_subjects_data,
+                         year_distribution=year_distribution,
+                         year_level_labels=year_level_labels,
+                         year_level_data=year_level_data,
+                         max_year_count=max_year_count,
+                         session_status_breakdown=session_status_breakdown,
+                         session_status_labels=session_status_labels,
+                         session_status_data=session_status_data,
+                         monthly_labels=monthly_labels_json,
+                         monthly_data=monthly_data_json,
+                         current_month_sessions=current_month_sessions,
+                         avg_monthly_sessions=avg_monthly_sessions,
+                         peak_month=peak_month,
+                         growth_rate=growth_rate,
+                         # Performance data
+                         top_mentors=top_mentors,
+                         subject_coverage=subject_coverage,
+                         recent_activities=recent_activities)
 
-@app.template_filter('date')
-def date_filter(value, format='%Y-%m-%d'):
-    """Format date for templates"""
-    if isinstance(value, str):
-        return value
-    return value.strftime(format) if value else ''
+# Available subjects for the Australian curriculum
+def get_all_subjects():
+    """Return all available subjects for Australian schools"""
+    return AUSTRALIAN_SUBJECTS
 
-@app.template_filter('time')
-def time_filter(value, format='%H:%M'):
-    """Format time for templates"""
-    if isinstance(value, str):
-        return value
-    return value.strftime(format) if value else ''
+# API Routes
+@app.route('/api/subjects')
+def api_subjects():
+    """Return all available subjects as JSON"""
+    return jsonify(AUSTRALIAN_SUBJECTS)
 
-# Template context processors and filters
-@app.template_global()
-def moment():
-    """Get current moment for template comparisons"""
-    return datetime.now()
+@app.route('/search_subjects')
+def search_subjects():
+    """Search subjects by query parameter"""
+    query = request.args.get('q', '').lower()
+    if not query:
+        return jsonify(AUSTRALIAN_SUBJECTS)
+    
+    # Filter subjects that contain the query
+    filtered_subjects = [subject for subject in AUSTRALIAN_SUBJECTS 
+                        if query in subject.lower()]
+    return jsonify(filtered_subjects)
+
+@app.route('/api/statistics')
+def api_statistics():
+    """Return statistics data as JSON"""
+    try:
+        # Get basic counts
+        total_mentors = Mentor.query.count()
+        total_mentees = Mentee.query.count()
+        total_sessions = Session.query.count()
+        assigned_mentees = Mentee.query.filter(Mentee.mentor_id.isnot(None)).count()
+        
+        # Get subject statistics
+        from collections import Counter
+        mentee_subjects = Counter([m.subject for m in Mentee.query.all()])
+        mentor_subjects = Counter()
+        for mentor in Mentor.query.all():
+            for subject in mentor.get_subjects_list():
+                mentor_subjects[subject.strip()] += 1
+        
+        return jsonify({
+            'totals': {
+                'mentors': total_mentors,
+                'mentees': total_mentees,
+                'sessions': total_sessions,
+                'assigned_mentees': assigned_mentees,
+                'unassigned_mentees': total_mentees - assigned_mentees
+            },
+            'subjects': {
+                'mentee_subjects': dict(mentee_subjects.most_common(10)),
+                'mentor_subjects': dict(mentor_subjects.most_common(10))
+            }
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # Error handlers
 @app.errorhandler(404)
-def not_found(error):
+def not_found_error(error):
     """Handle 404 errors"""
     return render_template('base.html'), 404
 
@@ -1162,290 +1440,13 @@ def internal_error(error):
     db.session.rollback()
     return render_template('base.html'), 500
 
-# Enhanced API endpoints for outstanding functionality
-@app.route('/api/matching-suggestions')
-def get_matching_suggestions():
-    """Get AI-powered matching suggestions for coordinators"""
-    unmatched_mentees = Mentee.query.filter_by(mentor_id=None).all()
-    available_mentors = Mentor.query.all()
-    
-    suggestions = []
-    for mentee in unmatched_mentees[:5]:  # Top 5 suggestions
-        best_matches = []
-        for mentor in available_mentors:
-            if mentor.can_take_more_mentees():
-                score = calculate_enhanced_match_score(mentor, mentee)
-                if score > 60:  # Only suggest good matches
-                    best_matches.append({
-                        'mentor': {
-                            'id': mentor.id,
-                            'name': mentor.name,
-                            'expertise': mentor.subjects.split(',') if mentor.subjects else []
-                        },
-                        'mentee': {
-                            'id': mentee.id,
-                            'name': mentee.name,
-                            'interests': [mentee.subject]
-                        },
-                        'score': round(score),
-                        'reasons': generate_match_reasons(mentor, mentee, score),
-                        'id': f"{mentor.id}-{mentee.id}"
-                    })
-        
-        if best_matches:
-            suggestions.extend(sorted(best_matches, key=lambda x: x['score'], reverse=True)[:1])
-    
-    return jsonify(suggestions)
-
-def calculate_enhanced_match_score(mentor, mentee):
-    """Enhanced matching algorithm with more sophisticated scoring"""
-    score = 0
-    
-    # Subject alignment (40 points)
-    mentor_subjects = set(mentor.subjects.lower().split(',') if mentor.subjects else [])
-    mentee_subject = set([mentee.subject.lower()])
-    subject_overlap = len(mentor_subjects.intersection(mentee_subject))
-    if subject_overlap > 0:
-        score += 40
-    
-    # Experience level matching (30 points) - use mentor count as proxy
-    current_mentees = mentor.current_mentee_count()
-    if current_mentees >= 3:
-        score += 30  # Experienced mentor
-    elif current_mentees >= 1:
-        score += 20  # Some experience
-    else:
-        score += 10  # New mentor
-    
-    # Availability compatibility (20 points)
-    if mentor.can_take_more_mentees():
-        score += 20
-    
-    # Workload balance (10 points)
-    current_load = mentor.current_mentee_count()
-    max_load = mentor.max_mentees
-    load_ratio = current_load / max_load if max_load > 0 else 1
-    score += max(0, 10 - (load_ratio * 10))
-    
-    return min(100, score)
-
-def generate_match_reasons(mentor, mentee, score):
-    """Generate human-readable reasons for the match suggestion"""
-    reasons = []
-    
-    mentor_subjects = set(mentor.subjects.lower().split(',') if mentor.subjects else [])
-    mentee_subject = set([mentee.subject.lower()])
-    overlap = mentor_subjects.intersection(mentee_subject)
-    
-    if overlap:
-        reasons.append(f"Subject match: {mentee.subject}")
-    
-    current_load = mentor.current_mentee_count()
-    if current_load < 3:
-        reasons.append("Mentor has availability for new mentees")
-    
-    if score > 80:
-        reasons.append("Exceptional compatibility across all criteria")
-    elif score > 70:
-        reasons.append("Strong overall compatibility")
-    
-    if not reasons:
-        reasons.append("Good general compatibility")
-    
-    return reasons
-
-@app.route('/api/inactive-mentees')
-def get_inactive_mentees():
-    """Get mentees who haven't had sessions recently"""
-    from datetime import datetime, timedelta
-    
-    cutoff_date = datetime.now() - timedelta(days=14)
-    
-    # Get mentees with no recent sessions
-    inactive_mentees = []
-    mentees = Mentee.query.all()
-    
-    for mentee in mentees:
-        recent_sessions = Session.query.filter(
-            Session.mentee_id == mentee.id,
-            Session.date >= cutoff_date.date(),
-            Session.status == 'completed'
-        ).count()
-        
-        if recent_sessions == 0:
-            last_session = Session.query.filter_by(mentee_id=mentee.id).order_by(Session.date.desc()).first()
-            inactive_mentees.append({
-                'id': mentee.id,
-                'name': mentee.name,
-                'lastSession': last_session.date.strftime('%Y-%m-%d') if last_session else 'No sessions yet'
-            })
-    
-    return jsonify(inactive_mentees)
-
-@app.route('/api/optimal-slots/<int:mentor_id>/<int:mentee_id>')
-def get_optimal_time_slots(mentor_id, mentee_id):
-    """Find optimal time slots for mentor-mentee sessions"""
-    from datetime import datetime, timedelta
-    import random
-    
-    # Generate smart time slot suggestions
-    # In a real implementation, this would check actual availability
-    slots = []
-    base_date = datetime.now() + timedelta(days=1)
-    
-    for i in range(5):  # Next 5 days
-        slot_date = base_date + timedelta(days=i)
-        if slot_date.weekday() < 5:  # Weekdays only
-            for hour in [10, 14, 16]:  # Good meeting times
-                compatibility_score = random.randint(75, 95)  # Simulate compatibility calculation
-                slots.append({
-                    'day': slot_date.strftime('%A'),
-                    'date': slot_date.strftime('%Y-%m-%d'),
-                    'time': f"{hour}:00",
-                    'datetime': f"{slot_date.strftime('%Y-%m-%d')} {hour}:00",
-                    'score': compatibility_score
-                })
-    
-    # Sort by compatibility score
-    slots.sort(key=lambda x: x['score'], reverse=True)
-    
-    return jsonify(slots[:3])  # Return top 3 suggestions
-
-@app.route('/api/dashboard-analytics')
-def get_dashboard_analytics():
-    """Get comprehensive analytics for coordinator dashboard"""
-    total_mentors = Mentor.query.count()
-    total_mentees = Mentee.query.count()
-    active_assignments = Mentee.query.filter(Mentee.mentor_id.isnot(None)).count()
-    total_sessions = Session.query.count()
-    
-    # Calculate average rating (using a default since rating field doesn't exist)
-    completed_sessions = Session.query.filter_by(status='completed').all()
-    avg_rating = 4.2  # Placeholder since rating field doesn't exist in current model
-    
-    # Programme effectiveness (percentage of successful matches)
-    successful_matches = Mentee.query.filter(Mentee.mentor_id.isnot(None)).count()
-    total_matches = Mentee.query.count()
-    effectiveness = (successful_matches / total_matches * 100) if total_matches > 0 else 0
-    
-    return jsonify({
-        'totalMentors': total_mentors,
-        'totalMentees': total_mentees,
-        'activeAssignments': active_assignments,
-        'completedSessions': total_sessions,
-        'averageRating': round(avg_rating, 1),
-        'programmeEffectiveness': round(effectiveness, 1),
-        'trends': {
-            'mentors': '+5%',
-            'mentees': '+12%',
-            'sessions': '+23%',
-            'satisfaction': '+8%'
-        }
-    })
-
-@app.route('/api/bulk-assign', methods=['POST'])
-def api_bulk_assign_mentors():
-    """API endpoint: Bulk assign mentors to multiple mentees"""
-    data = request.get_json()
-    mentee_ids = data.get('mentee_ids', [])
-    assignment_method = data.get('method', 'auto')  # 'auto' or 'manual'
-    
-    assignments_created = 0
-    for mentee_id in mentee_ids:
-        mentee = Mentee.query.get(mentee_id)
-        if mentee and not mentee.mentor_id:
-            if assignment_method == 'auto':
-                # Find best available mentor
-                best_mentor = find_best_available_mentor(mentee)
-                if best_mentor:
-                    mentee.mentor_id = best_mentor.id
-                    assignments_created += 1
-    
-    try:
-        db.session.commit()
-        return jsonify({
-            'success': True,
-            'message': f'Successfully created {assignments_created} assignments'
-        })
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'success': False, 'error': str(e)}), 500
-
-def find_best_available_mentor(mentee):
-    """Find the best available mentor for a mentee"""
-    available_mentors = Mentor.query.all()
-    best_mentor = None
-    best_score = 0
-    
-    for mentor in available_mentors:
-        if mentor.can_take_more_mentees():
-            score = calculate_enhanced_match_score(mentor, mentee)
-            if score > best_score:
-                best_score = score
-                best_mentor = mentor
-    
-    return best_mentor
-
 # Initialize database
 def init_db():
-    """Initialize database tables and run migrations"""
+    """Initialize database tables"""
     with app.app_context():
         try:
-            # Create all tables
+            # Only create tables if they don't exist (don't drop existing data)
             db.create_all()
-            
-            # Run migration for new columns if needed
-            import sqlite3
-            database_url = app.config['SQLALCHEMY_DATABASE_URI']
-            if database_url.startswith('sqlite:///'):
-                db_path = database_url.replace('sqlite:///', '')
-                if os.path.exists(db_path):
-                    try:
-                        conn = sqlite3.connect(db_path)
-                        cursor = conn.cursor()
-                        
-                        # Check if new columns exist
-                        cursor.execute("PRAGMA table_info(mentor)")
-                        columns = [row[1] for row in cursor.fetchall()]
-                        
-                        new_columns = [
-                            ('first_name', 'VARCHAR(50)'),
-                            ('last_name', 'VARCHAR(50)'),
-                            ('role', 'VARCHAR(50) DEFAULT "Mentor"'),
-                            ('start_date', 'DATE'),
-                            ('term', 'VARCHAR(20)'),
-                            ('week', 'VARCHAR(20)'),
-                            ('day', 'VARCHAR(20)')
-                        ]
-                        
-                        # Add missing columns
-                        for column_name, column_type in new_columns:
-                            if column_name not in columns:
-                                cursor.execute(f"ALTER TABLE mentor ADD COLUMN {column_name} {column_type}")
-                        
-                        # Update existing records without first_name/last_name
-                        cursor.execute("SELECT id, name FROM mentor WHERE first_name IS NULL AND name IS NOT NULL")
-                        mentors = cursor.fetchall()
-                        
-                        for mentor_id, full_name in mentors:
-                            name_parts = full_name.split(' ', 1)
-                            first_name = name_parts[0]
-                            last_name = name_parts[1] if len(name_parts) > 1 else ''
-                            
-                            cursor.execute("""
-                                UPDATE mentor 
-                                SET first_name = ?, last_name = ?, role = COALESCE(role, 'Mentor')
-                                WHERE id = ?
-                            """, (first_name, last_name, mentor_id))
-                        
-                        conn.commit()
-                        conn.close()
-                        
-                    except Exception as e:
-                        if 'conn' in locals():
-                            conn.close()
-                        print(f"Migration warning: {e}")
-            
         except Exception as e:
             raise
 

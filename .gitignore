@@ -6,6 +6,7 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 ENV/
 env.bak/
 .env
@@ -14,10 +15,25 @@ env.bak/
 instance/
 .webassets-cache
 
-# Database
-*.db
-*.sqlite
-*.sqlite3
+# Database backups and development files
+*.db.backup_*
+*.sqlite.backup
+migrate_*.py
+test_*.py
+*_test.py
+comprehensive_test.py
+manual_feature_test.py
+final_test_suite.py
+
+# Development and testing files
+TESTING_CHECKLIST.md
+USER_GUIDE_QUICK.md
+add_sample_data.py
+get-pip.py
+setup.sh
+run_simple.py
+start.py
+run.sh
 
 # IDE
 .vscode/
