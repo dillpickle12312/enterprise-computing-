@@ -34,15 +34,26 @@ db = SQLAlchemy(app)
 class Mentor(db.Model):
     """Mentor model representing tutors/teachers"""
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(100), nullable=False)  # Keep for backward compatibility
     roll_call = db.Column(db.String(20), unique=True, nullable=False)
+    role = db.Column(db.String(50), nullable=False, default='Mentor')
     subjects = db.Column(db.String(200), nullable=False)  # Comma-separated subjects
     max_mentees = db.Column(db.Integer, default=5)
+    start_date = db.Column(db.Date, nullable=True)
+    term = db.Column(db.String(20), nullable=True)  # e.g., "Term 1", "Semester 1"
+    week = db.Column(db.String(20), nullable=True)  # e.g., "Week 1-5"
+    day = db.Column(db.String(20), nullable=True)   # e.g., "Monday", "Tuesday"
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Relationships
     mentees = db.relationship('Mentee', backref='assigned_mentor', lazy=True)
     sessions = db.relationship('Session', backref='mentor', lazy=True)
+    
+    def get_full_name(self):
+        """Return full name from first and last name"""
+        return f"{self.first_name} {self.last_name}"
     
     def get_subjects_list(self):
         """Return subjects as a list"""
@@ -57,7 +68,7 @@ class Mentor(db.Model):
         return self.current_mentee_count() < self.max_mentees
     
     def __repr__(self):
-        return f'<Mentor {self.name}>'
+        return f'<Mentor {self.get_full_name()}>'
 
 class Mentee(db.Model):
     """Mentee model representing students"""
@@ -282,10 +293,25 @@ def mentors():
 def add_mentor():
     """Add a new mentor"""
     if request.method == 'POST':
-        name = request.form['name'].strip()
+        first_name = request.form['first_name'].strip()
+        last_name = request.form['last_name'].strip()
+        name = f"{first_name} {last_name}"  # Backward compatibility
         roll_call = request.form['roll_call'].strip()
+        role = request.form['role'].strip()
         subjects = request.form['subjects'].strip()
         max_mentees = int(request.form['max_mentees'])
+        term = request.form.get('term', '').strip()
+        week = request.form.get('week', '').strip()
+        day = request.form.get('day', '').strip()
+        
+        # Parse start date if provided
+        start_date = None
+        if request.form.get('start_date'):
+            try:
+                start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d').date()
+            except ValueError:
+                flash('Invalid date format!', 'error')
+                return render_template('add_mentor.html')
         
         # Check if roll_call already exists
         if Mentor.query.filter_by(roll_call=roll_call).first():
@@ -293,10 +319,17 @@ def add_mentor():
             return render_template('add_mentor.html')
         
         mentor = Mentor(
+            first_name=first_name,
+            last_name=last_name,
             name=name,
             roll_call=roll_call,
+            role=role,
             subjects=subjects,
-            max_mentees=max_mentees
+            max_mentees=max_mentees,
+            start_date=start_date,
+            term=term,
+            week=week,
+            day=day
         )
         
         try:

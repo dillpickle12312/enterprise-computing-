@@ -93,17 +93,41 @@
 <div class="row">    {% for item in mentor_data %}
         {% set mentor = item.mentor %}
     <div class="col-md-6 col-lg-4 mb-4 mentor-card" 
-         data-name="{{ mentor.name.lower() }}"
+         data-name="{{ mentor.get_full_name().lower() if mentor.first_name else mentor.name.lower() }}"
          data-roll-call="{{ mentor.roll_call.lower() }}"
          data-subjects="{{ mentor.subjects.lower() }}"
          data-status="{{ item.status }}"
+         data-role="{{ mentor.role if mentor.role else 'Mentor' }}"
          data-capacity-status="{% if mentor.mentees|length >= mentor.max_mentees %}full{% else %}available{% endif %}">
         <div class="card h-100">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">{{ mentor.name }}</h5>
+                <div>
+                    <h5 class="card-title mb-0">
+                        {% if mentor.first_name and mentor.last_name %}
+                            {{ mentor.first_name }} {{ mentor.last_name }}
+                        {% else %}
+                            {{ mentor.name }}
+                        {% endif %}
+                    </h5>
+                    {% if mentor.role %}
+                        <small class="text-muted">{{ mentor.role }}</small>
+                    {% endif %}
+                </div>
                 <span class="badge bg-primary">{{ mentor.roll_call }}</span>
             </div>
             <div class="card-body">
+                <!-- Schedule Information -->
+                {% if mentor.term or mentor.week or mentor.day %}
+                <div class="mb-3">
+                    <small class="text-muted">Schedule:</small>
+                    <div class="small">
+                        {% if mentor.term %}<span class="badge bg-info me-1">{{ mentor.term }}</span>{% endif %}
+                        {% if mentor.week %}<span class="badge bg-secondary me-1">{{ mentor.week }}</span>{% endif %}
+                        {% if mentor.day %}<span class="badge bg-success me-1">{{ mentor.day }}</span>{% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
                 <div class="mb-3">
                     <small class="text-muted">Subjects:</small>
                     <div>
