@@ -24,11 +24,14 @@ def validate_roll_call(roll_call):
     if not roll_call or not isinstance(roll_call, str):
         return False
     
+    # Convert to uppercase and strip whitespace
+    roll_call = roll_call.strip().upper()
+    
     # Pattern 1: Years 10-12 with class numbers (10/1, 11/2, 12/7)
     pattern1 = r'^1[0-2]\/[1-9]$'
     
     # Pattern 2: Years 7-9 with single letter (7A, 8B, 9C)
-    pattern2 = r'^[7-9][A-Za-z]$'
+    pattern2 = r'^[7-9][A-Z]$'
     
     # Pattern 3: Subject codes (12ENG1, 11MAT2, 10SCI3)
     pattern3 = r'^1[0-2][A-Z]{2,4}[1-9]$'

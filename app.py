@@ -95,17 +95,17 @@ def validate_roll_call(roll_call):
     
     if not roll_call or len(roll_call.strip()) < 2:
         return False
-    
+
     roll_call = roll_call.strip().upper()
     
-    # Pattern 1: Year + Letter (7A, 8B, 9C, etc.) for years 7-9
-    pattern1 = r'^[789][A-Z]$'
+    # Pattern 1: Years 10-12 with class numbers (10/1, 11/2, 12/7)
+    pattern1 = r'^1[0-2]\/[1-9]$'
     
-    # Pattern 2: Year/Class Number (10/1, 11/2, 12/3, etc.) for years 10-12
-    pattern2 = r'^(1[0-2])/[1-9]$'
+    # Pattern 2: Years 7-9 with single letter (7A, 8B, 9C)
+    pattern2 = r'^[7-9][A-Z]$'
     
-    # Pattern 3: Year + Subject code + Class (10MAT1, 11ENG2, 12SCI3, etc.)
-    pattern3 = r'^(1[0-2])[A-Z]{2,4}[1-9]$'
+    # Pattern 3: Subject codes (12ENG1, 11MAT2, 10SCI3)
+    pattern3 = r'^1[0-2][A-Z]{2,4}[1-9]$'
     
     return bool(re.match(pattern1, roll_call) or 
                 re.match(pattern2, roll_call) or 
