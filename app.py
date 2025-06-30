@@ -444,18 +444,33 @@ def mentees():
 def add_mentee():
     """Add a new mentee"""
     if request.method == 'POST':
-        name = request.form['name'].strip()
-        roll_call = request.form['roll_call'].strip().upper()  # Convert to uppercase
-        subject = request.form['subject'].strip()
+        name = request.form.get('name', '').strip()
+        roll_call = request.form.get('roll_call', '').strip().upper()  # Convert to uppercase
+        subject = request.form.get('subject', '').strip()
         
-        # Validate required fields
-        if not name or not roll_call or not subject:
-            flash('Please fill in all required fields.', 'error')
+        # Validate required fields with specific error messages
+        errors = []
+        if not name:
+            errors.append('Student name is required.')
+        if not roll_call:
+            errors.append('Roll call class is required.')
+        if not subject:
+            errors.append('Subject needed is required.')
+        
+        if errors:
+            for error in errors:
+                flash(error, 'error')
             return render_template('add_mentee.html')
         
         # Validate roll call format
         if not validate_roll_call(roll_call):
-            flash('Invalid roll call format. Please use format like "12/7", "11/2" for Years 10-12 or "9A", "8B" for Years 7-9.', 'error')
+            flash('Invalid roll call format. Please use format like "12/7", "11/2" for Years 10-12 or "9A", "8B" for Years 7-9, or "12ENG1" for subject codes.', 'error')
+            return render_template('add_mentee.html')
+        
+        # Check if mentee with same roll call already exists
+        existing_mentee = Mentee.query.filter_by(roll_call=roll_call).first()
+        if existing_mentee:
+            flash(f'A mentee with roll call "{roll_call}" already exists: {existing_mentee.name}', 'error')
             return render_template('add_mentee.html')
         
         # Set lessons based on subject (you can update this mapping as needed)
@@ -485,6 +500,7 @@ def add_mentee():
         except Exception as e:
             db.session.rollback()
             flash(f'Error adding mentee: {str(e)}', 'error')
+            return render_template('add_mentee.html')
     
     return render_template('add_mentee.html')
 

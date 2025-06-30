@@ -276,6 +276,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let selectedSubject = '';
 
+    // Populate the hidden select field with all subjects
+    availableSubjects.forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject;
+        option.textContent = subject;
+        subjectSelect.appendChild(option);
+    });
+
     // Subject search functionality
     function updateSubjectDisplay() {
         if (selectedSubject) {
@@ -299,6 +307,16 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSubjectDisplay();
         subjectSearch.value = '';
         subjectDropdown.style.display = 'none';
+        
+        // Make sure the hidden select field is updated
+        subjectSelect.value = subject;
+        
+        // Remove validation errors when subject is selected
+        subjectSelect.classList.remove('is-invalid');
+        subjectSelect.classList.add('is-valid');
+        
+        // Update lesson information
+        showLessonInfo(subject);
     }
     
     // Make selectSubject globally available
@@ -369,7 +387,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Validate roll call
-        if (!rollCallInput.value.trim()) {
+        const rollCallRegex = /^(1[0-2]\/[1-9]|[7-9][A-Za-z]|1[0-2][A-Z]{2,4}[1-9])$/;
+        if (!rollCallInput.value.trim() || !rollCallRegex.test(rollCallInput.value.trim().toUpperCase())) {
             rollCallInput.classList.add('is-invalid');
             isValid = false;
         } else {
@@ -377,9 +396,11 @@ document.addEventListener('DOMContentLoaded', function() {
             rollCallInput.classList.add('is-valid');
         }
         
-        // Validate subject
-        if (!selectedSubject) {
+        // Validate subject - check if subject is selected
+        if (!selectedSubject || !subjectSelect.value) {
             subjectSelect.classList.add('is-invalid');
+            // Show error message for subject
+            alert('Please select a subject from the dropdown.');
             isValid = false;
         } else {
             subjectSelect.classList.remove('is-invalid');
@@ -389,7 +410,25 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isValid) {
             e.preventDefault();
             e.stopPropagation();
+            
+            // Debug information
+            console.log('Form validation failed:');
+            console.log('Name:', nameInput.value);
+            console.log('Roll Call:', rollCallInput.value);
+            console.log('Selected Subject:', selectedSubject);
+            console.log('Subject Select Value:', subjectSelect.value);
+            
+            alert('Please fill in all required fields correctly.');
         } else {
+            // Ensure the hidden select has the correct value before submission
+            subjectSelect.value = selectedSubject;
+            
+            // Debug information for successful submission
+            console.log('Form submission:');
+            console.log('Name:', nameInput.value);
+            console.log('Roll Call:', rollCallInput.value);
+            console.log('Subject:', subjectSelect.value);
+            
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Adding Mentee...';
             submitBtn.disabled = true;
             
