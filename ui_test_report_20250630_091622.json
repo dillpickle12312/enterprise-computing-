@@ -1,0 +1,2685 @@
+{
+  "timestamp": "2025-06-30T09:16:22.627012",
+  "test_type": "Comprehensive UI Testing (Grey Box & Black Box)",
+  "ui_elements_found": {
+    "buttons": [
+      {
+        "template": "delete_mentor_confirm.html",
+        "content": "\n                            <i class=\"fas fa-trash me-2\"></i>Yes, Delete Permanently\n              ",
+        "type": "button"
+      },
+      {
+        "template": "delete_mentor_confirm.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "delete_mentor_confirm.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "delete_mentor_confirm.html",
+        "content": "class=\"btn btn-warning\"",
+        "type": "button"
+      },
+      {
+        "template": "delete_mentor_confirm.html",
+        "content": "class=\"btn btn-danger\"",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "\n                    <i class=\"fas fa-sync-alt me-2\"></i>Refresh\n                ",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "\n                    <i class=\"fas fa-download me-2\"></i>Export\n                ",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "\n                    <i class=\"fas fa-print me-2\"></i>Print\n                ",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "\n                            <i class=\"fas fa-ellipsis-v\"></i>\n                        ",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "class=\"btn-group\"",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "class=\"btn btn-outline-primary btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "class=\"btn btn-outline-secondary btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "class=\"btn btn-outline-info btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "class=\"btn btn-sm btn-outline-light dropdown-toggle\"",
+        "type": "button"
+      },
+      {
+        "template": "statistics.html",
+        "content": "class=\"btn-close\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "\n                                <i class=\"fas fa-calendar-check me-2\"></i>Schedule Session\n        ",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "\n                                <i class=\"fas fa-calendar-plus me-2\"></i>Schedule Session\n         ",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-light\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-light\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-primary btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-info btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-light btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-light\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-success btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-primary btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-success btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-info btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-light me-2\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "class=\"btn-close\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Math",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "English",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Science",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Chess",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Clear",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "\n                            <i class=\"fas fa-plus me-2\"></i>Add Mentor\n                        ",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Mathematics",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Physics",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Chemistry",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Biology",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "English",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Computer Science",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "History",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "Geography",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn-close\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn-group-sm mt-1\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-quick-add\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-quick-add\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-quick-add\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-quick-add\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-secondary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-secondary btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-primary btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-info btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-light btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-btn\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-btn\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-btn\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-btn\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-btn\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-btn\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-btn\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "class=\"btn btn-outline-primary btn-sm subject-btn\"",
+        "type": "button"
+      },
+      {
+        "template": "assign_mentor.html",
+        "content": "\n                                <i class=\"fas fa-link me-2\"></i>Assign Mentor\n                     ",
+        "type": "button"
+      },
+      {
+        "template": "assign_mentor.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "assign_mentor.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "assign_mentor.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "assign_mentor.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "\n                                    Change\n                                ",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "\n                            <i class=\"fas fa-plus me-2\"></i>Add Mentee\n                        ",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "class=\"btn-close\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "class=\"btn btn-sm btn-outline-secondary ms-auto\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "class=\"btn btn-outline-secondary btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "class=\"btn btn-success btn-lg\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "class=\"btn btn-outline-info btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "class=\"btn btn-outline-warning btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "class=\"btn btn-outline-light btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "\n                                <i class=\"fas fa-eraser me-2\"></i>Clear All\n                       ",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "\n                                <i class=\"fas fa-check me-2\"></i>Assign Selected Mentors\n          ",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-outline-success\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "\n                                <i class=\"fas fa-eraser me-2\"></i>Clear All\n                       ",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "\n                                <i class=\"fas fa-unlink me-2\"></i>Unassign All\n                    ",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "\n                                <i class=\"fas fa-exchange-alt me-2\"></i>Confirm Reassignments\n     ",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "\n                <i class=\"fas fa-unlink me-2\"></i>Unassign All Students\n            ",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-outline-warning\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-warning\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "class=\"btn btn-warning\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "\n                                <i class=\"fas fa-unlink me-1\"></i>Unassign Mentor\n                 ",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "\n                                                        <i class=\"fas fa-check\"></i> Complete\n     ",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "\n                                                        <i class=\"fas fa-check\"></i>\n              ",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-outline-warning btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn-group btn-group-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-outline-success\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "class=\"btn btn-outline-danger\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "Month",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "Week",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "Day",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "Close",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                            <i class=\"fas fa-calendar-day me-2 text-primary\"></i>Current & Upcoming",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                            <i class=\"fas fa-times\"></i>\n                        ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-check\"></i>\n                      ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-clock\"></i>\n                      ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-times\"></i>\n                      ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-user-times\"></i>\n                 ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-undo\"></i>\n                       ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                            <i class=\"fas fa-history me-2\"></i>Past Sessions\n                      ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                            <i class=\"fas fa-times\"></i>\n                        ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-eraser me-1\"></i>Clear Filters\n   ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-undo\"></i>\n                       ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-undo\"></i>\n                       ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <i class=\"fas fa-check\"></i>\n                      ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                <i class=\"fas fa-check me-1\"></i>Mark Complete\n                    ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                <i class=\"fas fa-clock me-1\"></i>Reschedule\n                       ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                <i class=\"fas fa-times me-1\"></i>Cancel\n                           ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                <i class=\"fas fa-user-times me-1\"></i>Mark Missed\n                 ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                <i class=\"fas fa-undo me-1\"></i>Mark as Scheduled\n                 ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                <i class=\"fas fa-undo me-1\"></i>Restore to Scheduled\n              ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                <i class=\"fas fa-undo me-1\"></i>Restore to Scheduled\n              ",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn-group\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn-close\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn-close\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-link p-0 text-decoration-none\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-secondary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn-group btn-group-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-success\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-warning\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-danger\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-dark\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-link p-0 text-decoration-none text-muted\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-secondary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-secondary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn-group btn-group-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-warning\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-success\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-warning btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-danger btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-dark btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-warning btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "calendar.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "user_guide.html",
+        "content": "class=\"btn btn-outline-light\"",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "\n                                        <i class=\"fas fa-broom me-2\"></i>Cleanup Old Sessions\n     ",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "\n                                        <i class=\"fas fa-check-double me-2\"></i>Validate Data Integ",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "\n                                <i class=\"fas fa-trash me-2\"></i>Clear All Data\n                   ",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "class=\"btn btn-outline-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "class=\"btn btn-outline-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "class=\"btn btn-outline-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "class=\"btn btn-outline-info btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "class=\"btn btn-outline-info btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "class=\"btn btn-outline-info btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "class=\"btn btn-danger\"",
+        "type": "button"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "delete_mentee_confirm.html",
+        "content": "\n                            <i class=\"fas fa-trash me-2\"></i>Yes, Delete Permanently\n              ",
+        "type": "button"
+      },
+      {
+        "template": "delete_mentee_confirm.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "delete_mentee_confirm.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "delete_mentee_confirm.html",
+        "content": "class=\"btn btn-danger\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "\n                            <i class=\"fas fa-plus me-2\"></i>Add Mentor\n                        ",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "class=\"btn-close\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "\n                                                <i class=\"fas fa-check\"></i> Complete\n             ",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "\n                                <i class=\"fas fa-download me-2\"></i>Export Data\n                   ",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-info\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-warning\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn-group\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-outline-info dropdown-toggle\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-outline-danger\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-sm btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "class=\"btn btn-sm btn-outline-success\"",
+        "type": "button"
+      },
+      {
+        "template": "base.html",
+        "content": "\n                <span class=\"navbar-toggler-icon\"></span>\n            ",
+        "type": "button"
+      },
+      {
+        "template": "base.html",
+        "content": "",
+        "type": "button"
+      },
+      {
+        "template": "base.html",
+        "content": "class=\"btn-close\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "\n                                                        <i class=\"fas fa-check\"></i> Complete\n     ",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-outline-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-success btn-sm ms-2\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-success\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-success btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-outline-warning\"",
+        "type": "button"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "class=\"btn btn-outline-danger\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "\n                        <i class=\"fas fa-download me-1\"></i>Export\n                    ",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "\n                        <i class=\"fas fa-trash me-1\"></i>Bulk Actions\n                    ",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "\n                                    <i class=\"fas fa-chalkboard-teacher me-2\"></i>Delete All Mentor",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "\n            <i class=\"fas fa-times\"></i>\n        ",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn btn-success me-2\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn-group me-2\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn btn-outline-primary dropdown-toggle\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn-group\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn btn-outline-danger dropdown-toggle\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn btn-outline-secondary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn btn-outline-primary btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn btn-outline-danger btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentors.html",
+        "content": "class=\"btn btn-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "\n                        <i class=\"fas fa-download me-1\"></i>Export\n                    ",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "\n                                                <i class=\"fas fa-download me-1\"></i>Export to CSV\n ",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-success me-2\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn-group me-2\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-outline-primary dropdown-toggle\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-info\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn-group btn-group-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-outline-primary\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-outline-success\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-outline-danger\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-info btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-warning btn-sm\"",
+        "type": "button"
+      },
+      {
+        "template": "mentees.html",
+        "content": "class=\"btn btn-success btn-lg\"",
+        "type": "button"
+      }
+    ],
+    "forms": [
+      {
+        "template": "delete_mentor_confirm.html",
+        "content": "\n                        <button type=\"submit\" \n                                class=\"btn btn-danger\"\n                                onclick=\"return confirmDeletion(event)\">\n                        ",
+        "type": "form"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "\n                        <div class=\"row\">\n                            <!-- Mentor-Mentee Pair Selection -->\n                            <div class=\"col-md-6 mb-3\">\n                                <la",
+        "type": "form"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "\n                        <div class=\"row\">\n                            <!-- Mentor Selection -->\n                            <div class=\"col-md-6 mb-3\">\n                                <label for=\"men",
+        "type": "form"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "\n                    <!-- Mentor Name -->\n                    <div class=\"mb-4\">\n                        <label for=\"name\" class=\"form-label fw-bold\">\n                            <i class=\"fas fa-user",
+        "type": "form"
+      },
+      {
+        "template": "assign_mentor.html",
+        "content": "\n                        <div class=\"row\">\n                            <div class=\"col-md-6 mb-3\">\n                                <label for=\"mentee_id\" class=\"form-label\">\n                          ",
+        "type": "form"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "\n                    <!-- Student Name -->\n                    <div class=\"mb-4\">\n                        <label for=\"name\" class=\"form-label fw-bold\">\n                            <i class=\"fas fa-use",
+        "type": "form"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "\n        <div class=\"row\">\n            <!-- Unassigned Mentees -->\n            <div class=\"col-md-6\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n                 ",
+        "type": "form"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "\n        <div class=\"row\">\n            <!-- Students to Reassign -->\n            <div class=\"col-md-6\">\n                <div class=\"card\">\n                    <div class=\"card-header\">\n               ",
+        "type": "form"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "\n                            <input type=\"hidden\" name=\"mentee_id\" value=\"{{ mentee.id }}\">\n                            <button type=\"submit\" class=\"btn btn-outline-warning btn-sm\" \n                  ",
+        "type": "form"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "\n                                                    <input type=\"hidden\" name=\"session_id\" value=\"{{ session.id }}\">\n                                                    <input type=\"hidden\" name=\"sta",
+        "type": "form"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "\n                                                    <input type=\"hidden\" name=\"session_id\" value=\"{{ session.id }}\">\n                                                    <input type=\"hidden\" name=\"sta",
+        "type": "form"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                <div class=\"modal-body\">\n                    <input type=\"hidden\" id=\"reschedule-session-id\" name=\"session_id\">                    <div class=\"mb-3\">\n                        <label fo",
+        "type": "form"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "\n                            <div class=\"mb-3\">\n                                <h6 class=\"text-danger\">Clear All System Data</h6>\n                                <p class=\"text-muted mb-3\">\n         ",
+        "type": "form"
+      },
+      {
+        "template": "delete_mentee_confirm.html",
+        "content": "\n                        <button type=\"submit\" \n                                class=\"btn btn-danger\"\n                                onclick=\"return confirmDeletion(event)\">\n                        ",
+        "type": "form"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "\n                    <div class=\"row\">\n                        <!-- Personal Information Section -->\n                        <div class=\"col-md-6\">\n                            <h5 class=\"text-primary ",
+        "type": "form"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "\n                                            <input type=\"hidden\" name=\"session_id\" value=\"{{ session.id }}\">\n                                            <input type=\"hidden\" name=\"status\" value=\"comp",
+        "type": "form"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "\n                                                    <input type=\"hidden\" name=\"session_id\" value=\"{{ session.id }}\">\n                                                    <input type=\"hidden\" name=\"sta",
+        "type": "form"
+      },
+      {
+        "template": "mentors.html",
+        "content": "\n                                <button type=\"submit\" class=\"dropdown-item text-danger\" \n                                        onclick=\"return confirm('Delete ALL mentors? This only works if no men",
+        "type": "form"
+      }
+    ],
+    "links": [
+      {
+        "template": "delete_mentor_confirm.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-arrow-le",
+        "type": "link"
+      },
+      {
+        "template": "delete_mentor_confirm.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-list me-",
+        "type": "link"
+      },
+      {
+        "template": "delete_mentor_confirm.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-exch",
+        "type": "link"
+      },
+      {
+        "template": "statistics.html",
+        "href": "#",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "statistics.html",
+        "href": "#",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "Dashboard",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "Calendar",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-arrow-left m",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-cale",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-user",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-user",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-home",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                                    <i class=\"fas",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                                    <i class=\"fas",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                                    <i class=\"fas",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-home me-",
+        "type": "link"
+      },
+      {
+        "template": "schedule_session.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-calendar",
+        "type": "link"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-arro",
+        "type": "link"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-list me-",
+        "type": "link"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-user-gra",
+        "type": "link"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-home me-",
+        "type": "link"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-book me-",
+        "type": "link"
+      },
+      {
+        "template": "assign_mentor.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "assign_mentor.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "assign_mentor.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "add_mentee.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-arro",
+        "type": "link"
+      },
+      {
+        "template": "add_mentee.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-list me-",
+        "type": "link"
+      },
+      {
+        "template": "add_mentee.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-chalkboa",
+        "type": "link"
+      },
+      {
+        "template": "add_mentee.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-link me-",
+        "type": "link"
+      },
+      {
+        "template": "add_mentee.html",
+        "href": "#",
+        "text": "\n                    ${subject}\n                ",
+        "type": "link"
+      },
+      {
+        "template": "add_mentee.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-book me-",
+        "type": "link"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-arrow-left me-2\"",
+        "type": "link"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-plus me-2\"></i>A",
+        "type": "link"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-list me-2\"></i>V",
+        "type": "link"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-plus me-2\"></i>A",
+        "type": "link"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-list me-2\"></i>V",
+        "type": "link"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-plus me-2\"></i>A",
+        "type": "link"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-plus me-2\"></i>A",
+        "type": "link"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-arrow-left m",
+        "type": "link"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-list me-2\"><",
+        "type": "link"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n            <i class=\"fas fa-arrow-left me-2\"></i",
+        "type": "link"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-plus me-2\"></i>A",
+        "type": "link"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-list me-2\"></i>V",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-arrow-left m",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-link me-",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-calendar-plu",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                    {{ mentee.ass",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-link",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                 ",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                <",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentee_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-trash me-2\">",
+        "type": "link"
+      },
+      {
+        "template": "calendar.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-plus me-2\"></i>S",
+        "type": "link"
+      },
+      {
+        "template": "calendar.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-plus",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#getting-started",
+        "text": "<i class=\"fas fa-play-circle me-1\"></i>Getting Sta",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#managing-mentors",
+        "text": "<i class=\"fas fa-chalkboard-teacher me-1\"></i>Mana",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#managing-mentees",
+        "text": "<i class=\"fas fa-user-graduate me-1\"></i>Managing ",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#scheduling-sessions",
+        "text": "<i class=\"fas fa-calendar-plus me-1\"></i>Schedulin",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#using-calendar",
+        "text": "<i class=\"fas fa-calendar-alt me-1\"></i>Using the ",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#tracking-progress",
+        "text": "<i class=\"fas fa-chart-line me-1\"></i>Tracking Pro",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#troubleshooting",
+        "text": "<i class=\"fas fa-tools me-1\"></i>Common Issues",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#tips-best-practices",
+        "text": "<i class=\"fas fa-lightbulb me-1\"></i>Tips & Best P",
+        "type": "link"
+      },
+      {
+        "template": "user_guide.html",
+        "href": "#",
+        "text": "\n                        <i class=\"fas fa-arrow-up",
+        "type": "link"
+      },
+      {
+        "template": "clear_all_data.html",
+        "href": "{{ url_for(",
+        "text": "\n                                        <i class=",
+        "type": "link"
+      },
+      {
+        "template": "clear_all_data.html",
+        "href": "{{ url_for(",
+        "text": "\n                                        <i class=",
+        "type": "link"
+      },
+      {
+        "template": "clear_all_data.html",
+        "href": "{{ url_for(",
+        "text": "\n                                        <i class=",
+        "type": "link"
+      },
+      {
+        "template": "clear_all_data.html",
+        "href": "{{ url_for(",
+        "text": "\n                                        <i class=",
+        "type": "link"
+      },
+      {
+        "template": "clear_all_data.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-arrow-le",
+        "type": "link"
+      },
+      {
+        "template": "delete_mentee_confirm.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-arrow-le",
+        "type": "link"
+      },
+      {
+        "template": "delete_mentee_confirm.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-list me-",
+        "type": "link"
+      },
+      {
+        "template": "add_mentor.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-arro",
+        "type": "link"
+      },
+      {
+        "template": "add_mentor.html",
+        "href": "#",
+        "text": "\n                    ${subject}\n                ",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                                            <i cl",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "calendar",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-plus me-",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-plus me-",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-link me-",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-calendar",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                                    <i class=\"fas",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                                    <i class=\"fas",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                                    <i class=\"fas",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-exclamat",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "\n                                            {{ me",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "View All",
+        "type": "link"
+      },
+      {
+        "template": "dashboard.html",
+        "href": "{{ url_for(",
+        "text": "View All",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-graduation-cap m",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-tach",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "#",
+        "text": "\n                            <i class=\"fas fa-chal",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "View All Mentors",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "Add New Mentor",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "#",
+        "text": "\n                            <i class=\"fas fa-user",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "View All Mentees",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "Add New Mentee",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "Assign Mentor",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "#",
+        "text": "\n                            <i class=\"fas fa-cale",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "Calendar View",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "Schedule Session",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-char",
+        "type": "link"
+      },
+      {
+        "template": "base.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-ques",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                            {{ se",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-arrow-left m",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                        <i class=\"fas fa-user-plu",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-calendar-plu",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                <",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                <",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                <",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                 ",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                            {{ se",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                    <i class=\"fas",
+        "type": "link"
+      },
+      {
+        "template": "mentor_detail.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-plus me-2\"><",
+        "type": "link"
+      },
+      {
+        "template": "mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentors.html",
+        "href": "javascript:window.print()",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                           <i class=\"fas fa-eye m",
+        "type": "link"
+      },
+      {
+        "template": "mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-tras",
+        "type": "link"
+      },
+      {
+        "template": "mentors.html",
+        "href": "{{ url_for(",
+        "text": "\n                <i class=\"fas fa-plus me-2\"></i>A",
+        "type": "link"
+      },
+      {
+        "template": "mentors.html",
+        "href": "#",
+        "text": "\n                    ${subject}\n                ",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-plus me-2\"><",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "javascript:window.print()",
+        "text": "\n                                <i class=\"fas fa-",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                    <i class=\"fas fa-link me-2\"><",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                                            <i cl",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                <",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                <",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                 ",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                <",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                                                <",
+        "type": "link"
+      },
+      {
+        "template": "mentees.html",
+        "href": "{{ url_for(",
+        "text": "\n                            <i class=\"fas fa-plus",
+        "type": "link"
+      }
+    ],
+    "inputs": [
+      {
+        "template": "schedule_session.html",
+        "content": "<input type=\"hidden\" id=\"mentor_id\" name=\"mentor_id\">",
+        "type": "input"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "<input type=\"hidden\" id=\"mentee_id\" name=\"mentee_id\">",
+        "type": "input"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "<input type=\"date\" class=\"form-control\" id=\"scheduled_date\" name=\"scheduled_date\" required>",
+        "type": "input"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "<input type=\"date\" class=\"form-control\" id=\"date\" name=\"date\" required>",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "<input type=\"text\" \n                               class=\"form-control form-control-lg\" \n                               id=\"name\" \n                               name=\"name\" \n                               required \n                               placeholder=\"Enter mentor's full name\"\n                               autocomplete=\"name\"\n                               pattern=\"[A-Za-z\\s]{2,50}\"\n                               title=\"Name should contain only letters and spaces (2-50 characters)\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "<input type=\"text\" \n                                   class=\"form-control form-control-lg\" \n                                   id=\"roll_call\" \n                                   name=\"roll_call\" \n                                   required \n                                   placeholder=\"e.g., MENT001, T123456\"\n                                   autocomplete=\"username\"\n                                   pattern=\"[A-Za-z0-9]{3,20}\"\n                                   title=\"Staff ID should be 3-20 characters (letters and numbers only)\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "<input type=\"range\" \n                                   class=\"form-range me-3\" \n                                   id=\"max_mentees_slider\" \n                                   min=\"1\" \n                                   max=\"15\" \n                                   value=\"5\"\n                                   style=\"flex: 1;\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "content": "<input type=\"number\" \n                                   class=\"form-control text-center fw-bold\" \n                                   id=\"max_mentees\" \n                                   name=\"max_mentees\" \n                                   value=\"5\" \n                                   min=\"1\" \n                                   max=\"15\" \n                                   required\n                                   style=\"width: 80px;\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "<input type=\"text\" \n                               class=\"form-control form-control-lg\" \n                               id=\"name\" \n                               name=\"name\" \n                               required \n                               placeholder=\"Enter student's full name\"\n                               autocomplete=\"name\"\n                               pattern=\"[A-Za-z\\s]{2,50}\"\n                               title=\"Name should contain only letters and spaces (2-50 characters)\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "<input type=\"text\" \n                                   class=\"form-control form-control-lg\" \n                                   id=\"roll_call\" \n                                   name=\"roll_call\" \n                                   required \n                                   placeholder=\"e.g., 12/7, 11/2, 9A, 8B, 12ENG1\"\n                                   autocomplete=\"off\"\n                                   pattern=\"(1[0-2]\\/[1-9]|[7-9][A-Za-z]|1[0-2][A-Z]{2,4}[1-9])\"\n                                   title=\"Years 10-12: format like 12/7, 11/2. Years 7-9: format like 9A, 8B. Subject codes: 12ENG1, 11MAT2\"\n                                   style=\"text-transform: uppercase;\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "<input type=\"text\" \n                                   class=\"form-control form-control-lg\" \n                                   id=\"subject-search\" \n                                   placeholder=\"Search for a subject...\"\n                                   autocomplete=\"off\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "<input class=\"form-check-input\" type=\"checkbox\" id=\"autoAssignMentor\" checked>",
+        "type": "input"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "<input type=\"hidden\" name=\"mentee_id\" value=\"{{ mentee.id }}\">",
+        "type": "input"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "<input type=\"hidden\" name=\"session_id\" value=\"{{ session.id }}\">",
+        "type": "input"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "<input type=\"hidden\" name=\"status\" value=\"completed\">",
+        "type": "input"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "<input type=\"hidden\" name=\"session_id\" value=\"{{ session.id }}\">",
+        "type": "input"
+      },
+      {
+        "template": "mentee_detail.html",
+        "content": "<input type=\"hidden\" name=\"status\" value=\"completed\">",
+        "type": "input"
+      },
+      {
+        "template": "calendar.html",
+        "content": "<input type=\"hidden\" id=\"reschedule-session-id\" name=\"session_id\">",
+        "type": "input"
+      },
+      {
+        "template": "calendar.html",
+        "content": "<input type=\"date\" class=\"form-control\" id=\"new_date\" name=\"new_date\" required>",
+        "type": "input"
+      },
+      {
+        "template": "calendar.html",
+        "content": "<input type=\"text\" class=\"form-control form-control-sm\" id=\"currentSessionSearch\" \n                               placeholder=\"Search current sessions...\" style=\"width: 220px;\">",
+        "type": "input"
+      },
+      {
+        "template": "calendar.html",
+        "content": "<input type=\"text\" class=\"form-control form-control-sm\" id=\"pastSessionSearch\" \n                               placeholder=\"Search past sessions...\" style=\"width: 180px;\">",
+        "type": "input"
+      },
+      {
+        "template": "calendar.html",
+        "content": "<input type=\"date\" class=\"form-control form-control-sm\" id=\"pastDateFrom\" \n                                                   onchange=\"filterPastSessions()\">",
+        "type": "input"
+      },
+      {
+        "template": "calendar.html",
+        "content": "<input type=\"date\" class=\"form-control form-control-sm\" id=\"pastDateTo\" \n                                                   onchange=\"filterPastSessions()\">",
+        "type": "input"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "<input class=\"form-check-input\" type=\"checkbox\" id=\"confirm-understand\" required>",
+        "type": "input"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "<input class=\"form-check-input\" type=\"checkbox\" id=\"confirm-backup\" required>",
+        "type": "input"
+      },
+      {
+        "template": "clear_all_data.html",
+        "content": "<input type=\"text\" \n                                           class=\"form-control\" \n                                           id=\"confirmation-text\" \n                                           placeholder=\"Type exactly: DELETE ALL DATA\"\n                                           required>",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "<input type=\"text\" \n                                       class=\"form-control\" \n                                       id=\"first_name\" \n                                       name=\"first_name\" \n                                       required \n                                       placeholder=\"Enter first name\"\n                                       autocomplete=\"given-name\"\n                                       pattern=\"[A-Za-z\\s]{2,25}\"\n                                       title=\"First name should contain only letters (2-25 characters)\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "<input type=\"text\" \n                                       class=\"form-control\" \n                                       id=\"last_name\" \n                                       name=\"last_name\" \n                                       required \n                                       placeholder=\"Enter last name\"\n                                       autocomplete=\"family-name\"\n                                       pattern=\"[A-Za-z\\s]{2,25}\"\n                                       title=\"Last name should contain only letters (2-25 characters)\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "<input type=\"text\" \n                                           class=\"form-control\" \n                                           id=\"roll_call\" \n                                           name=\"roll_call\" \n                                           required \n                                           placeholder=\"e.g., 12/7, 11/2, 9A, 8B, 12ENG1\"\n                                           autocomplete=\"off\"\n                                           pattern=\"(1[0-2]\\/[1-9]|[7-9][A-Za-z]|1[0-2][A-Z]{2,4}[1-9])\"\n                                           title=\"Years 10-12: format like 12/7, 11/2. Years 7-9: format like 9A, 8B. Subject codes: 12ENG1, 11MAT2\"\n                                           style=\"text-transform: uppercase;\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "<input type=\"text\" \n                                           class=\"form-control\" \n                                           id=\"subjects-search\" \n                                           placeholder=\"Search for subjects to add...\"\n                                           autocomplete=\"off\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "<input type=\"hidden\" id=\"subjects\" name=\"subjects\" required>",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "<input type=\"range\" \n                                           class=\"form-range me-3\" \n                                           id=\"max_mentees_slider\" \n                                           min=\"1\" \n                                           max=\"15\" \n                                           value=\"5\"\n                                           style=\"flex: 1;\">",
+        "type": "input"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "<input type=\"number\" \n                                           class=\"form-control text-center fw-bold\" \n                                           id=\"max_mentees\" \n                                           name=\"max_mentees\" \n                                           value=\"5\" \n                                           min=\"1\" \n                                           max=\"15\" \n                                           required\n                                           style=\"width: 80px;\">",
+        "type": "input"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "<input type=\"hidden\" name=\"session_id\" value=\"{{ session.id }}\">",
+        "type": "input"
+      },
+      {
+        "template": "dashboard.html",
+        "content": "<input type=\"hidden\" name=\"status\" value=\"completed\">",
+        "type": "input"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "<input type=\"hidden\" name=\"session_id\" value=\"{{ session.id }}\">",
+        "type": "input"
+      },
+      {
+        "template": "mentor_detail.html",
+        "content": "<input type=\"hidden\" name=\"status\" value=\"completed\">",
+        "type": "input"
+      },
+      {
+        "template": "mentors.html",
+        "content": "<input type=\"text\" class=\"form-control\" id=\"mentorSearch\" placeholder=\"Search mentors by name or roll call...\">",
+        "type": "input"
+      },
+      {
+        "template": "mentors.html",
+        "content": "<input type=\"text\" class=\"form-control\" id=\"subjectFilter\" placeholder=\"Search subjects...\" autocomplete=\"off\">",
+        "type": "input"
+      }
+    ],
+    "selects": [
+      {
+        "template": "schedule_session.html",
+        "content": "\n                                    <option value=\"\">Select a mentor-mentee pair...</option>       ",
+        "type": "select"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "\n                                    <option value=\"\">Choose a mentor...</option>\n                  ",
+        "type": "select"
+      },
+      {
+        "template": "schedule_session.html",
+        "content": "\n                                    <option value=\"\">Choose a mentee...</option>\n                  ",
+        "type": "select"
+      },
+      {
+        "template": "assign_mentor.html",
+        "content": "\n                                    <option value=\"\">Choose a student...</option>\n                 ",
+        "type": "select"
+      },
+      {
+        "template": "assign_mentor.html",
+        "content": "\n                                    <option value=\"\">First select a mentee...</option>\n            ",
+        "type": "select"
+      },
+      {
+        "template": "add_mentee.html",
+        "content": "\n                            <option value=\"\">Choose subject...</option>\n                        ",
+        "type": "select"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "content": "\n                                                <option value=\"\">Select mentor...</option>\n        ",
+        "type": "select"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "content": "\n                                                <option value=\"\">Select new mentor...</option>\n    ",
+        "type": "select"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <option value=\"\">All Mentors</option>\n             ",
+        "type": "select"
+      },
+      {
+        "template": "calendar.html",
+        "content": "\n                                                <option value=\"\">All Statuses</option>\n            ",
+        "type": "select"
+      },
+      {
+        "template": "add_mentor.html",
+        "content": "\n                                    <option value=\"\">Select role...</option>\n                      ",
+        "type": "select"
+      },
+      {
+        "template": "mentors.html",
+        "content": "\n            <option value=\"\">All Status Levels</option>\n            <option value=\"ACTIVE\">\ud83d\udfe2 Active",
+        "type": "select"
+      },
+      {
+        "template": "mentors.html",
+        "content": "\n            <option value=\"\">All Capacities</option>\n            <option value=\"available\">Availabl",
+        "type": "select"
+      }
+    ],
+    "javascript_functions": [
+      {
+        "template": "delete_mentor_confirm.html",
+        "function": "confirmDeletion",
+        "type": "javascript"
+      },
+      {
+        "template": "statistics.html",
+        "function": "refreshStats",
+        "type": "javascript"
+      },
+      {
+        "template": "statistics.html",
+        "function": "exportStats",
+        "type": "javascript"
+      },
+      {
+        "template": "statistics.html",
+        "function": "printStats",
+        "type": "javascript"
+      },
+      {
+        "template": "statistics.html",
+        "function": "downloadChart",
+        "type": "javascript"
+      },
+      {
+        "template": "statistics.html",
+        "function": "viewFullData",
+        "type": "javascript"
+      },
+      {
+        "template": "statistics.html",
+        "function": "showNotification",
+        "type": "javascript"
+      },
+      {
+        "template": "schedule_session.html",
+        "function": "updatePairInfo",
+        "type": "javascript"
+      },
+      {
+        "template": "schedule_session.html",
+        "function": "updateSessionSummary",
+        "type": "javascript"
+      },
+      {
+        "template": "schedule_session.html",
+        "function": "updateCompatibleMentees",
+        "type": "javascript"
+      },
+      {
+        "template": "schedule_session.html",
+        "function": "validateCompatibility",
+        "type": "javascript"
+      },
+      {
+        "template": "schedule_session.html",
+        "function": "updateAssignmentStatus",
+        "type": "javascript"
+      },
+      {
+        "template": "add_mentor_old.html",
+        "function": "updateCapacityFeedback",
+        "type": "javascript"
+      },
+      {
+        "template": "add_mentee.html",
+        "function": "updateSubjectDisplay",
+        "type": "javascript"
+      },
+      {
+        "template": "add_mentee.html",
+        "function": "selectSubject",
+        "type": "javascript"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "function": "updateAssignmentCounts",
+        "type": "javascript"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "function": "updateAssignmentSummary",
+        "type": "javascript"
+      },
+      {
+        "template": "bulk_assign_mentors.html",
+        "function": "validateMentorCapacity",
+        "type": "javascript"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "function": "updateAssignmentCounts",
+        "type": "javascript"
+      },
+      {
+        "template": "reassign_mentees.html",
+        "function": "updateReassignmentSummary",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "showSessionDetails",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "updateSessionStatus",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "showRescheduleModal",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "rescheduleSession",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "updateSessionCounts",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "clearCurrentSearch",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "clearPastSearch",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "filterPastSessions",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "clearPastFilters",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "clearSearch",
+        "type": "javascript"
+      },
+      {
+        "template": "calendar.html",
+        "function": "closeSessionModal",
+        "type": "javascript"
+      },
+      {
+        "template": "clear_all_data.html",
+        "function": "confirmClearData",
+        "type": "javascript"
+      },
+      {
+        "template": "clear_all_data.html",
+        "function": "cleanupCompletedSessions",
+        "type": "javascript"
+      },
+      {
+        "template": "clear_all_data.html",
+        "function": "validateDataIntegrity",
+        "type": "javascript"
+      },
+      {
+        "template": "clear_all_data.html",
+        "function": "validateForm",
+        "type": "javascript"
+      },
+      {
+        "template": "delete_mentee_confirm.html",
+        "function": "confirmDeletion",
+        "type": "javascript"
+      },
+      {
+        "template": "add_mentor.html",
+        "function": "updateSelectedSubjectsDisplay",
+        "type": "javascript"
+      },
+      {
+        "template": "add_mentor.html",
+        "function": "addSubject",
+        "type": "javascript"
+      },
+      {
+        "template": "add_mentor.html",
+        "function": "removeSubject",
+        "type": "javascript"
+      },
+      {
+        "template": "mentors.html",
+        "function": "filterMentors",
+        "type": "javascript"
+      },
+      {
+        "template": "mentees.html",
+        "function": "exportMentees",
+        "type": "javascript"
+      }
+    ]
+  },
+  "results": {
+    "UI Element Scanning": true,
+    "Form Validation Patterns": true,
+    "Database Interaction Points": false,
+    "Session Management": true,
+    "Navigation Flow": true,
+    "Form Submission Flows": true,
+    "User Feedback Mechanisms": true,
+    "Button Functionality": false,
+    "Accessibility Features": true,
+    "Responsive Design": true
+  },
+  "summary": {
+    "total_tests": 10,
+    "passed_tests": 8,
+    "failed_tests": 2,
+    "success_rate": 80.0
+  }
+}

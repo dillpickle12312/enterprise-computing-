@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roll Call Validation Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .valid { background-color: #d4edda; color: #155724; }
+        .invalid { background-color: #f8d7da; color: #721c24; }
+        input { margin: 5px; padding: 5px; }
+        button { margin: 5px; padding: 8px 16px; }
+    </style>
+</head>
+<body>
+    <h1>Roll Call Validation Test</h1>
+    <p>Test the frontend validation patterns used in your Render application.</p>
+    
+    <div>
+        <label>Enter Roll Call:</label>
+        <input type="text" id="rollCallInput" placeholder="e.g., 7A, 8B, 12/7">
+        <button onclick="testValidation()">Test Validation</button>
+    </div>
+    
+    <div id="results"></div>
+    
+    <h2>Automatic Tests</h2>
+    <div id="autoTests"></div>
+
+    <script>
+        // Exact patterns from your application
+        const htmlPattern = /^(1[0-2]\/[1-9]|[7-9][A-Z]|1[0-2][A-Z]{2,4}[1-9])$/;
+        const jsPattern = /^(1[0-2]\/[1-9]|[7-9][A-Z]|1[0-2][A-Z]{2,4}[1-9])$/;
+        
+        function testValidation() {
+            const input = document.getElementById('rollCallInput');
+            const value = input.value.trim().toUpperCase();
+            const results = document.getElementById('results');
+            
+            const htmlValid = htmlPattern.test(value);
+            const jsValid = jsPattern.test(value);
+            
+            results.innerHTML = `
+                <div class="test-result ${htmlValid ? 'valid' : 'invalid'}">
+                    HTML Pattern: ${htmlValid ? 'VALID' : 'INVALID'}
+                </div>
+                <div class="test-result ${jsValid ? 'valid' : 'invalid'}">
+                    JavaScript Pattern: ${jsValid ? 'VALID' : 'INVALID'}
+                </div>
+                <div class="test-result">
+                    Input: "${input.value}" → Processed: "${value}"
+                </div>
+            `;
+        }
+        
+        // Auto-run tests
+        function runAutoTests() {
+            const testCases = [
+                { input: '7A', expected: true, category: 'Years 7-9' },
+                { input: '8B', expected: true, category: 'Years 7-9' },
+                { input: '9C', expected: true, category: 'Years 7-9' },
+                { input: '7a', expected: true, category: 'Years 7-9 (lowercase)' },
+                { input: '10/1', expected: true, category: 'Years 10-12' },
+                { input: '11/2', expected: true, category: 'Years 10-12' },
+                { input: '12/7', expected: true, category: 'Years 10-12' },
+                { input: '12ENG1', expected: true, category: 'Subject codes' },
+                { input: '11MAT2', expected: true, category: 'Subject codes' },
+                { input: '6A', expected: false, category: 'Invalid year' },
+                { input: '13A', expected: false, category: 'Invalid year' },
+                { input: '7AA', expected: false, category: 'Invalid format' }
+            ];
+            
+            const autoTestsDiv = document.getElementById('autoTests');
+            let html = '';
+            
+            testCases.forEach(test => {
+                const processed = test.input.trim().toUpperCase();
+                const result = jsPattern.test(processed);
+                const isCorrect = result === test.expected;
+                
+                html += `
+                    <div class="test-result ${isCorrect ? 'valid' : 'invalid'}">
+                        ${test.category}: "${test.input}" → ${result ? 'VALID' : 'INVALID'} 
+                        ${isCorrect ? '✓' : '✗ Expected: ' + (test.expected ? 'VALID' : 'INVALID')}
+                    </div>
+                `;
+            });
+            
+            autoTestsDiv.innerHTML = html;
+        }
+        
+        // Run auto tests on page load
+        window.onload = runAutoTests;
+    </script>
+</body>
+</html>

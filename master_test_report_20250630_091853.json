@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-06-30T09:18:53.217752",
+  "test_type": "Master Test Suite - All Components",
+  "suites_run": [
+    [
+      "simple_system_test.py",
+      "Core System Functionality Tests"
+    ],
+    [
+      "comprehensive_ui_test.py",
+      "UI & Button Interaction Tests"
+    ],
+    [
+      "manual_system_test.py",
+      "Advanced Manual System Tests"
+    ]
+  ],
+  "results": {
+    "Core System Functionality Tests": true,
+    "UI & Button Interaction Tests": false,
+    "Advanced Manual System Tests": false,
+    "Manual Verification Checklist": true
+  },
+  "summary": {
+    "total_suites": 4,
+    "passed_suites": 2,
+    "failed_suites": 2,
+    "overall_success": false
+  }
+}

@@ -1,0 +1,1878 @@
+{
+  "timestamp": "2025-06-30T08:56:28.940171",
+  "summary": {
+    "templates_tested": 18,
+    "total_buttons": 149,
+    "total_tests": 373,
+    "passed_tests": 328,
+    "failed_tests": 45,
+    "success_rate": 87.93565683646113
+  },
+  "test_results": [
+    {
+      "test": "Base Template: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Base Template: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Base Template: No form fields found",
+      "passed": true,
+      "details": "Template has no form fields"
+    },
+    {
+      "test": "Base Template: No JavaScript handlers",
+      "passed": true,
+      "details": "Template has no inline JavaScript"
+    },
+    {
+      "test": "Dashboard: submit button: 'Complete'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Dashboard: button button: 'Export Data'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: link button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Dashboard: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Dashboard: link button: 'Add New Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Dashboard: link button: 'Add New Mentee'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Dashboard: link button: 'Assign Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Dashboard: link button: 'Schedule Session'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Dashboard: link button: 'Manage System Data'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Dashboard: link button: 'View All'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Dashboard: link button: 'View All'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Dashboard: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Dashboard: input field (name: session_id) has identifier",
+      "passed": true,
+      "details": "name: session_id, id: None"
+    },
+    {
+      "test": "Dashboard: input field (name: status) has identifier",
+      "passed": true,
+      "details": "name: status, id: None"
+    },
+    {
+      "test": "Dashboard: No JavaScript handlers",
+      "passed": true,
+      "details": "Template has no inline JavaScript"
+    },
+    {
+      "test": "Mentors List: button button: 'Export'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentors List: button button: 'Bulk Actions'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentors List: submit button: 'Delete All Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentors List: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Mentors List: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Mentors List: link button: 'Add New Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentors List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentors List: link button: 'View Details'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentors List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentors List: link button: 'Delete'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentors List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentors List: link button: 'Add First Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentors List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentors List: input field (id: mentorSearch) has identifier",
+      "passed": true,
+      "details": "name: None, id: mentorSearch"
+    },
+    {
+      "test": "Mentors List: input field (id: subjectFilter) has identifier",
+      "passed": true,
+      "details": "name: None, id: subjectFilter"
+    },
+    {
+      "test": "Mentors List: select field (id: statusFilter) has identifier",
+      "passed": true,
+      "details": "name: None, id: statusFilter"
+    },
+    {
+      "test": "Mentors List: select field (id: capacityFilter) has identifier",
+      "passed": true,
+      "details": "name: None, id: capacityFilter"
+    },
+    {
+      "test": "Mentors List: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: return confirm(..."
+    },
+    {
+      "test": "Mentors List: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: clearFilters()..."
+    },
+    {
+      "test": "Mentors List: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: selectSubjectFilter(..."
+    },
+    {
+      "test": "Mentees List: button button: 'Export'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentees List: button button: 'Export to CSV'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentees List: link button: 'Add New Mentee'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentees List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentees List: link button: 'Assign Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentees List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentees List: link button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Mentees List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentees List: link button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Mentees List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentees List: link button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Mentees List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentees List: link button: 'Bulk Assign Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentees List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentees List: link button: 'Add First Mentee'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentees List: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentees List: No form fields found",
+      "passed": true,
+      "details": "Template has no form fields"
+    },
+    {
+      "test": "Mentees List: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: exportMentees()..."
+    },
+    {
+      "test": "Add Mentor Form: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Add Mentor Form: submit button: 'Add Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentor Form: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Add Mentor Form: link button: 'Cancel'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentor Form: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Add Mentor Form: input field (name: first_name) (id: first_name) has identifier",
+      "passed": true,
+      "details": "name: first_name, id: first_name"
+    },
+    {
+      "test": "Add Mentor Form: Required field has validation",
+      "passed": true,
+      "details": "type: text, pattern: [A-Za-z\\s]{2,25}"
+    },
+    {
+      "test": "Add Mentor Form: input field (name: last_name) (id: last_name) has identifier",
+      "passed": true,
+      "details": "name: last_name, id: last_name"
+    },
+    {
+      "test": "Add Mentor Form: Required field has validation",
+      "passed": true,
+      "details": "type: text, pattern: [A-Za-z\\s]{2,25}"
+    },
+    {
+      "test": "Add Mentor Form: input field (name: roll_call) (id: roll_call) has identifier",
+      "passed": true,
+      "details": "name: roll_call, id: roll_call"
+    },
+    {
+      "test": "Add Mentor Form: Required field has validation",
+      "passed": true,
+      "details": "type: text, pattern: (1[0-2]\\/[1-9]|[7-9][A-Za-z]|1[0-2][A-Z]{2,4}[1-9])"
+    },
+    {
+      "test": "Add Mentor Form: input field (id: subjects-search) has identifier",
+      "passed": true,
+      "details": "name: None, id: subjects-search"
+    },
+    {
+      "test": "Add Mentor Form: input field (name: subjects) (id: subjects) has identifier",
+      "passed": true,
+      "details": "name: subjects, id: subjects"
+    },
+    {
+      "test": "Add Mentor Form: input field (id: max_mentees_slider) has identifier",
+      "passed": true,
+      "details": "name: None, id: max_mentees_slider"
+    },
+    {
+      "test": "Add Mentor Form: input field (name: max_mentees) (id: max_mentees) has identifier",
+      "passed": true,
+      "details": "name: max_mentees, id: max_mentees"
+    },
+    {
+      "test": "Add Mentor Form: Required field has validation",
+      "passed": false,
+      "details": "type: number, pattern: None"
+    },
+    {
+      "test": "Add Mentor Form: select field (name: role) (id: role) has identifier",
+      "passed": true,
+      "details": "name: role, id: role"
+    },
+    {
+      "test": "Add Mentor Form: Required field has validation",
+      "passed": false,
+      "details": "type: select, pattern: None"
+    },
+    {
+      "test": "Add Mentor Form: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: removeSubject(..."
+    },
+    {
+      "test": "Add Mentor Form: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: addSubject(..."
+    },
+    {
+      "test": "Add Mentee Form: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Add Mentee Form: button button: 'Change' (id: change-subject)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentee Form: submit button: 'Add Mentee' (id: submitBtn)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentee Form: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Add Mentee Form: link button: 'Back to Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentee Form: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Add Mentee Form: link button: 'View All Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentee Form: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Add Mentee Form: link button: 'Add Mentor Instead'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentee Form: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Add Mentee Form: link button: 'Assign Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentee Form: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Add Mentee Form: link button: 'View Complete User Guide'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Add Mentee Form: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Add Mentee Form: input field (name: name) (id: name) has identifier",
+      "passed": true,
+      "details": "name: name, id: name"
+    },
+    {
+      "test": "Add Mentee Form: Required field has validation",
+      "passed": true,
+      "details": "type: text, pattern: [A-Za-z\\s]{2,50}"
+    },
+    {
+      "test": "Add Mentee Form: input field (name: roll_call) (id: roll_call) has identifier",
+      "passed": true,
+      "details": "name: roll_call, id: roll_call"
+    },
+    {
+      "test": "Add Mentee Form: Required field has validation",
+      "passed": true,
+      "details": "type: text, pattern: (1[0-2]\\/[1-9]|[7-9][A-Za-z]|1[0-2][A-Z]{2,4}[1-9])"
+    },
+    {
+      "test": "Add Mentee Form: input field (id: subject-search) has identifier",
+      "passed": true,
+      "details": "name: None, id: subject-search"
+    },
+    {
+      "test": "Add Mentee Form: input field (id: autoAssignMentor) has identifier",
+      "passed": true,
+      "details": "name: None, id: autoAssignMentor"
+    },
+    {
+      "test": "Add Mentee Form: select field (name: subject) (id: subject) has identifier",
+      "passed": true,
+      "details": "name: subject, id: subject"
+    },
+    {
+      "test": "Add Mentee Form: Required field has validation",
+      "passed": false,
+      "details": "type: select, pattern: None"
+    },
+    {
+      "test": "Add Mentee Form: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: selectSubject(..."
+    },
+    {
+      "test": "Mentor Detail: submit button: 'Complete'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Mentor Detail: link button: 'Back to Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'Assign Students'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'Schedule Session'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'View'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'Schedule'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'Assign More Students'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'Assign First Student'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'Schedule First Session'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'Reassign Students'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: link button: 'Delete Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentor Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentor Detail: input field (name: session_id) has identifier",
+      "passed": true,
+      "details": "name: session_id, id: None"
+    },
+    {
+      "test": "Mentor Detail: input field (name: status) has identifier",
+      "passed": true,
+      "details": "name: status, id: None"
+    },
+    {
+      "test": "Mentor Detail: No JavaScript handlers",
+      "passed": true,
+      "details": "Template has no inline JavaScript"
+    },
+    {
+      "test": "Mentee Detail: submit button: 'Unassign Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Mentee Detail: submit button: 'Complete'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Mentee Detail: submit button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Mentee Detail: link button: 'Back to Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentee Detail: link button: 'Assign Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentee Detail: link button: 'Schedule Session'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentee Detail: link button: 'Assign Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentee Detail: link button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentee Detail: link button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentee Detail: link button: 'Schedule First Session'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentee Detail: link button: 'Delete Mentee'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Mentee Detail: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Mentee Detail: input field (name: mentee_id) has identifier",
+      "passed": true,
+      "details": "name: mentee_id, id: None"
+    },
+    {
+      "test": "Mentee Detail: input field (name: session_id) has identifier",
+      "passed": true,
+      "details": "name: session_id, id: None"
+    },
+    {
+      "test": "Mentee Detail: input field (name: status) has identifier",
+      "passed": true,
+      "details": "name: status, id: None"
+    },
+    {
+      "test": "Mentee Detail: input field (name: session_id) has identifier",
+      "passed": true,
+      "details": "name: session_id, id: None"
+    },
+    {
+      "test": "Mentee Detail: input field (name: status) has identifier",
+      "passed": true,
+      "details": "name: status, id: None"
+    },
+    {
+      "test": "Mentee Detail: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: return confirm(..."
+    },
+    {
+      "test": "Assign Mentor: submit button: 'Assign Mentor' (id: assign-btn)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Assign Mentor: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Assign Mentor: link button: 'Back to Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Assign Mentor: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Assign Mentor: link button: 'Add New Mentee'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Assign Mentor: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Assign Mentor: link button: 'View All Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Assign Mentor: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Assign Mentor: select field (name: mentee_id) (id: mentee_id) has identifier",
+      "passed": true,
+      "details": "name: mentee_id, id: mentee_id"
+    },
+    {
+      "test": "Assign Mentor: Required field has validation",
+      "passed": false,
+      "details": "type: select, pattern: None"
+    },
+    {
+      "test": "Assign Mentor: select field (name: mentor_id) (id: mentor_id) has identifier",
+      "passed": true,
+      "details": "name: mentor_id, id: mentor_id"
+    },
+    {
+      "test": "Assign Mentor: Required field has validation",
+      "passed": false,
+      "details": "type: select, pattern: None"
+    },
+    {
+      "test": "Assign Mentor: No JavaScript handlers",
+      "passed": true,
+      "details": "Template has no inline JavaScript"
+    },
+    {
+      "test": "Bulk Assign: button button: 'Clear All'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: submit button: 'Assign Selected Mentors' (id: assign-button)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Bulk Assign: link button: 'Back to Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Bulk Assign: link button: 'Add New Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Bulk Assign: link button: 'View All Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Bulk Assign: link button: 'Add New Mentee'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Bulk Assign: link button: 'View All Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Bulk Assign: link button: 'Add Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Bulk Assign: link button: 'Add Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Bulk Assign: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Bulk Assign: select field (name: assignments) (id: {{ mentee.id }}) has identifier",
+      "passed": true,
+      "details": "name: assignments, id: {{ mentee.id }}"
+    },
+    {
+      "test": "Bulk Assign: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: clearAllAssignments()..."
+    },
+    {
+      "test": "Reassign Mentees: button button: 'Clear All'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: button button: 'Unassign All'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: submit button: 'Confirm Reassignments' (id: reassign-button)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Reassign Mentees: button button: 'Unassign All Students'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: link button: 'Back to Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Reassign Mentees: link button: 'All Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Reassign Mentees: link button: 'Back to Mentor Details'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Reassign Mentees: link button: 'Add New Mentor'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Reassign Mentees: link button: 'View All Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Reassign Mentees: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Reassign Mentees: select field (name: reassignments) (id: {{ mentee.id }}) has identifier",
+      "passed": true,
+      "details": "name: reassignments, id: {{ mentee.id }}"
+    },
+    {
+      "test": "Reassign Mentees: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: clearAllReassignments()..."
+    },
+    {
+      "test": "Reassign Mentees: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: selectAllUnassign()..."
+    },
+    {
+      "test": "Reassign Mentees: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: unassignAll()..."
+    },
+    {
+      "test": "Schedule Session: submit button: 'Schedule Session'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Schedule Session: submit button: 'Schedule Session' (id: schedule-btn)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Schedule Session: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Schedule Session: link button: 'Back to Calendar'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Back to Calendar'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'View Calendar'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Manage Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Manage Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Dashboard'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Back to Calendar'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Add Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Add Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Assign Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'Return to Dashboard'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: link button: 'View Calendar'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Schedule Session: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Schedule Session: input field (name: mentor_id) (id: mentor_id) has identifier",
+      "passed": true,
+      "details": "name: mentor_id, id: mentor_id"
+    },
+    {
+      "test": "Schedule Session: input field (name: mentee_id) (id: mentee_id) has identifier",
+      "passed": true,
+      "details": "name: mentee_id, id: mentee_id"
+    },
+    {
+      "test": "Schedule Session: input field (name: scheduled_date) (id: scheduled_date) has identifier",
+      "passed": true,
+      "details": "name: scheduled_date, id: scheduled_date"
+    },
+    {
+      "test": "Schedule Session: Required field has validation",
+      "passed": false,
+      "details": "type: date, pattern: None"
+    },
+    {
+      "test": "Schedule Session: input field (name: date) (id: date) has identifier",
+      "passed": true,
+      "details": "name: date, id: date"
+    },
+    {
+      "test": "Schedule Session: Required field has validation",
+      "passed": false,
+      "details": "type: date, pattern: None"
+    },
+    {
+      "test": "Schedule Session: select field (name: mentor_mentee_pair) (id: mentor_mentee_pair) has identifier",
+      "passed": true,
+      "details": "name: mentor_mentee_pair, id: mentor_mentee_pair"
+    },
+    {
+      "test": "Schedule Session: Required field has validation",
+      "passed": false,
+      "details": "type: select, pattern: None"
+    },
+    {
+      "test": "Schedule Session: select field (name: mentor_id) (id: mentor_id) has identifier",
+      "passed": true,
+      "details": "name: mentor_id, id: mentor_id"
+    },
+    {
+      "test": "Schedule Session: Required field has validation",
+      "passed": false,
+      "details": "type: select, pattern: None"
+    },
+    {
+      "test": "Schedule Session: select field (name: mentee_id) (id: mentee_id) has identifier",
+      "passed": true,
+      "details": "name: mentee_id, id: mentee_id"
+    },
+    {
+      "test": "Schedule Session: Required field has validation",
+      "passed": false,
+      "details": "type: select, pattern: None"
+    },
+    {
+      "test": "Statistics: button button: 'Refresh'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Statistics: button button: 'Export'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Statistics: button button: 'Print'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Statistics: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Statistics: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Statistics: No form fields found",
+      "passed": true,
+      "details": "Template has no form fields"
+    },
+    {
+      "test": "Statistics: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: refreshStats()..."
+    },
+    {
+      "test": "Statistics: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: exportStats()..."
+    },
+    {
+      "test": "Statistics: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: printStats()..."
+    },
+    {
+      "test": "Statistics: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: downloadChart(..."
+    },
+    {
+      "test": "Statistics: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: viewFullData(..."
+    },
+    {
+      "test": "Statistics: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: refreshStats()..."
+    },
+    {
+      "test": "Statistics: Local script include",
+      "passed": false,
+      "details": "Script: https://cdn.jsdelivr.net/npm/chart.js"
+    },
+    {
+      "test": "Calendar: button button: 'Month'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Week'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Day'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Close'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Current & Upcoming Sessions\n  ' (id: current-sessions-count)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Past Sessions\n                ' (id: past-sessions-count)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Clear Filters'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: ''",
+      "passed": false,
+      "details": "Text: False, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Mark Complete'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Reschedule'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Cancel'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Mark Missed'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Mark as Scheduled'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Restore to Scheduled'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: button button: 'Restore to Scheduled'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: link button: 'Schedule New Session'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Calendar: link button: 'Schedule New Session'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Calendar: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Calendar: input field (name: session_id) (id: reschedule-session-id) has identifier",
+      "passed": true,
+      "details": "name: session_id, id: reschedule-session-id"
+    },
+    {
+      "test": "Calendar: input field (name: new_date) (id: new_date) has identifier",
+      "passed": true,
+      "details": "name: new_date, id: new_date"
+    },
+    {
+      "test": "Calendar: Required field has validation",
+      "passed": false,
+      "details": "type: date, pattern: None"
+    },
+    {
+      "test": "Calendar: input field (id: currentSessionSearch) has identifier",
+      "passed": true,
+      "details": "name: None, id: currentSessionSearch"
+    },
+    {
+      "test": "Calendar: input field (id: pastSessionSearch) has identifier",
+      "passed": true,
+      "details": "name: None, id: pastSessionSearch"
+    },
+    {
+      "test": "Calendar: input field (id: pastDateFrom) has identifier",
+      "passed": true,
+      "details": "name: None, id: pastDateFrom"
+    },
+    {
+      "test": "Calendar: input field (id: pastDateTo) has identifier",
+      "passed": true,
+      "details": "name: None, id: pastDateTo"
+    },
+    {
+      "test": "Calendar: select field (id: pastMentorFilter) has identifier",
+      "passed": true,
+      "details": "name: None, id: pastMentorFilter"
+    },
+    {
+      "test": "Calendar: select field (id: pastStatusFilter) has identifier",
+      "passed": true,
+      "details": "name: None, id: pastStatusFilter"
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: calendar.changeView(..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: calendar.changeView(..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: calendar.changeView(..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: clearCurrentSearch()..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus({{ session.id }}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: showRescheduleModal({{ session.id }})..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus({{ session.id }}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus({{ session.id }}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus({{ session.id }}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: clearPastSearch()..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: clearPastFilters()..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus({{ session.id }}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus({{ session.id }}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus({{ session.id }}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus(${event.id}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: showRescheduleModal(${event.id}); closeSessionModa..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus(${event.id}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus(${event.id}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus(${event.id}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus(${event.id}, ..."
+    },
+    {
+      "test": "Calendar: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: updateSessionStatus(${event.id}, ..."
+    },
+    {
+      "test": "Calendar: Local script include",
+      "passed": false,
+      "details": "Script: https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"
+    },
+    {
+      "test": "User Guide: link button: 'Back to Top'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "User Guide: Link button has valid href",
+      "passed": false,
+      "details": "href: #"
+    },
+    {
+      "test": "User Guide: No form fields found",
+      "passed": true,
+      "details": "Template has no form fields"
+    },
+    {
+      "test": "User Guide: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: window.scrollTo(0,0); return false;..."
+    },
+    {
+      "test": "Clear Data: button button: 'Cleanup Old Sessions'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Clear Data: button button: 'Validate Data Integrity'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Clear Data: submit button: 'Clear All Data' (id: clear-data-btn)",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Clear Data: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Clear Data: link button: 'Export Mentors (CSV)'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Clear Data: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Clear Data: link button: 'Export Mentees (CSV)'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Clear Data: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Clear Data: link button: 'Export Sessions (CSV)'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Clear Data: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Clear Data: link button: 'Refresh Statistics'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Clear Data: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Clear Data: link button: 'Back to Dashboard'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Clear Data: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Clear Data: input field (id: confirm-understand) has identifier",
+      "passed": true,
+      "details": "name: None, id: confirm-understand"
+    },
+    {
+      "test": "Clear Data: Required field has validation",
+      "passed": false,
+      "details": "type: checkbox, pattern: None"
+    },
+    {
+      "test": "Clear Data: input field (id: confirm-backup) has identifier",
+      "passed": true,
+      "details": "name: None, id: confirm-backup"
+    },
+    {
+      "test": "Clear Data: Required field has validation",
+      "passed": false,
+      "details": "type: checkbox, pattern: None"
+    },
+    {
+      "test": "Clear Data: input field (id: confirmation-text) has identifier",
+      "passed": true,
+      "details": "name: None, id: confirmation-text"
+    },
+    {
+      "test": "Clear Data: Required field has validation",
+      "passed": false,
+      "details": "type: text, pattern: None"
+    },
+    {
+      "test": "Clear Data: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: cleanupCompletedSessions()..."
+    },
+    {
+      "test": "Clear Data: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: validateDataIntegrity()..."
+    },
+    {
+      "test": "Clear Data: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: return confirmClearData(event)..."
+    },
+    {
+      "test": "Delete Mentor: submit button: 'Yes, Delete Permanently'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Delete Mentor: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Delete Mentor: link button: 'Cancel & Go Back'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Delete Mentor: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Delete Mentor: link button: 'Back to All Mentors'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Delete Mentor: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Delete Mentor: link button: 'Reassign Students First'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Delete Mentor: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Delete Mentor: No form fields found",
+      "passed": true,
+      "details": "Template has no form fields"
+    },
+    {
+      "test": "Delete Mentor: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: return confirmDeletion(event)..."
+    },
+    {
+      "test": "Delete Mentee: submit button: 'Yes, Delete Permanently'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Delete Mentee: Submit button in form context",
+      "passed": true,
+      "details": "Submit buttons should be within form elements"
+    },
+    {
+      "test": "Delete Mentee: link button: 'Cancel & Go Back'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Delete Mentee: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Delete Mentee: link button: 'Back to All Mentees'",
+      "passed": true,
+      "details": "Text: True, Action: True"
+    },
+    {
+      "test": "Delete Mentee: Link button has valid href",
+      "passed": true,
+      "details": "href: {{ url_for("
+    },
+    {
+      "test": "Delete Mentee: No form fields found",
+      "passed": true,
+      "details": "Template has no form fields"
+    },
+    {
+      "test": "Delete Mentee: Safe onclick handler",
+      "passed": true,
+      "details": "Handler: return confirmDeletion(event)..."
+    }
+  ]
+}

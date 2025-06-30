@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roll Call Validation Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .result { margin: 10px 0; padding: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        input { padding: 8px; margin: 5px; }
+        button { padding: 8px 16px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Roll Call Validation Test</h1>
+    <p>This page tests the exact same validation patterns used in the mentee form.</p>
+    
+    <div class="test-section">
+        <h3>Manual Test</h3>
+        <input type="text" id="manualTest" placeholder="Enter roll call (e.g., 7A, 8B, 12/7)" style="text-transform: uppercase;">
+        <button onclick="testManualInput()">Test</button>
+        <div id="manualResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Automated Tests</h3>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <div id="testResults"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>HTML Form Validation Test</h3>
+        <form onsubmit="return testFormValidation(event)">
+            <input type="text" 
+                   id="formTest" 
+                   pattern="(1[0-2]\/[1-9]|[7-9][A-Z]|1[0-2][A-Z]{2,4}[1-9])"
+                   placeholder="Test HTML5 validation"
+                   style="text-transform: uppercase;"
+                   required>
+            <button type="submit">Test Form</button>
+        </form>
+        <div id="formResult"></div>
+    </div>
+
+    <script>
+        // JavaScript validation function (same as in add_mentee.html)
+        function validateRollCall(rollCall) {
+            const rollCallRegex = /^(1[0-2]\/[1-9]|[7-9][A-Z]|1[0-2][A-Z]{2,4}[1-9])$/;
+            return rollCallRegex.test(rollCall.trim().toUpperCase());
+        }
+        
+        function testManualInput() {
+            const input = document.getElementById('manualTest').value;
+            const result = validateRollCall(input);
+            const resultDiv = document.getElementById('manualResult');
+            
+            resultDiv.innerHTML = `
+                <div class="${result ? 'pass' : 'fail'} result">
+                    Input: "${input}" → ${result ? '✅ VALID' : '❌ INVALID'}
+                </div>
+            `;
+        }
+        
+        function runAllTests() {
+            const testCases = [
+                // Years 7-9 (should pass)
+                { input: '7A', expected: true, description: 'Year 7 Class A' },
+                { input: '8B', expected: true, description: 'Year 8 Class B' },
+                { input: '9C', expected: true, description: 'Year 9 Class C' },
+                { input: '7a', expected: true, description: 'Year 7 Class A (lowercase)' },
+                { input: '8b', expected: true, description: 'Year 8 Class B (lowercase)' },
+                { input: '9c', expected: true, description: 'Year 9 Class C (lowercase)' },
+                { input: ' 7A ', expected: true, description: 'Year 7 Class A (with spaces)' },
+                { input: ' 8B ', expected: true, description: 'Year 8 Class B (with spaces)' },
+                
+                // Years 10-12 (should pass)
+                { input: '10/1', expected: true, description: 'Year 10 Class 1' },
+                { input: '11/2', expected: true, description: 'Year 11 Class 2' },
+                { input: '12/7', expected: true, description: 'Year 12 Class 7' },
+                { input: ' 12/7 ', expected: true, description: 'Year 12 Class 7 (with spaces)' },
+                
+                // Subject codes (should pass)
+                { input: '12ENG1', expected: true, description: 'Year 12 English Class 1' },
+                { input: '11MAT2', expected: true, description: 'Year 11 Math Class 2' },
+                
+                // Invalid cases (should fail)
+                { input: '6A', expected: false, description: 'Year 6 (not supported)' },
+                { input: '10A', expected: false, description: 'Year 10 with letter (wrong format)' },
+                { input: '12/0', expected: false, description: 'Class 0 (invalid)' },
+                { input: '7', expected: false, description: 'Year only' },
+                { input: 'A', expected: false, description: 'Letter only' },
+                { input: '', expected: false, description: 'Empty string' },
+            ];
+            
+            let html = '<h4>Test Results:</h4>';
+            let passed = 0;
+            let failed = 0;
+            
+            testCases.forEach(test => {
+                const result = validateRollCall(test.input);
+                const success = result === test.expected;
+                
+                if (success) {
+                    passed++;
+                } else {
+                    failed++;
+                }
+                
+                html += `
+                    <div class="${success ? 'pass' : 'fail'} result">
+                        "${test.input}" → ${result ? 'VALID' : 'INVALID'} 
+                        ${success ? '✅' : '❌'} ${test.description}
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div class="result" style="background-color: #e2e3e5; margin-top: 15px;">
+                    <strong>Summary: ${passed} passed, ${failed} failed</strong>
+                </div>
+            `;
+            
+            document.getElementById('testResults').innerHTML = html;
+        }
+        
+        function testFormValidation(event) {
+            event.preventDefault();
+            const input = document.getElementById('formTest');
+            const resultDiv = document.getElementById('formResult');
+            
+            // Test HTML5 validation
+            const isValid = input.checkValidity();
+            
+            resultDiv.innerHTML = `
+                <div class="${isValid ? 'pass' : 'fail'} result">
+                    HTML5 Form Validation: "${input.value}" → ${isValid ? '✅ VALID' : '❌ INVALID'}
+                </div>
+            `;
+            
+            return false;
+        }
+        
+        // Auto-run tests on page load
+        window.onload = function() {
+            runAllTests();
+        };
+    </script>
+</body>
+</html>
