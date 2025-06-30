@@ -378,7 +378,7 @@ def add_mentor():
         
         # Validate roll call format
         if not validate_roll_call(roll_call):
-            flash('Invalid roll call format. Please use format like "12ENG1" (Year + Subject + Class).', 'error')
+            flash('Invalid roll call format. Please use format like "12/7", "11/2" for Years 10-12 or "9A", "8B" for Years 7-9.', 'error')
             return render_template('add_mentor.html')
         
         mentor = Mentor(
@@ -455,7 +455,7 @@ def add_mentee():
         
         # Validate roll call format
         if not validate_roll_call(roll_call):
-            flash('Invalid roll call format. Please use format like "10MAT2" (Year + Subject + Class).', 'error')
+            flash('Invalid roll call format. Please use format like "12/7", "11/2" for Years 10-12 or "9A", "8B" for Years 7-9.', 'error')
             return render_template('add_mentee.html')
         
         # Set lessons based on subject (you can update this mapping as needed)

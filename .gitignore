@@ -24,6 +24,10 @@ test_*.py
 comprehensive_test.py
 manual_feature_test.py
 final_test_suite.py
+simple_system_test.py
+manual_system_test.py
+fix_mentor_roll_calls.py
+test_report_*.json
 
 # Development and testing files
 TESTING_CHECKLIST.md
@@ -51,3 +55,4 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+\n# Test and development files\nmanual_*.py\ncomprehensive_*.py\nsimple_*.py\nmaster_*.py\nfinal_*.py\nfix_*.py\nrun_tests.sh\nsystem_health_check.py\nvalidation_utils.py\ncomprehensive_system_fixer.py\n# Test reports and logs\ntest_results_*.txt\n*_test_output.txt\nsystem_health_*.txt\n# Backup files\nmentorship_backup_*.db\n*.bak\n*.backup\n# Documentation generated during testing\nMISSING_ROUTES_DOCUMENTATION.md\nTESTING_GUIDE.md\nROLL_CALL_FIXED.md\nMANUAL_VERIFICATION_CHECKLIST.md\nTEST_RESULTS_*.md

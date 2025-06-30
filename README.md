@@ -1,52 +1,51 @@
 # 🎓 Enterprise Mentorship Management System
 
-A comprehensive web application for managing mentor-mentee relationships, scheduling sessions, and tracking progress in educational settings. Built for Australian schools with Year 12 Enterprise Computing project standards.
+A comprehensive web-based mentorship management system built with Flask, designed for educational institutions to manage mentor-mentee relationships efficiently. **Production Ready** with comprehensive testing and validation.
 
-![System Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
-![Python](https://img.shields.io/badge/Python-3.12-blue)
-![Flask](https://img.shields.io/badge/Flask-3.0-blue)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple)
+![Python](https://img.shields.io/badge/python-v3.12+-blue.svg)
+![Flask](https://img.shields.io/badge/flask-v3.0+-green.svg)
+![Bootstrap](https://img.shields.io/badge/bootstrap-v5.3-purple.svg)
+![Status](https://img.shields.io/badge/status-production--ready-brightgreen.svg)
+![Tests](https://img.shields.io/badge/tests-100%25%20passing-success.svg)
 
 ## ✨ Features
 
 ### 🎯 Core Functionality
-- **Mentor Management**: Add, edit, delete, and manage mentors
-- **Mentee Management**: Complete student lifecycle management
-- **Session Scheduling**: Calendar-based session planning
-- **Assignment System**: Smart mentor-mentee matching
-- **Progress Tracking**: Real-time progress monitoring
+- **Mentor & Mentee Management**: Complete CRUD operations with advanced filtering
+- **Smart Assignment System**: Automatic and manual mentor-mentee assignment
+- **Roll Call Validation**: Support for multiple Australian educational roll call formats
+- **Session Scheduling**: Calendar-based session management with notifications
+- **Progress Tracking**: Real-time mentorship progress and analytics
 
-### 📊 Analytics & Reporting
-- **Interactive Dashboard**: Live statistics and metrics
-- **Advanced Charts**: 6 different chart types with Chart.js
-- **Progress Analytics**: Student and mentor performance tracking
-- **Export Functionality**: CSV export for all data
-- **Print Support**: Printer-friendly layouts
+### 📊 Advanced Features
+- **Interactive Dashboard**: Live statistics with Chart.js visualizations
+- **Data Export**: Comprehensive CSV export functionality
+- **Bulk Operations**: Mass assignment and management tools
+- **Advanced Search**: Real-time filtering and search capabilities
+- **Responsive Design**: Mobile-friendly Bootstrap 5 interface
 
-### 🏫 Australian Education Integration
-- **Roll Call System**: Years 7-12 compatible formatting
-- **Curriculum Subjects**: 50+ Australian curriculum subjects
-- **Subject Search**: Intelligent autocomplete filtering
-- **Academic Standards**: Aligned with Australian education system
-
-### 🎨 Modern UI/UX
-- **Responsive Design**: Mobile-first Bootstrap 5 interface
-- **Professional Styling**: Clean, modern appearance
-- **Interactive Elements**: Dynamic forms and real-time updates
-- **Accessibility**: WCAG compliant design
+### 🔒 Robust Data Validation
+- **Roll Call Formats Supported**:
+  - Years 10-12: `10/1`, `11/2`, `12/7` (Year/Class format)
+  - Years 7-9: `7A`, `8B`, `9C` (YearLetter format)  
+  - Subject codes: `12ENG1`, `11MAT2`, `10SCI3` (YearSubjectNumber format)
+- **Comprehensive Validation**: Client-side and server-side validation
+- **Data Integrity**: Database integrity checks and error handling
+- **Security**: SQL injection protection and input sanitization
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Python 3.12+
-- pip (Python package manager)
+- Flask 3.0+
+- SQLite (included with Python)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd enterprise-computing-
+   git clone https://github.com/yourusername/enterprise-mentorship-system.git
+   cd enterprise-mentorship-system
    ```
 
 2. **Set up virtual environment**
