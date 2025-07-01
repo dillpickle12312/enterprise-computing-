@@ -110,7 +110,7 @@
                                            required 
                                            placeholder="e.g., 12/7, 11/2, 9A, 8B, 12ENG1"
                                            autocomplete="off"
-                                           pattern="(1[0-2]\/[1-9]|[7-9][A-Za-z]|1[0-2][A-Z]{2,4}[1-9])"
+                                           pattern="(1[0-2]\/[1-9]|[7-9][A-Z]|1[0-2][A-Z]{2,4}[1-9])"
                                            title="Years 10-12: format like 12/7, 11/2. Years 7-9: format like 9A, 8B. Subject codes: 12ENG1, 11MAT2"
                                            style="text-transform: uppercase;">
                                     <div class="invalid-feedback">
@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.value = this.value.toUpperCase();
         
         // Real-time validation
-        const rollCallPattern = /^(1[0-2]\/[1-9]|[7-9][A-Za-z]|(1[0-2])[A-Z]{2,4}[1-9])$/;
+        const rollCallPattern = /^(1[0-2]\/[1-9]|[7-9][A-Z]|1[0-2][A-Z]{2,4}[1-9])$/;
         if (rollCallPattern.test(this.value)) {
             this.classList.remove('is-invalid');
             this.classList.add('is-valid');

@@ -61,11 +61,18 @@ A comprehensive web-based mentorship management system built with Flask, designe
 
 4. **Run the application**
    ```bash
+   # For local development (if Flask is installed)
    python app.py
+   # OR
+   flask run
+   
+   # For Render deployment (automatic)
+   # Render uses: gunicorn app:app
    ```
 
 5. **Access the system**
-   Open your browser and go to `http://localhost:5000`
+   - **Local**: Open your browser and go to `http://localhost:5000`
+   - **Render**: Your app will be available at your Render URL
 
 ### Optional: Generate Test Data
 ```bash
@@ -90,6 +97,44 @@ enterprise-computing-/
 │   ├── statistics.html        # Analytics page
 │   └── ...                    # Other templates
 └── venv/                      # Virtual environment
+```
+
+## � Deployment
+
+### 🌐 Render Deployment (Recommended)
+
+This project is configured for easy Render deployment:
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Deploy to Render"
+   git push origin main
+   ```
+
+2. **Connect to Render**
+   - Go to [render.com](https://render.com)
+   - Connect your GitHub repository
+   - Render will automatically detect the `render.yaml` configuration
+
+3. **Automatic Deployment**
+   - Build command: `pip install -r requirements.txt`
+   - Start command: `gunicorn app:app`
+   - Environment: Python 3.12+
+
+### 🔧 Local Development
+
+For local testing:
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run locally
+flask run
+# OR
+python -m flask run
+
+# Access at http://localhost:5000
 ```
 
 ## 🔧 Configuration
