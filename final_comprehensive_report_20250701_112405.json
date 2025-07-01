@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-07-01T11:24:05.785238",
+  "test_results": {
+    "UI Elements Parsing": true,
+    "Form Validation Patterns": false,
+    "Navigation Links": true,
+    "Database Validation": true,
+    "Critical Buttons and Actions": true,
+    "Database File Exists": true,
+    "Required Templates Exist": true,
+    "Static Files Exist": true,
+    "Configuration Files Exist": true
+  },
+  "ui_elements_found": {
+    "total_buttons": 43,
+    "total_forms": 10,
+    "total_links": 73,
+    "total_inputs": 28
+  },
+  "templates_processed": 11,
+  "summary": {
+    "total_categories": 9,
+    "passed_categories": 8,
+    "failed_categories": 1,
+    "success_rate": 88.88888888888889,
+    "deployment_ready": false
+  }
+}
