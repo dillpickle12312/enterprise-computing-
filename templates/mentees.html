@@ -155,10 +155,6 @@
                                         {% endif %}
                                     </td>
                                     <td>                                        <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ url_for('mentee_detail', id=mentee.id) }}" 
-                                               class="btn btn-outline-primary" title="View Details">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
                                             {% if not mentee.assigned_mentor %}
                                                 <a href="{{ url_for('assign_mentor') }}?mentee_id={{ mentee.id }}" 
                                                    class="btn btn-outline-success" title="Assign Mentor">
